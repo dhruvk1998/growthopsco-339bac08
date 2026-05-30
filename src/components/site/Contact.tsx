@@ -104,10 +104,6 @@ export function Contact() {
         </form>
       </div>
 
-      <footer className="mx-auto mt-24 flex max-w-7xl flex-col items-start justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row sm:items-center">
-        <div>© {new Date().getFullYear()} Dhruv Kaushik · CRM Implementation & Workflow Automation</div>
-        <div className="text-xs">Built for operators who care about pipeline.</div>
-      </footer>
     </section>
   );
 }
