@@ -4,8 +4,8 @@ import { Link } from "@tanstack/react-router";
 const navItems = [
   { label: "Workflow", href: "#workflow" },
   { label: "Services", href: "#services" },
-  { label: "Case Studies", href: "#case-studies" },
-  { label: "Health Check", href: "#health-check" },
+  { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ];
 
