@@ -17,17 +17,27 @@ export function Contact() {
 
           <div className="mt-10 space-y-4">
             <a
-              href="mailto:dhruv@example.com"
+              href="mailto:dhruv.kaushik866@gmail.com"
               className="flex items-center justify-between rounded-xl border border-border bg-card/70 p-5 transition-all hover:border-accent/50"
             >
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-widest text-accent">Email</div>
-                <div className="mt-1 font-semibold">dhruv@example.com</div>
+                <div className="mt-1 font-semibold">dhruv.kaushik866@gmail.com</div>
               </div>
               <span className="text-accent">→</span>
             </a>
             <a
-              href="https://www.linkedin.com"
+              href="tel:+17786799471"
+              className="flex items-center justify-between rounded-xl border border-border bg-card/70 p-5 transition-all hover:border-accent/50"
+            >
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-widest text-accent">Phone</div>
+                <div className="mt-1 font-semibold">+1 (778) 679-9471</div>
+              </div>
+              <span className="text-accent">→</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dhruv-kaushik-95231a175/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between rounded-xl border border-border bg-card/70 p-5 transition-all hover:border-accent/50"
@@ -40,7 +50,7 @@ export function Contact() {
             </a>
             <div className="rounded-xl border border-border bg-card/70 p-5">
               <div className="text-[11px] font-bold uppercase tracking-widest text-accent">Based in</div>
-              <div className="mt-1 font-semibold">Canada · Working with global clients</div>
+              <div className="mt-1 font-semibold">Burnaby, BC · Canada</div>
             </div>
           </div>
         </div>
