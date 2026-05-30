@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 
 const navItems = [
-  { label: "Workflow", href: "#workflow" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Services", to: "/services" },
+  { label: "Case Studies", to: "/case-studies" },
+  { label: "Framework", to: "/framework" },
+  { label: "Tools", to: "/tools" },
+  { label: "Contact", to: "/contact" },
+] as const;
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { location } = useRouterState();
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -18,37 +23,82 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
   return (
     <nav
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "border-b border-border/60 bg-background/75 backdrop-blur-lg" : "border-b border-transparent"
+        scrolled || open
+          ? "border-b border-border/60 bg-background/85 backdrop-blur-lg"
+          : "border-b border-transparent"
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
-          <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">DK</span>
+          <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
+            DK
+          </span>
           <span className="text-base">Dhruv Kaushik</span>
         </Link>
-        <div className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
+
+        <div className="hidden items-center gap-7 text-sm font-medium text-muted-foreground lg:flex">
           {navItems.map((n) => (
-            <a key={n.href} href={n.href} className="transition-colors hover:text-accent">
+            <Link
+              key={n.to}
+              to={n.to}
+              activeOptions={{ exact: n.to === "/" }}
+              className="transition-colors hover:text-accent data-[status=active]:text-accent"
+            >
               {n.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
           >
             Book Consultation
-          </a>
+          </Link>
         </div>
-        <a
-          href="#contact"
-          className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground md:hidden"
+
+        <button
+          aria-label="Toggle menu"
+          onClick={() => setOpen((v) => !v)}
+          className="grid size-10 place-items-center rounded-lg border border-border bg-card/60 lg:hidden"
         >
-          Contact
-        </a>
+          <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+            {open ? (
+              <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+            )}
+          </svg>
+        </button>
       </div>
+
+      {open && (
+        <div className="border-t border-border/60 bg-background/95 backdrop-blur-lg lg:hidden">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
+            {navItems.map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                activeOptions={{ exact: n.to === "/" }}
+                className="rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-accent data-[status=active]:bg-card data-[status=active]:text-accent"
+              >
+                {n.label}
+              </Link>
+            ))}
+            <Link
+              to="/contact"
+              className="mt-2 rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground"
+            >
+              Book Consultation
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
