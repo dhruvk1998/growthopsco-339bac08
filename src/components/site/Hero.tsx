@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import heroImage from "@/assets/hero-dashboard.jpg";
 
 const trustItems = [
@@ -25,21 +26,21 @@ export function Hero() {
             CRM Implementation & <span className="text-accent">Workflow Automation</span> Specialist
           </h1>
           <p className="mb-10 max-w-xl text-lg leading-relaxed text-muted-foreground lg:text-xl">
-            Helping businesses stop losing leads through enterprise-grade CRM systems, sales process design, and intelligent lead lifecycle optimization.
+            Helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a
-              href="#case-studies"
+            <Link
+              to="/case-studies"
               className="rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
             >
               View Case Studies
-            </a>
-            <a
-              href="#contact"
+            </Link>
+            <Link
+              to="/contact"
               className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
             >
-              Let's Work Together
-            </a>
+              Schedule a Consultation
+            </Link>
           </div>
           <div className="mt-14">
             <p className="mb-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
