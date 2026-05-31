@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 const questions = [
   "Are leads assigned automatically to the right rep?",
@@ -91,12 +92,13 @@ export function HealthCheck() {
             <div className={`mt-2 text-6xl font-bold ${verdict.color}`}>{Math.round(score)}<span className="text-2xl text-muted-foreground">/100</span></div>
             <p className={`mt-2 text-lg font-bold ${verdict.color}`}>{verdict.label}</p>
             <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">{verdict.note}</p>
-            <a
-              href="#contact"
-              className="mt-6 inline-block rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
+            <Link
+              to="/contact"
+              hash="consultation-form"
+              className="mt-6 inline-block rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground shadow-glow transition-all duration-300 hover:scale-[1.02] hover:opacity-95"
             >
-              Let's optimize your CRM system
-            </a>
+              Book a Free CRM Consultation →
+            </Link>
           </div>
         )}
       </div>
