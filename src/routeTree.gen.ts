@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiConsultationLeadRouteImport } from './routes/api/consultation-lead'
 
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
@@ -52,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiConsultationLeadRoute = ApiConsultationLeadRouteImport.update({
+  id: '/api/consultation-lead',
+  path: '/api/consultation-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
+  '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
+  '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
+  '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/framework'
     | '/services'
     | '/tools'
+    | '/api/consultation-lead'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/framework'
     | '/services'
     | '/tools'
+    | '/api/consultation-lead'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/framework'
     | '/services'
     | '/tools'
+    | '/api/consultation-lead'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   FrameworkRoute: typeof FrameworkRoute
   ServicesRoute: typeof ServicesRoute
   ToolsRoute: typeof ToolsRoute
+  ApiConsultationLeadRoute: typeof ApiConsultationLeadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/consultation-lead': {
+      id: '/api/consultation-lead'
+      path: '/api/consultation-lead'
+      fullPath: '/api/consultation-lead'
+      preLoaderRoute: typeof ApiConsultationLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   FrameworkRoute: FrameworkRoute,
   ServicesRoute: ServicesRoute,
   ToolsRoute: ToolsRoute,
+  ApiConsultationLeadRoute: ApiConsultationLeadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

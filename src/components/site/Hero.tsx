@@ -20,7 +20,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-accent"></span>
             </span>
-            Available for Consulting · Canada
+            Available for Consulting
           </div>
           <h1 className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight lg:text-7xl">
             CRM Implementation & <span className="text-accent">Workflow Automation</span> Specialist
