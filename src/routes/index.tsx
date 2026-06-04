@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
-import { FeaturedCaseStudy } from "@/components/site/FeaturedCaseStudy";
+import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
 import { Workflow } from "@/components/site/Workflow";
 import { Testimonials } from "@/components/site/Testimonials";
 import { FinalCTA } from "@/components/site/FinalCTA";
@@ -50,8 +50,8 @@ function HomePage() {
   return (
     <SiteLayout>
       <Hero />
+      <FeaturedCaseStudies />
       <HomeServicesPreview />
-      <FeaturedCaseStudy />
       <Workflow />
       <Testimonials />
       <FinalCTA />
