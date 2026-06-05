@@ -14,10 +14,19 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   );
 }
 
+const expertise = [
+  "CRM Implementation",
+  "Workflow Automation",
+  "Revenue Operations",
+  "Website Integrations",
+  "Chatbot Integrations",
+  "Lead Lifecycle Design",
+];
+
 function SiteFooter() {
   return (
     <footer className="border-t border-border/60 bg-background">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
             <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
@@ -26,8 +35,7 @@ function SiteFooter() {
             <span className="text-base">Dhruv Kaushik</span>
           </Link>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            CRM Implementation & Workflow Automation Specialist. Helping businesses
-            streamline lead management and scale CRM operations.
+            CRM, Automation & Revenue Operations Consultant. Helping growing businesses streamline lead management and scale operational efficiency.
           </p>
         </div>
         <div>
@@ -36,7 +44,16 @@ function SiteFooter() {
             <li><Link to="/services" className="hover:text-accent">Services</Link></li>
             <li><Link to="/case-studies" className="hover:text-accent">Case Studies</Link></li>
             <li><Link to="/framework" className="hover:text-accent">CRM Framework</Link></li>
-            <li><Link to="/tools" className="hover:text-accent">Tools & Expertise</Link></li>
+            <li><Link to="/about" className="hover:text-accent">About</Link></li>
+            <li><Link to="/contact" className="hover:text-accent">Contact</Link></li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Expertise</p>
+          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+            {expertise.map((e) => (
+              <li key={e}>{e}</li>
+            ))}
           </ul>
         </div>
         <div>
@@ -50,7 +67,7 @@ function SiteFooter() {
       </div>
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <div>© {new Date().getFullYear()} Dhruv Kaushik · CRM Implementation & Workflow Automation</div>
+          <div>© {new Date().getFullYear()} Dhruv Kaushik · CRM, Automation & Revenue Operations</div>
           <div>Built for operators who care about pipeline.</div>
         </div>
       </div>

@@ -2,48 +2,44 @@ import { Link } from "@tanstack/react-router";
 
 const cases = [
   {
-    industry: "SaaS / B2B",
+    slug: "freshworks-crm-rollout",
     category: "CRM Implementation",
     title: "Company-Wide Freshworks CRM Rollout",
-    metric: "100% lead capture accuracy",
+    metric: "Centralized pipeline across departments",
     challenge:
       "Leads scattered across channels with no unified owner, no SLA, and zero leadership visibility.",
     solution:
       "Deployed Freshworks CRM end-to-end, mapped lifecycle stages to real sales motions, and shipped routing automation the team adopted.",
-    result: "100% lead capture accuracy with full pipeline visibility.",
   },
   {
-    industry: "Revenue Ops",
+    slug: "sales-pipeline-automation",
     category: "Workflow Automation",
     title: "Sales Pipeline & Workflow Automation",
-    metric: "18 hrs/week saved",
+    metric: "~50% productivity improvement",
     challenge:
       "Reps spent hours on manual data entry, stage updates, and reporting instead of selling.",
     solution:
       "Built automation flows for stage transitions, task creation, follow-up reminders, and pipeline hygiene.",
-    result: "18 hours/week saved per rep through automation.",
   },
   {
-    industry: "Marketing Ops",
+    slug: "chatbot-crm-integration",
     category: "Website ↔ CRM Integration",
     title: "Chatbot ↔ CRM Integration Sprint",
-    metric: "92% faster response time",
+    metric: "Up to 95% faster lead response",
     challenge:
       "Website inquiries were captured manually, slow to route, and frequently lost before follow-up.",
     solution:
       "Designed an API integration mapping chatbot fields to CRM records with validation, routing, and instant assignment.",
-    result: "92% faster lead response with zero manual entry.",
   },
   {
-    industry: "AI Automation",
-    category: "AI Chatbot Automation",
-    title: "AI-Powered Lead Qualification",
-    metric: "35% more qualified leads",
+    slug: "ai-lead-qualification",
+    category: "AI Automation",
+    title: "AI-Powered Lead Qualification System",
+    metric: "~99% qualified lead growth",
     challenge:
       "High lead volume with low MQL-to-SQL conversion — sales wasted time on poor-fit prospects.",
     solution:
       "Integrated an AI scoring layer with CRM workflows to auto-qualify, prioritize, and route only sales-ready leads.",
-    result: "35% increase in qualified opportunities reaching sales.",
   },
 ];
 
@@ -56,17 +52,26 @@ export function FeaturedCaseStudies() {
             Featured Case Studies
           </p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            Featured Case Studies
+            Proof from real consulting engagements.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Explore real CRM, Revenue Operations, Marketing Automation, Website Integration, and AI Automation projects through an interactive case study portfolio.
+            A snapshot of CRM, Revenue Operations, Marketing Automation, Website Integration, and AI Automation projects. Tap any card to reveal the engagement summary.
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
           {cases.map((c) => (
-            <FlipCard key={c.title} c={c} />
+            <FlipCard key={c.slug} c={c} />
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/case-studies"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/60 px-6 py-3 text-sm font-bold text-foreground transition-all hover:border-accent/50 hover:text-accent"
+          >
+            View All Case Studies →
+          </Link>
         </div>
       </div>
     </section>
@@ -76,12 +81,11 @@ export function FeaturedCaseStudies() {
 function FlipCard({ c }: { c: (typeof cases)[number] }) {
   return (
     <div className="group [perspective:1600px] min-h-[420px]">
-      <div className="relative h-full w-full min-h-[420px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)] [.is-flipped_&]:[transform:rotateY(180deg)]">
+      <div className="relative h-full w-full min-h-[420px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] [.is-flipped_&]:[transform:rotateY(180deg)]">
         {/* FRONT */}
         <div
           tabIndex={0}
           onClick={(e) => {
-            // mobile tap toggle
             const parent = (e.currentTarget.parentElement?.parentElement) as HTMLElement | null;
             parent?.classList.toggle("is-flipped");
           }}
@@ -90,14 +94,11 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           <div className="relative">
             <span className="inline-flex rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
-              {c.industry}
+              {c.category}
             </span>
             <h3 className="mt-5 text-2xl font-bold leading-tight tracking-tight">
               {c.title}
             </h3>
-            <p className="mt-3 text-sm font-medium text-muted-foreground">
-              {c.category}
-            </p>
           </div>
 
           <div className="relative">
@@ -105,10 +106,10 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
               <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
                 Key Outcome
               </p>
-              <p className="mt-1 text-xl font-bold text-foreground">{c.metric}</p>
+              <p className="mt-1 text-lg font-bold text-foreground">{c.metric}</p>
             </div>
             <p className="mt-5 text-center text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Click to View Summary
+              Tap to Reveal
             </p>
           </div>
         </div>
@@ -140,22 +141,14 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
                 {c.solution}
               </p>
             </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
-                Result
-              </p>
-              <p className="mt-1.5 text-sm font-semibold leading-relaxed text-foreground">
-                {c.result}
-              </p>
-            </div>
           </div>
 
           <Link
             to="/case-studies"
+            hash={c.slug}
             className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-all hover:opacity-90"
           >
-            View Full Case Study
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            View Full Case Study →
           </Link>
         </div>
       </div>

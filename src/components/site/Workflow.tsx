@@ -1,102 +1,64 @@
-import { useState } from "react";
-
 const steps = [
   {
     n: "01",
     title: "Lead Capture",
-    short: "Multi-source ingestion",
-    detail:
-      "Unify lead capture across website forms, chatbots, paid campaigns, and inbound channels. Every prospect lands in one structured pipeline — no spreadsheets, no inbox triage.",
+    detail: "Unify intake across website forms, chatbots, paid campaigns, and inbound channels into one structured pipeline.",
   },
   {
     n: "02",
-    title: "CRM Lead Insert",
-    short: "API + data hygiene",
-    detail:
-      "Clean, deduplicate, and enrich incoming leads via API before insertion into Freshworks or LeadSquared. Standardized fields make every downstream automation reliable.",
+    title: "Data Hygiene",
+    detail: "Standardize fields, deduplicate, and enrich incoming leads so every downstream automation runs on clean data.",
   },
   {
     n: "03",
     title: "Lead Assignment",
-    short: "Routing logic",
-    detail:
-      "Round-robin, geography, product line, or intent-based routing. Leads land with the right rep within seconds, with full ownership trails and escalation rules.",
+    detail: "Routing by territory, product, or intent — with ownership trails and escalation rules built in.",
   },
   {
     n: "04",
-    title: "Automation & Routing",
-    short: "Workflows that fire",
-    detail:
-      "Triggered nurture sequences, internal Slack/email alerts, SLA timers, and re-assignment rules — engineered to keep every lead moving without manual nudging.",
+    title: "Automation",
+    detail: "Triggered sequences, internal alerts, SLA timers, and re-assignment rules that keep leads moving without manual nudging.",
   },
   {
     n: "05",
-    title: "Sales Follow-Up",
-    short: "Standardized cadences",
-    detail:
-      "Reps work from a single, prioritized task list. Cadences are templated, calls and emails logged automatically, and pipeline stages reflect real-time activity.",
+    title: "Follow-Up",
+    detail: "Templated cadences with automatic activity logging, so reps work a single prioritized task list.",
   },
   {
     n: "06",
-    title: "Conversion Tracking",
-    short: "Full-funnel attribution",
-    detail:
-      "Closed-loop reporting across channels, stages, and reps. Stakeholders get the pipeline visibility they need to forecast and reinvest with confidence.",
+    title: "Reporting",
+    detail: "Closed-loop visibility across channels, stages, and reps for confident forecasting and reinvestment.",
   },
 ];
 
 export function Workflow() {
-  const [active, setActive] = useState(0);
-  const step = steps[active];
-
   return (
-    <section id="workflow" className="px-6 py-24">
-      <div className="reveal mx-auto max-w-7xl">
-        <div className="mb-14 max-w-2xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">The Method</p>
+    <section id="framework" className="px-6 py-24">
+      <div className="reveal mx-auto max-w-6xl">
+        <div className="mb-12 max-w-2xl">
+          <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Framework</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            How I Optimize Lead Management
+            The Lead Management Framework
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            A six-stage lifecycle I deploy for every CRM engagement. Click a stage to see how it works.
+          <p className="mt-4 text-base text-muted-foreground">
+            A six-stage lifecycle I apply to every CRM engagement.
           </p>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
-          {steps.map((s, i) => {
-            const isActive = i === active;
-            return (
-              <button
-                key={s.n}
-                onClick={() => setActive(i)}
-                className={`group relative rounded-2xl border p-5 text-left transition-all ${
-                  isActive
-                    ? "border-accent/60 bg-accent/[0.06] shadow-glow"
-                    : "border-border bg-card hover:border-accent/40 hover:-translate-y-0.5"
-                }`}
-              >
-                <div className={`mb-4 text-sm font-bold ${isActive ? "text-accent" : "text-accent/70"}`}>{s.n}</div>
-                <div className="text-sm font-bold text-foreground">{s.title}</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">{s.short}</div>
-                {i < steps.length - 1 && (
-                  <span className="pointer-events-none absolute right-[-0.5rem] top-1/2 hidden h-px w-4 -translate-y-1/2 bg-gradient-to-r from-accent/40 to-transparent lg:block" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 rounded-2xl border border-border bg-card/70 p-8">
-          <div className="flex items-start gap-4">
-            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-accent/10 font-bold text-accent">
-              {step.n}
-            </span>
-            <div>
-              <h3 className="text-2xl font-bold">{step.title}</h3>
-              <p className="mt-3 max-w-3xl leading-relaxed text-muted-foreground">{step.detail}</p>
-            </div>
-          </div>
-        </div>
+        <ol className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {steps.map((s) => (
+            <li
+              key={s.n}
+              className="group rounded-2xl border border-border bg-card/60 p-6 transition-colors hover:border-accent/40"
+            >
+              <div className="flex items-baseline gap-3">
+                <span className="text-xs font-bold tracking-widest text-accent">{s.n}</span>
+                <h3 className="text-base font-bold text-foreground">{s.title}</h3>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

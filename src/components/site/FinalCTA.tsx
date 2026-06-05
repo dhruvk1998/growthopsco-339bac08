@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 
 export function FinalCTA({
   eyebrow = "Let's Talk",
-  title = "Let's improve your CRM process.",
-  subtitle = "Tell me about your current lead lifecycle. I'll respond within one business day with a free initial assessment.",
+  title = "Let's Improve Your CRM Operations",
+  subtitle = "If your team is struggling with manual processes, inconsistent follow-up, disconnected systems, or CRM adoption challenges, let's discuss how your operations can be streamlined.",
 }: {
   eyebrow?: string;
   title?: string;
@@ -28,7 +28,7 @@ export function FinalCTA({
             to="/case-studies"
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
-            View Case Studies
+            Explore Case Studies
           </Link>
         </div>
       </div>
