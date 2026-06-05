@@ -1,12 +1,3 @@
-const trustItems = [
-  "Freshworks CRM",
-  "LeadSquared",
-  "Workflow Automation",
-  "API Integration",
-  "Chatbot Integration",
-  "Lead Lifecycle Design",
-];
-
 export function Hero() {
   const scrollToCases = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -14,7 +5,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative px-6 pt-40 pb-20">
+    <section className="relative px-6 pt-40 pb-16">
       <div className="mx-auto max-w-4xl text-center">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/5 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-accent">
           <span className="relative flex size-2">
@@ -24,10 +15,13 @@ export function Hero() {
           Available for Consulting
         </div>
         <h1 className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight lg:text-7xl">
-          CRM Implementation & <span className="text-accent">Workflow Automation</span> Specialist
+          CRM, Automation & <span className="text-accent">Revenue Operations</span> Consultant
         </h1>
-        <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-muted-foreground lg:text-xl">
-          Helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations.
+        <p className="mx-auto mb-5 max-w-2xl text-lg leading-relaxed text-muted-foreground lg:text-xl">
+          Helping growing businesses eliminate manual processes, improve lead management, automate workflows, integrate systems, and optimize revenue operations through practical CRM and automation solutions.
+        </p>
+        <p className="mx-auto mb-10 max-w-2xl text-sm leading-relaxed text-muted-foreground/80">
+          Supporting CRM implementation, workflow automation, chatbot integration, and revenue operations improvement initiatives across sales and marketing operations.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <a
@@ -43,21 +37,6 @@ export function Hero() {
           >
             Schedule a Consultation
           </a>
-        </div>
-        <div className="mt-14">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            Capabilities & Platforms
-          </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {trustItems.map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </section>

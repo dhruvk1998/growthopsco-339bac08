@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
+import { CredibilityMetrics } from "@/components/site/CredibilityMetrics";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
+import { WhyWorkWithMe } from "@/components/site/WhyWorkWithMe";
 import { Workflow } from "@/components/site/Workflow";
-import { Testimonials } from "@/components/site/Testimonials";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
-const title = "Dhruv Kaushik — CRM Implementation & Workflow Automation Specialist";
+const title = "Dhruv Kaushik — CRM, Automation & Revenue Operations Consultant";
 const description =
-  "Helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations. Freshworks & LeadSquared specialist based in Canada.";
+  "Helping growing businesses streamline lead management, automate workflows, integrate systems, and optimize revenue operations through practical CRM and automation solutions.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,16 +29,16 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Dhruv Kaushik",
-          jobTitle: "CRM Implementation & Workflow Automation Specialist",
+          jobTitle: "CRM, Automation & Revenue Operations Consultant",
           address: { "@type": "PostalAddress", addressCountry: "CA" },
           knowsAbout: [
-            "Freshworks CRM",
-            "LeadSquared",
+            "CRM Implementation",
             "Workflow Automation",
+            "Revenue Operations",
             "Lead Lifecycle Management",
-            "Sales Process Design",
-            "API Integration",
+            "Website Integration",
             "Chatbot Integration",
+            "AI Automation",
           ],
         }),
       },
@@ -50,10 +51,11 @@ function HomePage() {
   return (
     <SiteLayout>
       <Hero />
+      <CredibilityMetrics />
       <FeaturedCaseStudies />
       <HomeServicesPreview />
+      <WhyWorkWithMe />
       <Workflow />
-      <Testimonials />
       <FinalCTA />
     </SiteLayout>
   );
