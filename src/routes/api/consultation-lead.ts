@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
-const SHEET_RANGE = "Sheet1!A:J";
+const SHEET_RANGE = "Sheet1!A:L";
 const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
 const GATEWAY = "https://connector-gateway.lovable.dev";
 
@@ -15,6 +15,8 @@ const LeadSchema = z.object({
   website: z.string().trim().max(300).optional().default(""),
   crmUsed: z.string().trim().max(120).optional().default(""),
   preferredMeetingTime: z.string().trim().max(200).optional().default(""),
+  engagementType: z.string().trim().max(120).optional().default(""),
+  companySize: z.string().trim().max(40).optional().default(""),
   leadSource: z.string().trim().max(120).optional().default("Website Contact Form"),
 });
 
@@ -67,10 +69,12 @@ async function sendNotificationEmail(data: z.infer<typeof LeadSchema>, timestamp
     "",
     `Name: ${data.fullName}`,
     `Company: ${data.companyName || "—"}`,
+    `Company Size: ${data.companySize || "—"}`,
     `Email: ${data.email}`,
     `Phone: ${data.phone || "—"}`,
     `Website: ${data.website || "—"}`,
-    `CRM Used: ${data.crmUsed || "—"}`,
+    `Engagement Type: ${data.engagementType || "—"}`,
+    `Current CRM: ${data.crmUsed || "—"}`,
     `Preferred Meeting Time: ${data.preferredMeetingTime || "—"}`,
     "",
     "Requirements:",
@@ -142,6 +146,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
             data.requirements,
             data.preferredMeetingTime,
             data.leadSource,
+            data.engagementType,
+            data.companySize,
           ]);
 
           // Best-effort notification email

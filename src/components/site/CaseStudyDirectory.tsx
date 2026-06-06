@@ -40,7 +40,7 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Discovery", "Architecture", "Configuration", "Migration", "Enablement", "Adoption"],
     impact: "Single source of truth for sales operations with consistent ownership and measurable pipeline.",
     metrics: [
-      { value: "~50%", label: "Productivity improvement" },
+      { value: "Major", label: "Productivity improvement" },
       { value: "100%", label: "Lead capture coverage" },
       { value: "↑", label: "Reporting visibility for leadership" },
     ],
@@ -69,7 +69,7 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Audit", "Design", "Build", "QA", "Rollout", "Iterate"],
     impact: "Reps moved from administrative work to selling, with leadership gaining a cleaner pipeline view.",
     metrics: [
-      { value: "~50%", label: "Productivity uplift" },
+      { value: "Substantial", label: "Productivity uplift" },
       { value: "↓", label: "Manual data entry" },
       { value: "↑", label: "Pipeline hygiene" },
     ],
@@ -98,8 +98,8 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Chatbot", "API Layer", "Field Mapping", "Lead Routing", "CRM Record"],
     impact: "Inquiries entered the CRM in seconds with the right owner and clean data.",
     metrics: [
-      { value: "Up to 95%", label: "Faster lead response" },
-      { value: "~99%", label: "Reduction in manual lead entry" },
+      { value: "Faster", label: "Lead response time" },
+      { value: "Near-zero", label: "Manual lead entry" },
       { value: "0", label: "Lost inquiries" },
     ],
     outcome: "Chatbot interactions became part of a structured, trackable lead management process.",
@@ -127,7 +127,7 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Capture", "Enrich", "Score", "Prioritize", "Route", "Measure"],
     impact: "Sales worked a smaller, higher-quality queue with shorter cycle times.",
     metrics: [
-      { value: "~99%", label: "Growth in qualified leads" },
+      { value: "Significant", label: "Qualified lead growth" },
       { value: "↑", label: "MQL-to-SQL conversion" },
       { value: "↓", label: "Time on poor-fit prospects" },
     ],
@@ -175,7 +175,7 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Capture", "Classify", "Route", "Accept", "Escalate"],
     impact: "Leads reached the right rep in seconds, with no ambiguity about ownership.",
     metrics: [
-      { value: "Up to 95%", label: "Faster lead response" },
+      { value: "Faster", label: "Lead response time" },
       { value: "0", label: "Unassigned leads" },
       { value: "↑", label: "Acceptance rate" },
     ],
@@ -224,7 +224,7 @@ export const caseStudies: CaseStudy[] = [
     impact: "Marketing and sales worked from the same clean, consistent lead records.",
     metrics: [
       { value: "↑", label: "Lead data completeness" },
-      { value: "~99%", label: "Reduction in manual cleanup" },
+      { value: "Near-zero", label: "Manual cleanup required" },
       { value: "↑", label: "Attribution accuracy" },
     ],
     outcome: "A clean intake layer that made every downstream campaign and report more reliable.",
@@ -319,7 +319,7 @@ export const caseStudies: CaseStudy[] = [
     flow: ["Channel", "Normalize", "Enrich", "Insert", "Route"],
     impact: "Every channel landed in the same clean pipeline with reliable attribution.",
     metrics: [
-      { value: "~99%", label: "Manual intake eliminated" },
+      { value: "Eliminated", label: "Manual intake work" },
       { value: "↑", label: "Attribution accuracy" },
       { value: "↑", label: "Channel performance visibility" },
     ],
@@ -362,6 +362,11 @@ export function CaseStudyDirectory() {
   return (
     <section className="px-6 py-20">
       <div className="reveal mx-auto max-w-6xl">
+        <div className="mb-8 rounded-2xl border border-border bg-card/60 p-5 text-sm leading-relaxed text-muted-foreground">
+          <span className="mr-2 inline-flex rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-accent">Confidentiality</span>
+          Case studies represent CRM implementation, automation, integration, and process optimization engagements based on real-world project experience. Certain client identifiers and operational details have been modified or generalized to protect confidentiality.
+        </div>
+
         <div className="mb-10 flex flex-wrap gap-2">
           {categories.map((cat) => {
             const isActive = active === cat;

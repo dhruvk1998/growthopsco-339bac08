@@ -12,30 +12,30 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
             <span className="relative inline-flex size-2 rounded-full bg-accent"></span>
           </span>
-          Available for Consulting
+          Available for Consulting Engagements
         </div>
         <h1 className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight lg:text-7xl">
-          CRM, Automation & <span className="text-accent">Revenue Operations</span> Consultant
+          Turn fragmented sales processes into a <span className="text-accent">structured revenue engine</span>.
         </h1>
         <p className="mx-auto mb-5 max-w-2xl text-lg leading-relaxed text-muted-foreground lg:text-xl">
-          Helping growing businesses eliminate manual processes, improve lead management, automate workflows, integrate systems, and optimize revenue operations through practical CRM and automation solutions.
+          A boutique consultancy for growing businesses — combining business analysis, CRM implementation, workflow automation, and revenue operations to fix lead leakage, eliminate manual work, and give leadership real pipeline visibility.
         </p>
         <p className="mx-auto mb-10 max-w-2xl text-sm leading-relaxed text-muted-foreground/80">
-          Supporting CRM implementation, workflow automation, chatbot integration, and revenue operations improvement initiatives across sales and marketing operations.
+          Specialist experience with Freshworks and LeadSquared. Platform-neutral approach to CRM strategy, automation design, and process improvement.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <a
-            href="#featured-case-studies"
-            onClick={scrollToCases}
+            href="/contact"
             className="rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
           >
-            Explore Case Studies
+            Book a CRM Strategy Call
           </a>
           <a
-            href="/contact"
+            href="#featured-case-studies"
+            onClick={scrollToCases}
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
-            Schedule a Consultation
+            Explore Case Studies
           </a>
         </div>
       </div>

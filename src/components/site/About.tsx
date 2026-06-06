@@ -1,17 +1,17 @@
 const facts = [
-  { label: "Years in CRM Ops", value: "5+" },
+  { label: "Education", value: "MBA — UCW" },
+  { label: "Years in CRM Ops", value: "3+" },
   { label: "Departments Aligned", value: "12" },
   { label: "Workflows Automated", value: "40+" },
-  { label: "Platforms Mastered", value: "Freshworks · LeadSquared" },
 ];
 
 const bullets = [
-  "Set up Freshworks CRM company-wide from the ground up",
-  "Designed lead process flows aligned to business operations",
-  "Built workflow automations across the lead lifecycle",
-  "Coordinated API integrations with website development teams",
-  "Implemented chatbot ↔ CRM integration for instant capture",
-  "Optimized stakeholder reporting and pipeline visibility",
+  "Designed and rolled out Freshworks CRM company-wide across sales, marketing, and support",
+  "Owned LeadSquared automation end-to-end — re-architected lead intake, routing, and SLA logic",
+  "Translated stakeholder needs into lead lifecycle, pipeline, and reporting architecture",
+  "Coordinated API integrations between website, chatbot, and CRM with developer teams",
+  "Built Power BI reporting systems replacing manual leadership reports",
+  "Shipped production-grade Python monitoring systems used at NDTV and TV18",
 ];
 
 export function About() {
@@ -21,14 +21,28 @@ export function About() {
         <div>
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">About</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            I build the operational backbone behind growing sales teams.
+            A consultant who bridges business operations and CRM systems.
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            I'm Dhruv — a CRM Implementation & Workflow Automation consultant based in Canada. I partner with founders, sales leaders, and operations heads to translate messy lead processes into structured, automated, measurable systems.
+            I'm <span className="text-foreground">Dhruv Kaushik</span> — a CRM, Workflow Automation, and Revenue Operations consultant based in Burnaby, BC. I work directly with founders, sales leaders, and operations heads to translate messy lead processes into structured, automated, measurable systems.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            My background isn't pure engineering. It's <span className="text-foreground">business operations meets technical fluency</span> — which is exactly what makes CRM implementations succeed.
+            My background combines an <span className="text-foreground">MBA at University Canada West</span>, a technical foundation in software development and systems engineering, and hands-on CRM implementation experience across Freshworks and LeadSquared. That mix — <span className="text-foreground">business analysis, technical fluency, and operator instinct</span> — is exactly what makes CRM and automation engagements succeed.
           </p>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            Most underperforming CRMs aren't a software problem. They're a process problem dressed up as a tooling problem. That's what I help fix.
+          </p>
+          <a
+            href="https://www.linkedin.com/in/dhruv-kaushik-95231a175/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition-all hover:border-accent/50 hover:text-accent"
+          >
+            <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden="true">
+              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg>
+            Connect on LinkedIn
+          </a>
         </div>
 
         <div>
