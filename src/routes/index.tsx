@@ -2,15 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
 import { CredibilityMetrics } from "@/components/site/CredibilityMetrics";
+import { WhoIHelp } from "@/components/site/WhoIHelp";
+import { Workflow } from "@/components/site/Workflow";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
 import { WhyWorkWithMe } from "@/components/site/WhyWorkWithMe";
-import { Workflow } from "@/components/site/Workflow";
+import { EngagementOutcomes } from "@/components/site/EngagementOutcomes";
+import { HealthCheck } from "@/components/site/HealthCheck";
+import { FAQ } from "@/components/site/FAQ";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
 const title = "Dhruv Kaushik — CRM, Automation & Revenue Operations Consultant";
 const description =
-  "Helping growing businesses streamline lead management, automate workflows, integrate systems, and optimize revenue operations through practical CRM and automation solutions.";
+  "Boutique consultancy helping growing businesses fix lead leakage, automate manual work, integrate systems, and build CRM operations leadership can trust. Freshworks and LeadSquared specialist.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,7 +25,7 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://dhruvrevops.lovable.app/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -30,15 +34,18 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: "Dhruv Kaushik",
           jobTitle: "CRM, Automation & Revenue Operations Consultant",
-          address: { "@type": "PostalAddress", addressCountry: "CA" },
+          url: "https://dhruvrevops.lovable.app",
+          sameAs: ["https://www.linkedin.com/in/dhruv-kaushik-95231a175/"],
+          address: { "@type": "PostalAddress", addressLocality: "Burnaby", addressRegion: "BC", addressCountry: "CA" },
           knowsAbout: [
             "CRM Implementation",
             "Workflow Automation",
             "Revenue Operations",
             "Lead Lifecycle Management",
             "Website Integration",
-            "Chatbot Integration",
-            "AI Automation",
+            "Business Process Optimization",
+            "Freshworks",
+            "LeadSquared",
           ],
         }),
       },
@@ -52,10 +59,14 @@ function HomePage() {
     <SiteLayout>
       <Hero />
       <CredibilityMetrics />
-      <FeaturedCaseStudies />
-      <HomeServicesPreview />
-      <WhyWorkWithMe />
+      <WhoIHelp />
       <Workflow />
+      <HomeServicesPreview />
+      <FeaturedCaseStudies />
+      <WhyWorkWithMe />
+      <EngagementOutcomes />
+      <HealthCheck />
+      <FAQ />
       <FinalCTA />
     </SiteLayout>
   );
