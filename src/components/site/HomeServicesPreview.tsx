@@ -3,64 +3,70 @@ import { Link } from "@tanstack/react-router";
 
 export const standardServices = [
   {
-    title: "CRM Setup & Implementation",
-    problem: "Sales and marketing operate without a single source of truth, leaving leads, activity, and forecasts fragmented across tools.",
+    title: "Set Up a CRM That Actually Gets Used",
+    engagement: "CRM Implementation",
+    problem: "Sales and marketing operate without a single source of truth. Leads, activity, and forecasts live in disconnected tools and spreadsheets.",
     deliverables: [
-      "Account, pipeline, and lifecycle architecture",
-      "Custom fields, roles, and permissions",
-      "Team onboarding, training, and adoption tracking",
+      "Discovery, lifecycle, and pipeline architecture",
+      "Custom fields, roles, permissions, and reporting model",
+      "Data migration, team onboarding, and adoption tracking",
     ],
-    outcomes: "A CRM the team actually lives in — with centralized lead visibility and a foundation that scales.",
+    outcomes: "A CRM the team actually lives in — centralized lead visibility, accountable pipeline, and a foundation that scales.",
   },
   {
-    title: "Workflow Automation",
-    problem: "Reps lose hours to manual updates, follow-up triage, and routing decisions that should run themselves.",
+    title: "Reduce Manual CRM Work",
+    engagement: "Workflow Automation",
+    problem: "Reps lose hours every week to manual updates, follow-up triage, and routing decisions that should run themselves.",
     deliverables: [
-      "Lead routing and round-robin assignment",
+      "Lead routing, round-robin, and ownership rules",
       "Trigger-based sequences, alerts, and SLA timers",
-      "Stuck-deal recovery and re-engagement loops",
+      "Stuck-deal recovery and re-engagement automations",
     ],
-    outcomes: "Up to 50% productivity improvement and dramatically faster lead response.",
+    outcomes: "Reps move from administrative work to selling. Pipeline data stays clean without nightly cleanup.",
   },
   {
-    title: "Lead Process Design",
-    problem: "Lifecycle stages don't match how the business actually sells, so reporting and accountability break down.",
+    title: "Fix Lead Leakage & Ownership Issues",
+    engagement: "Lead Process Design",
+    problem: "Lifecycle stages don't match how the business actually sells. Leads sit unassigned, ownership is unclear, and reporting is unreliable.",
     deliverables: [
-      "End-to-end lifecycle from capture to close",
+      "End-to-end lead lifecycle from capture to close",
       "Source attribution, scoring, and qualification rules",
-      "SLA design and ownership matrices",
+      "Routing matrix, SLAs, and escalation paths",
     ],
-    outcomes: "A lead process every stakeholder understands and trusts.",
+    outcomes: "A lead process every stakeholder understands and trusts — with clear ownership and zero unassigned leads.",
   },
   {
-    title: "Website ↔ CRM Integration",
-    problem: "Web forms, chatbots, and CRM live in silos — leads are entered manually, lost, or duplicated.",
+    title: "Connect Your Website to Your CRM",
+    engagement: "Integration Project",
+    problem: "Web forms, chatbots, and the CRM live in silos. Leads are entered manually, lost between systems, or duplicated.",
     deliverables: [
       "API specs in partnership with web developers",
-      "Field mapping, validation, and routing rules",
+      "Field mapping, validation, and deduplication rules",
       "QA, monitoring, and fallback handling",
     ],
-    outcomes: "~99% reduction in manual lead intake and clean, structured CRM records.",
+    outcomes: "Inquiries land in the CRM in seconds with clean data, the right owner, and reliable attribution.",
   },
   {
-    title: "Chatbot Integration",
-    problem: "Chatbot inquiries don't reach sales fast enough, and qualified leads slip through the cracks.",
+    title: "Capture Chatbot Inquiries Inside Your CRM",
+    engagement: "Chatbot Integration",
+    problem: "Chatbot conversations don't reach sales fast enough. Qualified visitors slip through before anyone can follow up.",
     deliverables: [
       "Conversation-to-lead capture flows",
       "Qualification logic and CRM synchronization",
-      "Routing and instant assignment to reps",
+      "Instant routing and assignment to the right rep",
     ],
-    outcomes: "Up to 95% faster response time and meaningful growth in qualified inquiries.",
+    outcomes: "Conversational leads become structured CRM records with measurable follow-up and conversion.",
   },
   {
-    title: "CRM Audit & Optimization",
-    problem: "The current CRM is underused, full of bad data, or quietly leaking leads — but no one can pinpoint where.",
+    title: "Identify What's Slowing Down Your CRM",
+    engagement: "CRM Audit",
+    problem: "The CRM is underused, full of bad data, or quietly leaking leads — but no one can pinpoint where the breakdowns are.",
     deliverables: [
-      "Lifecycle audit and pipeline-stage diagnostic",
+      "Lifecycle, pipeline, and automation audit",
       "Data quality, duplication, and adoption review",
-      "Prioritized roadmap of fixes and quick wins",
+      "Prioritized 30/60/90 roadmap of fixes and quick wins",
     ],
-    outcomes: "A clear, prioritized plan to turn an underperforming CRM into a revenue engine.",
+    outcomes: "A concrete, sequenced plan to turn an underperforming CRM into a revenue engine — no guesswork.",
   },
 ];
 
@@ -74,8 +80,11 @@ export function HomeServicesPreview() {
           <div className="max-w-2xl">
             <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Services</p>
             <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-              Consulting built around your CRM lifecycle.
+              Engagements named after the problem they solve.
             </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Every service is scoped around a business outcome — not a tool, feature, or technical checklist.
+            </p>
           </div>
           <Link
             to="/services"
@@ -98,7 +107,10 @@ export function HomeServicesPreview() {
                 aria-expanded={isOpen}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-lg font-bold">{s.title}</h3>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">{s.engagement}</p>
+                    <h3 className="mt-1.5 text-lg font-bold leading-tight">{s.title}</h3>
+                  </div>
                   <span
                     className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-accent transition-transform ${
                       isOpen ? "rotate-45" : ""
