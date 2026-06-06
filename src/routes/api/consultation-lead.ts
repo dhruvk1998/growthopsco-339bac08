@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
-const SHEET_RANGE = "Sheet1!A:J";
+const SHEET_RANGE = "Sheet1!A:L";
 const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
 const GATEWAY = "https://connector-gateway.lovable.dev";
 
