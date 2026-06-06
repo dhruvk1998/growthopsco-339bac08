@@ -173,13 +173,52 @@ export function Contact() {
                   className="w-full rounded-lg border border-border bg-background p-3 text-sm outline-none transition-colors focus:border-accent"
                 />
               </Field>
-              <Field label="CRM Currently Used">
-                <input
-                  name="crmUsed"
-                  placeholder="e.g. Freshworks, LeadSquared, none yet"
-                  maxLength={120}
+              <Field label="What are you looking for? *">
+                <select
+                  name="engagementType"
+                  required
+                  defaultValue=""
                   className="w-full rounded-lg border border-border bg-background p-3 text-sm outline-none transition-colors focus:border-accent"
-                />
+                >
+                  <option value="" disabled>Select an engagement type…</option>
+                  <option>CRM Implementation</option>
+                  <option>CRM Audit</option>
+                  <option>Workflow Automation</option>
+                  <option>CRM Integration</option>
+                  <option>Lead Management Optimization</option>
+                  <option>Ongoing Support</option>
+                  <option>Not Sure Yet</option>
+                </select>
+              </Field>
+              <Field label="Company Size">
+                <select
+                  name="companySize"
+                  defaultValue=""
+                  className="w-full rounded-lg border border-border bg-background p-3 text-sm outline-none transition-colors focus:border-accent"
+                >
+                  <option value="">Select company size…</option>
+                  <option>1–10</option>
+                  <option>11–50</option>
+                  <option>51–200</option>
+                  <option>200+</option>
+                </select>
+              </Field>
+              <Field label="Current CRM">
+                <select
+                  name="crmUsed"
+                  defaultValue=""
+                  className="w-full rounded-lg border border-border bg-background p-3 text-sm outline-none transition-colors focus:border-accent"
+                >
+                  <option value="">Select current CRM…</option>
+                  <option>Freshworks</option>
+                  <option>LeadSquared</option>
+                  <option>HubSpot</option>
+                  <option>Salesforce</option>
+                  <option>Zoho</option>
+                  <option>Spreadsheets</option>
+                  <option>None yet</option>
+                  <option>Other</option>
+                </select>
               </Field>
               <Field label="Preferred Meeting Time">
                 <input
