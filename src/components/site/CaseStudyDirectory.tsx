@@ -362,6 +362,11 @@ export function CaseStudyDirectory() {
   return (
     <section className="px-6 py-20">
       <div className="reveal mx-auto max-w-6xl">
+        <div className="mb-8 rounded-2xl border border-border bg-card/60 p-5 text-sm leading-relaxed text-muted-foreground">
+          <span className="mr-2 inline-flex rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-accent">Confidentiality</span>
+          Case studies represent CRM implementation, automation, integration, and process optimization engagements based on real-world project experience. Certain client identifiers and operational details have been modified or generalized to protect confidentiality.
+        </div>
+
         <div className="mb-10 flex flex-wrap gap-2">
           {categories.map((cat) => {
             const isActive = active === cat;
