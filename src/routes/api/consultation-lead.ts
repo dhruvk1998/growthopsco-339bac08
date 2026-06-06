@@ -15,6 +15,8 @@ const LeadSchema = z.object({
   website: z.string().trim().max(300).optional().default(""),
   crmUsed: z.string().trim().max(120).optional().default(""),
   preferredMeetingTime: z.string().trim().max(200).optional().default(""),
+  engagementType: z.string().trim().max(120).optional().default(""),
+  companySize: z.string().trim().max(40).optional().default(""),
   leadSource: z.string().trim().max(120).optional().default("Website Contact Form"),
 });
 
