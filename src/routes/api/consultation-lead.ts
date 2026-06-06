@@ -146,6 +146,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
             data.requirements,
             data.preferredMeetingTime,
             data.leadSource,
+            data.engagementType,
+            data.companySize,
           ]);
 
           // Best-effort notification email
