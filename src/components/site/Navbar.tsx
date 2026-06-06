@@ -48,7 +48,7 @@ export function Navbar() {
             <Link
               key={n.to}
               to={n.to}
-              activeOptions={{ exact: n.to === "/" }}
+              
               className="transition-colors hover:text-accent data-[status=active]:text-accent"
             >
               {n.label}
@@ -95,7 +95,7 @@ export function Navbar() {
               <Link
                 key={n.to}
                 to={n.to}
-                activeOptions={{ exact: n.to === "/" }}
+                
                 className="rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-accent data-[status=active]:bg-card data-[status=active]:text-accent"
               >
                 {n.label}
