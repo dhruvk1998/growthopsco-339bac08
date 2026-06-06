@@ -33,6 +33,8 @@ export function Contact() {
       website: String(fd.get("website") || "").trim(),
       crmUsed: String(fd.get("crmUsed") || "").trim(),
       preferredMeetingTime: String(fd.get("preferredMeetingTime") || "").trim(),
+      engagementType: String(fd.get("engagementType") || "").trim(),
+      companySize: String(fd.get("companySize") || "").trim(),
       leadSource: "Website Contact Form",
     };
 
