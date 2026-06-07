@@ -1,71 +1,61 @@
 ## Goal
 
-Restore the proper multipage site (Home, About, Services, Framework, Case Studies, Contact each on their own route) so the footer only appears at the bottom of each page — but keep smooth anchor scrolling for in-page jumps (e.g. `/contact#consultation-form`, `/#featured-case-studies`).
+Replace the text "Freshworks | LeadSquared" on the site's Open Graph / social-preview thumbnail with "CRM Strategy • Workflow Automation • Revenue Operations", preserving the existing design, and wire the new image into the site's meta tags.
 
-## Root cause of the footer bug
+## Where the thumbnail lives today
 
-Last change stacked About, Services, Framework, Case Studies and Contact onto `/` with anchor navigation. The footer rendered once at the bottom of that mega-page, so scrolling through "sections" surfaced the footer mid-experience.
+- The thumbnail is **not** in `src/assets/`. The only file there is `hero-dashboard.jpg` (the Hero section image — will not be touched).
+- The OG image is referenced from `src/routes/__root.tsx` (lines 90–91) as an external URL:
+  - `og:image` → `https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/15725e39-02fb-4cc0-8c2a-23b8fa518561`
+  - `twitter:image` → same URL
+- Confirmed dimensions: **1344 × 768 PNG** (downloaded and inspected).
+
+This image is used as the Open Graph / Twitter Card social preview thumbnail across all routes via the root `head()`. No other reference exists in the codebase.
 
 ## Changes
 
-### 1. Homepage (`src/routes/index.tsx`)
+### 1. Edit the thumbnail image
 
-Restore the original landing composition (remove About + Contact):
+Use `imagegen--edit_image` on the downloaded current thumbnail (`/tmp/og.png`) with a prompt that:
 
-```text
-Hero → WhoIHelp → HomeServicesPreview → Workflow → FeaturedCaseStudies → HealthCheck → FinalCTA
-```
+- Removes the existing "Freshworks | LeadSquared" text exactly where it sits.
+- Adds "CRM Strategy • Workflow Automation • Revenue Operations" in the same position, using the same typography, color, weight, letter-spacing, and visual hierarchy.
+- Keeps everything else identical: background, gradients, name/title, photo, decorative elements, spacing, padding, 1344×768 dimensions.
 
-### 2. Navbar (`src/components/site/Navbar.tsx`) — route-based nav with mobile auto-close
+Save to `src/assets/og-thumbnail.png`.
 
-| Item | Destination |
-|---|---|
-| Home | `/` |
-| About | `/about` |
-| Services | `/services` |
-| Framework | `/framework` |
-| Case Studies | `/case-studies` |
-| Contact | `/contact` |
-| Book CRM Strategy Call (CTA) | `/contact#consultation-form` |
+### 2. QA the edited image
 
-Behaviors kept:
-- Clicking Home while already on `/` smooth-scrolls to top.
-- Mobile menu auto-closes after any selection.
-- Anchor in CTA (`#consultation-form`) deep-links to the form and the existing Contact page logic auto-focuses the first field.
+Open the generated PNG and visually verify:
+- Old text is fully gone (no ghosting / partial letters).
+- New text fits inside the original text band without overflowing or crowding adjacent elements.
+- Style matches (same font family/weight/color, same alignment).
+- Dimensions remain 1344×768.
 
-### 3. Hero CTAs (`src/components/site/Hero.tsx`)
+If any issue is found, re-run the edit with a refined prompt before continuing.
 
-- "Book a CRM Strategy Call" → `/contact#consultation-form` (route link).
-- "See Case Studies" → in-page smooth scroll to `#featured-case-studies` (anchor on the same homepage).
+### 3. Externalize to the CDN
 
-### 4. FinalCTA (`src/components/site/FinalCTA.tsx`)
+Run `lovable-assets create --file src/assets/og-thumbnail.png > src/assets/og-thumbnail.png.asset.json`, then delete the local PNG. The pointer JSON gives us a stable CDN URL of the form `/__l5e/assets-v1/{asset_id}/og-thumbnail.png`, which absolute-resolves against the published domain for crawlers.
 
-- "Schedule a Consultation" → `/contact#consultation-form`.
-- "Explore Case Studies" → `/case-studies`.
+### 4. Update meta references
 
-### 5. FeaturedCaseStudies (`src/components/site/FeaturedCaseStudies.tsx`)
+In `src/routes/__root.tsx`, replace both:
+- `og:image` content
+- `twitter:image` content
 
-Revert the section id from `case-studies` back to `featured-case-studies` (was changed for the single-page version; on the homepage it's now just an in-page anchor target).
+with the absolute URL `https://growthopsco.lovable.app/__l5e/assets-v1/{asset_id}/og-thumbnail.png` (OG/Twitter crawlers require absolute URLs). The `asset_id` comes from the `.asset.json` written in step 3.
 
-### 6. Styles (`src/styles.css`)
+### 5. Out of scope (explicitly NOT changed)
 
-Keep:
-- `html { scroll-behavior: smooth }` — so all `<a href="#...">` and same-page hash navigations scroll smoothly.
-- `section[id] { scroll-margin-top: 80px }` — so any in-page anchor (e.g. `#consultation-form` on `/contact`) lands below the fixed 80px navbar instead of being hidden under it.
-
-### 7. Cross-route anchor scrolling (TanStack Router)
-
-When navigating from one route to another with a hash (e.g. Navbar CTA → `/contact#consultation-form`), TanStack Router scrolls to the matching `id` on mount. Combined with the `scroll-margin-top` rule above, this lands the user at the right spot under the fixed navbar. Contact page's existing `useEffect` on `#consultation-form` also focuses the first input after that scroll.
-
-### 8. Unchanged
-
-- `/about`, `/services`, `/framework`, `/case-studies`, `/contact` route files keep their existing content and `head()` metadata.
-- `useReveal` runtime-error fix from the last change stays.
+- `src/components/site/Hero.tsx` — untouched.
+- `src/assets/hero-dashboard.jpg` — untouched.
+- Page layouts, copy on Home/About/Services/etc. — untouched.
+- The "Freshworks" / "LeadSquared" strings still present in body copy and JSON-LD `knowsAbout` (`src/routes/__root.tsx` description/og:description/twitter:description, `src/routes/index.tsx`) — out of scope for this request, which is specifically about the thumbnail image. Happy to follow up if you want those broadened too.
 
 ## Validation
 
-- Each nav item loads its own route. Footer only appears at the bottom of the current route.
-- Home stays a short landing page; footer no longer appears mid-scroll.
-- "Book CRM Strategy Call" from any page navigates to `/contact`, smooth-scrolls to the consultation form, and focuses the first input.
-- "See Case Studies" on the homepage smooth-scrolls down to the featured case studies block.
-- Mobile menu auto-closes on every selection.
+- Confirm the modified asset: `src/assets/og-thumbnail.png.asset.json`.
+- Confirm usage: `og:image` and `twitter:image` in `src/routes/__root.tsx` now point to the new CDN URL.
+- Open the new PNG to confirm the new tagline renders cleanly with the original design intact.
+- Confirm no edits to `Hero.tsx`, `hero-dashboard.jpg`, or any route/page layout files.
