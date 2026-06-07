@@ -8,9 +8,9 @@ import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
 import { HealthCheck } from "@/components/site/HealthCheck";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
-const title = "Dhruv Kaushik — CRM, Automation & Revenue Operations Consultant";
+const title = "Dhruv Kaushik — Independent CRM & Revenue Operations Consultant";
 const description =
-  "Boutique consultancy helping growing businesses fix lead leakage, automate manual work, integrate systems, and build CRM operations leadership can trust. Freshworks and LeadSquared specialist.";
+  "Independent CRM and RevOps consultant helping growing teams fix lead leakage, automate manual work, and build a pipeline leadership can trust. Freshworks and LeadSquared specialist.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
