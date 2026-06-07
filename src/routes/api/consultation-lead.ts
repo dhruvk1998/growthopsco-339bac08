@@ -159,9 +159,15 @@ export const Route = createFileRoute("/api/consultation-lead")({
 
           return Response.json({ ok: true });
         } catch (err) {
-          console.error("Consultation lead error:", err);
+          const detail = err instanceof Error ? err.message : String(err);
+          console.error("Consultation lead error:", detail);
           return Response.json(
-            { ok: false, error: "Something went wrong saving your request. Please try again or email us directly." },
+            {
+              ok: false,
+              error:
+                "We couldn't save your request right now. Please email dhruv.kaushik866@gmail.com or try again in a moment.",
+              detail,
+            },
             { status: 500 },
           );
         }
