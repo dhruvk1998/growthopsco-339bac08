@@ -54,17 +54,16 @@ export function useReveal() {
       return io;
     };
 
+    let io: IntersectionObserver | undefined;
     // Run after layout settles (route just mounted).
     const raf = requestAnimationFrame(() => {
-      const io = run();
-      // Cleanup
-      (raf as unknown as { __io?: IntersectionObserver }).__io = io;
+      io = run();
     });
 
     return () => {
       cancelAnimationFrame(raf);
-      const io = (raf as unknown as { __io?: IntersectionObserver }).__io;
       io?.disconnect();
     };
   }, [pathname]);
 }
+

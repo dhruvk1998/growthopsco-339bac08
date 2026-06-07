@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 export function FinalCTA({
   eyebrow = "Let's Talk",
   title = "Let's Improve Your CRM Operations",
@@ -9,6 +7,11 @@ export function FinalCTA({
   title?: string;
   subtitle?: string;
 }) {
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section className="px-6 py-24">
       <div className="reveal mx-auto max-w-5xl overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-card/80 to-transparent p-10 text-center sm:p-14">
@@ -18,18 +21,20 @@ export function FinalCTA({
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-muted-foreground">{subtitle}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link
-            to="/contact"
+          <a
+            href="#consultation-form"
+            onClick={scrollTo("consultation-form")}
             className="rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground transition-all hover:shadow-glow"
           >
             Schedule a Consultation
-          </Link>
-          <Link
-            to="/case-studies"
+          </a>
+          <a
+            href="#case-studies"
+            onClick={scrollTo("case-studies")}
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
             Explore Case Studies
-          </Link>
+          </a>
         </div>
       </div>
     </section>

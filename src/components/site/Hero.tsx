@@ -1,11 +1,11 @@
 export function Hero() {
-  const scrollToCases = (e: React.MouseEvent) => {
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById("featured-case-studies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <section className="relative px-6 pt-32 pb-12">
+    <section id="hero" className="relative px-6 pt-32 pb-12">
       <div className="mx-auto max-w-3xl text-center">
         <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/5 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-accent">
           <span className="relative flex size-2">
@@ -22,14 +22,15 @@ export function Hero() {
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <a
-            href="/contact"
+            href="#consultation-form"
+            onClick={scrollTo("consultation-form")}
             className="rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
           >
             Book a CRM Strategy Call
           </a>
           <a
-            href="#featured-case-studies"
-            onClick={scrollToCases}
+            href="#case-studies"
+            onClick={scrollTo("case-studies")}
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
             See Case Studies
@@ -39,3 +40,4 @@ export function Hero() {
     </section>
   );
 }
+
