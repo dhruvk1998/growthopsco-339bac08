@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as FrameworkRouteImport } from './routes/framework'
+import { Route as CrmAssessmentRouteImport } from './routes/crm-assessment'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as AboutRouteImport } from './routes/about'
@@ -31,6 +32,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const FrameworkRoute = FrameworkRouteImport.update({
   id: '/framework',
   path: '/framework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmAssessmentRoute = CrmAssessmentRouteImport.update({
+  id: '/crm-assessment',
+  path: '/crm-assessment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
+  '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
+  '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
+  '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/tools': typeof ToolsRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/case-studies'
     | '/contact'
+    | '/crm-assessment'
     | '/framework'
     | '/services'
     | '/tools'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/case-studies'
     | '/contact'
+    | '/crm-assessment'
     | '/framework'
     | '/services'
     | '/tools'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/case-studies'
     | '/contact'
+    | '/crm-assessment'
     | '/framework'
     | '/services'
     | '/tools'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
+  CrmAssessmentRoute: typeof CrmAssessmentRoute
   FrameworkRoute: typeof FrameworkRoute
   ServicesRoute: typeof ServicesRoute
   ToolsRoute: typeof ToolsRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/framework'
       fullPath: '/framework'
       preLoaderRoute: typeof FrameworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm-assessment': {
+      id: '/crm-assessment'
+      path: '/crm-assessment'
+      fullPath: '/crm-assessment'
+      preLoaderRoute: typeof CrmAssessmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
+  CrmAssessmentRoute: CrmAssessmentRoute,
   FrameworkRoute: FrameworkRoute,
   ServicesRoute: ServicesRoute,
   ToolsRoute: ToolsRoute,
