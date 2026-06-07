@@ -56,12 +56,11 @@ function HomePage() {
     <SiteLayout>
       <Hero />
       <WhoIHelp />
-      <About />
       <HomeServicesPreview />
       <Workflow />
       <FeaturedCaseStudies />
       <HealthCheck />
-      <Contact />
+      <FinalCTA />
     </SiteLayout>
   );
 }
