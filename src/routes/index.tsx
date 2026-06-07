@@ -58,15 +58,11 @@ function HomePage() {
   return (
     <SiteLayout>
       <Hero />
-      <CredibilityMetrics />
       <WhoIHelp />
-      <Workflow />
       <HomeServicesPreview />
+      <Workflow />
       <FeaturedCaseStudies />
-      <WhyWorkWithMe />
-      <EngagementOutcomes />
       <HealthCheck />
-      <FAQ />
       <FinalCTA />
     </SiteLayout>
   );
