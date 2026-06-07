@@ -10,8 +10,6 @@ const navItems = [
   { label: "Contact", to: "/contact" },
 ] as const;
 
-
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -28,6 +26,16 @@ export function Navbar() {
     setOpen(false);
   }, [location.pathname]);
 
+  const handleNavClick = (to: string) => (e: React.MouseEvent) => {
+    // Always close the mobile menu when a nav item is clicked
+    setOpen(false);
+    // If Home is clicked while already on the homepage, smooth-scroll to top
+    if (to === "/" && location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <nav
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
@@ -37,7 +45,11 @@ export function Navbar() {
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
+        <Link
+          to="/"
+          onClick={handleNavClick("/")}
+          className="flex items-center gap-2.5 font-bold tracking-tight"
+        >
           <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
             DK
           </span>
@@ -49,7 +61,7 @@ export function Navbar() {
             <Link
               key={n.to}
               to={n.to}
-              
+              onClick={handleNavClick(n.to)}
               className="transition-colors hover:text-accent data-[status=active]:text-accent"
             >
               {n.label}
@@ -57,6 +69,7 @@ export function Navbar() {
           ))}
           <Link
             to="/contact"
+            onClick={handleNavClick("/contact")}
             className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
           >
             Book CRM Strategy Call
@@ -85,7 +98,7 @@ export function Navbar() {
               <Link
                 key={n.to}
                 to={n.to}
-                
+                onClick={handleNavClick(n.to)}
                 className="rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-accent data-[status=active]:bg-card data-[status=active]:text-accent"
               >
                 {n.label}
@@ -93,6 +106,7 @@ export function Navbar() {
             ))}
             <Link
               to="/contact"
+              onClick={handleNavClick("/contact")}
               className="mt-2 rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground"
             >
               Book CRM Strategy Call

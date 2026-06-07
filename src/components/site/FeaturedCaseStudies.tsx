@@ -80,8 +80,8 @@ export function FeaturedCaseStudies() {
 
 function FlipCard({ c }: { c: (typeof cases)[number] }) {
   return (
-    <div className="group [perspective:1600px] min-h-[420px]">
-      <div className="relative h-full w-full min-h-[420px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] [.is-flipped_&]:[transform:rotateY(180deg)]">
+    <div className="group [perspective:1600px] min-h-[300px]">
+      <div className="relative h-full w-full min-h-[300px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] [.is-flipped_&]:[transform:rotateY(180deg)]">
         {/* FRONT */}
         <div
           tabIndex={0}
@@ -89,26 +89,26 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
             const parent = (e.currentTarget.parentElement?.parentElement) as HTMLElement | null;
             parent?.classList.toggle("is-flipped");
           }}
-          className="absolute inset-0 flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm [backface-visibility:hidden] transition-shadow duration-300 group-hover:border-accent/40 group-hover:shadow-[0_0_40px_-8px_hsl(var(--accent)/0.35)]"
+          className="absolute inset-0 flex cursor-pointer flex-col justify-between gap-4 overflow-hidden rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm [backface-visibility:hidden] transition-shadow duration-300 group-hover:border-accent/40 group-hover:shadow-[0_0_40px_-8px_hsl(var(--accent)/0.35)]"
         >
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           <div className="relative">
             <span className="inline-flex rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
               {c.category}
             </span>
-            <h3 className="mt-5 text-2xl font-bold leading-tight tracking-tight">
+            <h3 className="mt-3 text-xl font-bold leading-tight tracking-tight lg:text-2xl">
               {c.title}
             </h3>
           </div>
 
           <div className="relative">
-            <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4">
+            <div className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
                 Key Outcome
               </p>
-              <p className="mt-1 text-lg font-bold text-foreground">{c.metric}</p>
+              <p className="mt-1 text-base font-bold text-foreground">{c.metric}</p>
             </div>
-            <p className="mt-5 text-center text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="mt-3 text-center text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
               Tap to Reveal
             </p>
           </div>
@@ -122,14 +122,14 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
             const parent = (e.currentTarget.parentElement?.parentElement) as HTMLElement | null;
             parent?.classList.toggle("is-flipped");
           }}
-          className="absolute inset-0 flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-accent/40 bg-card/70 p-8 backdrop-blur-md [backface-visibility:hidden] [transform:rotateY(180deg)] shadow-[0_0_40px_-8px_hsl(var(--accent)/0.4)]"
+          className="absolute inset-0 flex cursor-pointer flex-col justify-between gap-4 overflow-hidden rounded-2xl border border-accent/40 bg-card/70 p-6 backdrop-blur-md [backface-visibility:hidden] [transform:rotateY(180deg)] shadow-[0_0_40px_-8px_hsl(var(--accent)/0.4)]"
         >
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
                 Challenge
               </p>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-1 text-sm leading-snug text-muted-foreground">
                 {c.challenge}
               </p>
             </div>
@@ -137,7 +137,7 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
               <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
                 Solution
               </p>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-1 text-sm leading-snug text-muted-foreground">
                 {c.solution}
               </p>
             </div>
@@ -146,7 +146,7 @@ function FlipCard({ c }: { c: (typeof cases)[number] }) {
           <Link
             to="/case-studies"
             hash={c.slug}
-            className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-all hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground transition-all hover:opacity-90"
           >
             View Full Case Study →
           </Link>
