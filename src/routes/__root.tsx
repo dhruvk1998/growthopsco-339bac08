@@ -87,8 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Dhruv Kaushik | CRM Consultant" },
       { name: "twitter:description", content: "CRM consultant helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations using Freshworks, LeadSqu" },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/15725e39-02fb-4cc0-8c2a-23b8fa518561" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/15725e39-02fb-4cc0-8c2a-23b8fa518561" },
+      { property: "og:image", content: "https://growthopsco.lovable.app/__l5e/assets-v1/977f065b-daec-4189-b7fa-0c74425872af/og-thumbnail.png" },
+      { name: "twitter:image", content: "https://growthopsco.lovable.app/__l5e/assets-v1/977f065b-daec-4189-b7fa-0c74425872af/og-thumbnail.png" },
     ],
     links: [
       {
