@@ -1,4 +1,4 @@
-import { useState } from "react";
+// useState no longer needed — cards are now plain links
 import { Link } from "@tanstack/react-router";
 
 export const standardServices = [
@@ -71,8 +71,6 @@ export const standardServices = [
 ];
 
 export function HomeServicesPreview() {
-  const [open, setOpen] = useState<number | null>(null);
-
   return (
     <section id="services" className="px-6 py-24">
       <div className="reveal mx-auto max-w-7xl">
@@ -83,7 +81,7 @@ export function HomeServicesPreview() {
               Services named after the business problem they solve.
             </h2>
             <p className="mt-4 text-base text-muted-foreground">
-              Every engagement starts with a business outcome — sales visibility, faster response, less manual work, a process that scales — and then brings in the right CRM, automation, or integration to make it real.
+              Every engagement starts with a business outcome — then brings in the right CRM, automation, or integration to make it real.
             </p>
           </div>
           <Link
@@ -95,56 +93,20 @@ export function HomeServicesPreview() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {standardServices.map((s, i) => {
-            const isOpen = open === i;
-            return (
-              <button
-                key={s.title}
-                onClick={() => setOpen(isOpen ? null : i)}
-                className={`group rounded-2xl border bg-card/70 p-6 text-left transition-all hover:-translate-y-0.5 ${
-                  isOpen ? "border-accent/50" : "border-border hover:border-accent/40"
-                }`}
-                aria-expanded={isOpen}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">{s.engagement}</p>
-                    <h3 className="mt-1.5 text-lg font-bold leading-tight">{s.title}</h3>
-                  </div>
-                  <span
-                    className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-accent transition-transform ${
-                      isOpen ? "rotate-45" : ""
-                    }`}
-                  >
-                    <svg viewBox="0 0 20 20" className="size-3.5" fill="currentColor">
-                      <path d="M10 4a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H5a1 1 0 110-2h4V5a1 1 0 011-1z" />
-                    </svg>
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.problem}</p>
-
-                <div
-                  className={`grid overflow-hidden transition-all duration-300 ${
-                    isOpen ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="min-h-0 border-t border-border pt-4">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">Typical Deliverables</p>
-                    <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
-                      {s.deliverables.map((d) => (
-                        <li key={d} className="flex items-start gap-2">
-                          <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 text-[10px] font-bold uppercase tracking-widest text-accent">Expected Outcomes</p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-foreground">{s.outcomes}</p>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+          {standardServices.map((s) => (
+            <Link
+              key={s.title}
+              to="/services"
+              className="group rounded-2xl border border-border bg-card/70 p-6 text-left transition-all hover:-translate-y-0.5 hover:border-accent/40"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-accent">{s.engagement}</p>
+              <h3 className="mt-1.5 text-base font-bold leading-snug">{s.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">{s.outcomes}</p>
+              <p className="mt-4 text-xs font-semibold text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                Learn more →
+              </p>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
