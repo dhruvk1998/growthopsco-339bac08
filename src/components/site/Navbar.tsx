@@ -77,7 +77,7 @@ export function Navbar() {
           <Link
             to="/contact"
             hash="consultation-form"
-            onClick={() => setOpen(false)}
+            onClick={handleBookClick}
             className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
           >
             Book CRM Strategy Call
