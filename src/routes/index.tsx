@@ -1,20 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
-import { CredibilityMetrics } from "@/components/site/CredibilityMetrics";
 import { WhoIHelp } from "@/components/site/WhoIHelp";
 import { Workflow } from "@/components/site/Workflow";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
-import { WhyWorkWithMe } from "@/components/site/WhyWorkWithMe";
-import { EngagementOutcomes } from "@/components/site/EngagementOutcomes";
 import { HealthCheck } from "@/components/site/HealthCheck";
-import { FAQ } from "@/components/site/FAQ";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
-const title = "Dhruv Kaushik — CRM, Automation & Revenue Operations Consultant";
+const title = "Dhruv Kaushik — Independent CRM & Revenue Operations Consultant";
 const description =
-  "Boutique consultancy helping growing businesses fix lead leakage, automate manual work, integrate systems, and build CRM operations leadership can trust. Freshworks and LeadSquared specialist.";
+  "Independent CRM and RevOps consultant helping growing teams fix lead leakage, automate manual work, and build a pipeline leadership can trust. Freshworks and LeadSquared specialist.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -58,15 +54,11 @@ function HomePage() {
   return (
     <SiteLayout>
       <Hero />
-      <CredibilityMetrics />
       <WhoIHelp />
-      <Workflow />
       <HomeServicesPreview />
+      <Workflow />
       <FeaturedCaseStudies />
-      <WhyWorkWithMe />
-      <EngagementOutcomes />
       <HealthCheck />
-      <FAQ />
       <FinalCTA />
     </SiteLayout>
   );
