@@ -27,7 +27,7 @@ function CRMAssessmentPage() {
       <PageHeader
         eyebrow="CRM Health Check"
         title="Find out where your CRM is losing leads."
-        subtitle="Eight quick questions across lead management, automation, integration, and reporting. Get a CRM Health Score, identified problem areas, and recommended next steps — in under two minutes."
+        description="Eight quick questions across lead management, automation, integration, and reporting. Get a CRM Health Score, identified problem areas, and recommended next steps — in under two minutes."
       />
       <HealthCheck />
       <FinalCTA
