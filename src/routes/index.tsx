@@ -63,11 +63,10 @@ function HomePage() {
       <HomeServicesPreview />
       <BeyondCRM />
       <WhoIHelp />
-      <Workflow />
       <FeaturedCaseStudies />
       <HealthCheck />
-      <About />
       <FinalCTA />
+
     </SiteLayout>
   );
 }
