@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
-import { CredibilityMetrics } from "@/components/site/CredibilityMetrics";
 import { WhoIHelp } from "@/components/site/WhoIHelp";
 import { Workflow } from "@/components/site/Workflow";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
-import { WhyWorkWithMe } from "@/components/site/WhyWorkWithMe";
-import { EngagementOutcomes } from "@/components/site/EngagementOutcomes";
 import { HealthCheck } from "@/components/site/HealthCheck";
-import { FAQ } from "@/components/site/FAQ";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
 const title = "Dhruv Kaushik — CRM, Automation & Revenue Operations Consultant";
