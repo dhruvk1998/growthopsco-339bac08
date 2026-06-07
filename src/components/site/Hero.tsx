@@ -1,7 +1,9 @@
+import { Link } from "@tanstack/react-router";
+
 export function Hero() {
-  const scrollTo = (id: string) => (e: React.MouseEvent) => {
+  const scrollToCases = (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("featured-case-studies")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -21,16 +23,16 @@ export function Hero() {
           I'm Dhruv Kaushik — an independent CRM and RevOps consultant. I help growing teams fix lead leakage, automate the manual work, and give leadership a pipeline they can trust. Specialist in Freshworks and LeadSquared.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <a
-            href="#consultation-form"
-            onClick={scrollTo("consultation-form")}
+          <Link
+            to="/contact"
+            hash="consultation-form"
             className="rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
           >
             Book a CRM Strategy Call
-          </a>
+          </Link>
           <a
-            href="#case-studies"
-            onClick={scrollTo("case-studies")}
+            href="#featured-case-studies"
+            onClick={scrollToCases}
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
             See Case Studies
@@ -40,4 +42,3 @@ export function Hero() {
     </section>
   );
 }
-
