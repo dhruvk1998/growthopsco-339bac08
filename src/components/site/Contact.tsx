@@ -8,14 +8,15 @@ export function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-focus first input if user lands on the form via hash
+  // Scroll to and focus the form if user lands on /contact#consultation-form
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.location.hash === "#consultation-form") {
-      requestAnimationFrame(() => {
-        firstInputRef.current?.focus({ preventScroll: false });
-      });
-    }
+    if (window.location.hash !== "#consultation-form") return;
+    requestAnimationFrame(() => {
+      const el = document.getElementById("consultation-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      firstInputRef.current?.focus({ preventScroll: true });
+    });
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

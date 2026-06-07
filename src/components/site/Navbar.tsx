@@ -28,9 +28,18 @@ export function Navbar() {
 
   const handleNavClick = (to: string) => (e: React.MouseEvent) => {
     setOpen(false);
-    if (to === "/" && location.pathname === "/") {
+    if (location.pathname === to) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleBookClick = (e: React.MouseEvent) => {
+    setOpen(false);
+    if (location.pathname === "/contact") {
+      e.preventDefault();
+      const el = document.getElementById("consultation-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -68,7 +77,7 @@ export function Navbar() {
           <Link
             to="/contact"
             hash="consultation-form"
-            onClick={() => setOpen(false)}
+            onClick={handleBookClick}
             className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
           >
             Book CRM Strategy Call
@@ -106,7 +115,7 @@ export function Navbar() {
             <Link
               to="/contact"
               hash="consultation-form"
-              onClick={() => setOpen(false)}
+              onClick={handleBookClick}
               className="mt-2 rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground"
             >
               Book CRM Strategy Call
