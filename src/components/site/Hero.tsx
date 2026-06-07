@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
 export function Hero() {
-  const scrollToCases = (e: React.MouseEvent) => {
+  const scrollToProblems = (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById("featured-case-studies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("does-this-sound-familiar")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -14,13 +14,13 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
             <span className="relative inline-flex size-2 rounded-full bg-accent"></span>
           </span>
-          Independent Consultant · Available
+          CRM, Automation & Business Systems Consultant
         </div>
         <h1 className="mb-5 text-4xl font-bold leading-[1.05] tracking-tight lg:text-6xl">
-          CRM & Revenue Ops that <span className="text-accent">actually closes the loop</span>.
+          Stop losing leads. <span className="text-accent">Run a sales process you can actually see.</span>
         </h1>
         <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-          I'm Dhruv Kaushik — an independent CRM and RevOps consultant. I help growing teams fix lead leakage, automate the manual work, and give leadership a pipeline they can trust. Specialist in Freshworks and LeadSquared.
+          I help growing businesses organize their sales, follow up consistently, automate the manual work, and get clear visibility into their pipeline — so leadership can make decisions with confidence and scale without the chaos.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link
@@ -28,14 +28,14 @@ export function Hero() {
             hash="consultation-form"
             className="rounded-xl bg-primary px-7 py-3.5 font-bold text-primary-foreground transition-all hover:opacity-90"
           >
-            Book a CRM Strategy Call
+            Book a Free Consultation
           </Link>
           <a
-            href="#featured-case-studies"
-            onClick={scrollToCases}
+            href="#does-this-sound-familiar"
+            onClick={scrollToProblems}
             className="rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:bg-white/5"
           >
-            See Case Studies
+            See if this sounds familiar
           </a>
         </div>
       </div>

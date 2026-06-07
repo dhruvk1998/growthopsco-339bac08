@@ -3,70 +3,70 @@ import { Link } from "@tanstack/react-router";
 
 export const standardServices = [
   {
-    title: "Set Up a CRM That Actually Gets Used",
+    title: "Give Your Team One Sales System That Works",
     engagement: "CRM Implementation",
-    problem: "Sales and marketing operate without a single source of truth. Leads, activity, and forecasts live in disconnected tools and spreadsheets.",
+    problem: "Sales visibility is low and the team operates from scattered tools. Leadership can't answer simple questions about pipeline or performance.",
     deliverables: [
       "Discovery, lifecycle, and pipeline architecture",
       "Custom fields, roles, permissions, and reporting model",
       "Data migration, team onboarding, and adoption tracking",
     ],
-    outcomes: "A CRM the team actually lives in — centralized lead visibility, accountable pipeline, and a foundation that scales.",
+    outcomes: "Clear sales visibility, accountable pipeline, and a process the team actually uses every day — powered by the right CRM for the business.",
   },
   {
-    title: "Reduce Manual CRM Work",
+    title: "Reduce Manual Work and Speed Up Response Times",
     engagement: "Workflow Automation",
-    problem: "Reps lose hours every week to manual updates, follow-up triage, and routing decisions that should run themselves.",
+    problem: "The team loses hours every week to repetitive updates, manual follow-up, and routing decisions — slowing response and frustrating customers.",
     deliverables: [
       "Lead routing, round-robin, and ownership rules",
       "Trigger-based sequences, alerts, and SLA timers",
       "Stuck-deal recovery and re-engagement automations",
     ],
-    outcomes: "Reps move from administrative work to selling. Pipeline data stays clean without nightly cleanup.",
+    outcomes: "More selling, less admin. Faster follow-up, consistent execution, and clean data without the nightly cleanup.",
   },
   {
-    title: "Fix Lead Leakage & Ownership Issues",
+    title: "Make Sure No Lead Falls Through the Cracks",
     engagement: "Lead Process Design",
-    problem: "Lifecycle stages don't match how the business actually sells. Leads sit unassigned, ownership is unclear, and reporting is unreliable.",
+    problem: "Leads sit unowned, follow-ups depend on memory, and no one is sure where opportunities are leaking out of the funnel.",
     deliverables: [
       "End-to-end lead lifecycle from capture to close",
       "Source attribution, scoring, and qualification rules",
       "Routing matrix, SLAs, and escalation paths",
     ],
-    outcomes: "A lead process every stakeholder understands and trusts — with clear ownership and zero unassigned leads.",
+    outcomes: "A reliable, transparent lead process — every inquiry owned, every follow-up tracked, every stage measurable.",
   },
   {
-    title: "Connect Your Website to Your CRM",
+    title: "Connect Your Website and Tools to Your CRM",
     engagement: "Integration Project",
-    problem: "Web forms, chatbots, and the CRM live in silos. Leads are entered manually, lost between systems, or duplicated.",
+    problem: "Web forms, chatbots, marketing tools, and the CRM live in silos. Leads are entered manually, lost between systems, or duplicated.",
     deliverables: [
       "API specs in partnership with web developers",
       "Field mapping, validation, and deduplication rules",
       "QA, monitoring, and fallback handling",
     ],
-    outcomes: "Inquiries land in the CRM in seconds with clean data, the right owner, and reliable attribution.",
+    outcomes: "Inquiries flow automatically into the right system with clean data, the right owner, and reliable attribution — no manual handoffs.",
   },
   {
-    title: "Capture Chatbot Inquiries Inside Your CRM",
-    engagement: "Chatbot Integration",
-    problem: "Chatbot conversations don't reach sales fast enough. Qualified visitors slip through before anyone can follow up.",
+    title: "Turn Chatbot Conversations Into Real Opportunities",
+    engagement: "Chatbot & AI Integration",
+    problem: "Website visitors get answers from a chatbot, but qualified prospects rarely reach sales fast enough to convert.",
     deliverables: [
       "Conversation-to-lead capture flows",
       "Qualification logic and CRM synchronization",
       "Instant routing and assignment to the right rep",
     ],
-    outcomes: "Conversational leads become structured CRM records with measurable follow-up and conversion.",
+    outcomes: "Conversational interest becomes structured pipeline — with measurable follow-up, response time, and conversion.",
   },
   {
-    title: "Identify What's Slowing Down Your CRM",
+    title: "Find Out Why Your Current CRM Isn't Working",
     engagement: "CRM Audit",
-    problem: "The CRM is underused, full of bad data, or quietly leaking leads — but no one can pinpoint where the breakdowns are.",
+    problem: "The CRM is underused, full of bad data, or quietly losing leads — but no one can pinpoint exactly where it's breaking down.",
     deliverables: [
       "Lifecycle, pipeline, and automation audit",
       "Data quality, duplication, and adoption review",
       "Prioritized 30/60/90 roadmap of fixes and quick wins",
     ],
-    outcomes: "A concrete, sequenced plan to turn an underperforming CRM into a revenue engine — no guesswork.",
+    outcomes: "A clear, sequenced plan to turn an underperforming CRM into a system the business can rely on — no guesswork, no rebuild from scratch.",
   },
 ];
 
@@ -80,10 +80,10 @@ export function HomeServicesPreview() {
           <div className="max-w-2xl">
             <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Services</p>
             <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-              Engagements named after the problem they solve.
+              Services named after the business problem they solve.
             </h2>
             <p className="mt-4 text-base text-muted-foreground">
-              Every service is scoped around a business outcome — not a tool, feature, or technical checklist.
+              Every engagement starts with a business outcome — sales visibility, faster response, less manual work, a process that scales — and then brings in the right CRM, automation, or integration to make it real.
             </p>
           </div>
           <Link

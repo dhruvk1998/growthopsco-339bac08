@@ -21,16 +21,16 @@ export function About() {
         <div>
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">About</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            A consultant who bridges business operations and CRM systems.
+            A consultant who understands the business — and can build the systems behind it.
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            I'm <span className="text-foreground">Dhruv Kaushik</span> — a CRM, Workflow Automation, and Revenue Operations consultant based in Burnaby, BC. I work directly with founders, sales leaders, and operations heads to translate messy lead processes into structured, automated, measurable systems.
+            I'm <span className="text-foreground">Dhruv Kaushik</span> — a CRM, Automation, and Business Systems consultant based in Burnaby, BC. I help founders and operations leaders turn messy, manual ways of working into structured systems that create visibility, consistency, and room to grow.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            My background combines an <span className="text-foreground">MBA at University Canada West</span>, a technical foundation in software development and systems engineering, and hands-on CRM implementation experience across Freshworks and LeadSquared. That mix — <span className="text-foreground">business analysis, technical fluency, and operator instinct</span> — is exactly what makes CRM and automation engagements succeed.
+            My background combines an <span className="text-foreground">MBA at University Canada West</span>, hands-on experience implementing CRMs and automation inside growing businesses, and a technical foundation in software, integrations, and Python. That mix — <span className="text-foreground">business strategy, operator instinct, and technical execution</span> — is what makes these engagements actually deliver results.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Most underperforming CRMs aren't a software problem. They're a process problem dressed up as a tooling problem. That's what I help fix.
+            Most operational pain in growing businesses isn't a software problem. It's a process problem dressed up as a tooling problem — and that's exactly what I help fix.
           </p>
           <a
             href="https://www.linkedin.com/in/dhruv-kaushik-95231a175/"
