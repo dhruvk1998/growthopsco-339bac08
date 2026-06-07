@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 
 const navItems = [
-  { label: "Services", to: "/services" },
-  { label: "Case Studies", to: "/case-studies" },
-  { label: "Framework", to: "/framework" },
+  { label: "Home", to: "/" },
   { label: "About", to: "/about" },
+  { label: "Services", to: "/services" },
+  { label: "Framework", to: "/framework" },
+  { label: "Case Studies", to: "/case-studies" },
   { label: "Contact", to: "/contact" },
 ] as const;
 
-const LINKEDIN_URL = "https://www.linkedin.com/in/dhruv-kaushik-95231a175/";
+
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
