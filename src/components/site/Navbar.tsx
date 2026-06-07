@@ -28,9 +28,18 @@ export function Navbar() {
 
   const handleNavClick = (to: string) => (e: React.MouseEvent) => {
     setOpen(false);
-    if (to === "/" && location.pathname === "/") {
+    if (location.pathname === to) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleBookClick = (e: React.MouseEvent) => {
+    setOpen(false);
+    if (location.pathname === "/contact") {
+      e.preventDefault();
+      const el = document.getElementById("consultation-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
