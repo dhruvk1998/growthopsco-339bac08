@@ -91,14 +91,6 @@ export function Navbar() {
                 {n.label}
               </Link>
             ))}
-            <a
-              href={LINKEDIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-accent"
-            >
-              LinkedIn ↗
-            </a>
             <Link
               to="/contact"
               className="mt-2 rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground"
