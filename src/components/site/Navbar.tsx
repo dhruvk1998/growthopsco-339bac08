@@ -115,7 +115,7 @@ export function Navbar() {
             <Link
               to="/contact"
               hash="consultation-form"
-              onClick={() => setOpen(false)}
+              onClick={handleBookClick}
               className="mt-2 rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground"
             >
               Book CRM Strategy Call
