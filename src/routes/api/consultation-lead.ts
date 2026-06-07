@@ -15,6 +15,7 @@ import { z } from "zod";
 
 const NOTIFY_EMAIL = "dhruv.kaushik866@gmail.com";
 const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
+const PUBLISHED_LOVABLE_ENDPOINT = "https://growthopsco.lovable.app/api/consultation-lead";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_RANGE = "Sheet1!A:L";
 const GATEWAY = "https://connector-gateway.lovable.dev";
@@ -109,6 +110,28 @@ async function appendToSheetViaGateway(row: string[]) {
   }
 }
 
+async function submitViaPublishedLovableEndpoint(data: Lead) {
+  const res = await fetch(PUBLISHED_LOVABLE_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "X-GrowthOps-Remote-Bridge": "1",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Published Lovable endpoint failed (${res.status}): ${body.slice(0, 300)}`);
+  }
+
+  const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+  if (!json.ok) {
+    throw new Error(json.error || "Published Lovable endpoint rejected the submission");
+  }
+}
+
 // --- Route -----------------------------------------------------------------
 
 export const Route = createFileRoute("/api/consultation-lead")({
@@ -127,12 +150,11 @@ export const Route = createFileRoute("/api/consultation-lead")({
           const data = parsed.data;
           const timestamp = new Date().toISOString();
           const appsScriptUrl = process.env.APPS_SCRIPT_URL;
+          const requestHost = new URL(request.url).host;
+          const isLovableHost = requestHost.endsWith("lovable.app");
+          const isRemoteBridge = request.headers.get("X-GrowthOps-Remote-Bridge") === "1";
 
-          // Try the cross-platform email transport first. It works identically
-          // on Vercel, Lovable, Netlify, or any host that can make outbound HTTPS.
-          const attempts: Array<{ name: string; fn: () => Promise<void> }> = [
-            { name: "FormSubmit", fn: () => submitViaFormSubmit(data, timestamp) },
-          ];
+          const attempts: Array<{ name: string; fn: () => Promise<void> }> = [];
           if (appsScriptUrl) {
             attempts.push({
               name: "AppsScript",
@@ -159,6 +181,13 @@ export const Route = createFileRoute("/api/consultation-lead")({
                 ]),
             });
           }
+          if (!isLovableHost && !isRemoteBridge) {
+            attempts.push({
+              name: "PublishedLovable",
+              fn: () => submitViaPublishedLovableEndpoint(data),
+            });
+          }
+          attempts.push({ name: "FormSubmit", fn: () => submitViaFormSubmit(data, timestamp) });
 
           let delivered = false;
           const errors: string[] = [];
