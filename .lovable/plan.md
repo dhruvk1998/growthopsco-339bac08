@@ -1,30 +1,71 @@
-## Plan: UX Refinements
+## Goal
 
-### 1. Home Navigation — Smooth Scroll to Top
-**File:** `src/components/site/Navbar.tsx`
-- Intercept the Home link click.
-- If the user is already on `/`, call `window.scrollTo({ top: 0, behavior: 'smooth' })` instead of (or in addition to) standard router navigation.
-- This ensures clicking Home from any scroll position on the homepage always returns to the Hero.
+Restore the proper multipage site (Home, About, Services, Framework, Case Studies, Contact each on their own route) so the footer only appears at the bottom of each page — but keep smooth anchor scrolling for in-page jumps (e.g. `/contact#consultation-form`, `/#featured-case-studies`).
 
-### 2. Mobile Navigation Menu — Auto-Close on Selection
-**File:** `src/components/site/Navbar.tsx`
-- Add an `onClick` handler to every mobile menu link that immediately sets `setOpen(false)`.
-- Keep the existing `useEffect(() => { setOpen(false); }, [location.pathname])` as a fallback for hard navigations.
-- This fixes the issue where same-page clicks (e.g., Home on homepage) leave the menu open.
+## Root cause of the footer bug
 
-### 3. Case Study Card Height Reduction
-**File:** `src/components/site/FeaturedCaseStudies.tsx`
-- Reduce flip card `min-h` from `420px` to `320px`.
-- Reduce card padding from `p-8` to `p-6` on both front and back faces.
-- Tighten internal spacing (e.g., `mt-5` → `mt-3`, `space-y-4` → `space-y-3`) to remove blank space between content blocks.
-- Maintain the flip animation, border radius, and visual consistency.
+Last change stacked About, Services, Framework, Case Studies and Contact onto `/` with anchor navigation. The footer rendered once at the bottom of that mega-page, so scrolling through "sections" surfaced the footer mid-experience.
 
-### Files Modified
-- `src/components/site/Navbar.tsx`
-- `src/components/site/FeaturedCaseStudies.tsx`
+## Changes
 
-### Deliverables After Implementation
-A. Home scroll behavior updated and tested.
-B. Mobile menu auto-close implemented for all links.
-C. Case study card height reduction completed (estimated ~24% shorter).
-D. Estimated page length reduction from tighter case study cards.
+### 1. Homepage (`src/routes/index.tsx`)
+
+Restore the original landing composition (remove About + Contact):
+
+```text
+Hero → WhoIHelp → HomeServicesPreview → Workflow → FeaturedCaseStudies → HealthCheck → FinalCTA
+```
+
+### 2. Navbar (`src/components/site/Navbar.tsx`) — route-based nav with mobile auto-close
+
+| Item | Destination |
+|---|---|
+| Home | `/` |
+| About | `/about` |
+| Services | `/services` |
+| Framework | `/framework` |
+| Case Studies | `/case-studies` |
+| Contact | `/contact` |
+| Book CRM Strategy Call (CTA) | `/contact#consultation-form` |
+
+Behaviors kept:
+- Clicking Home while already on `/` smooth-scrolls to top.
+- Mobile menu auto-closes after any selection.
+- Anchor in CTA (`#consultation-form`) deep-links to the form and the existing Contact page logic auto-focuses the first field.
+
+### 3. Hero CTAs (`src/components/site/Hero.tsx`)
+
+- "Book a CRM Strategy Call" → `/contact#consultation-form` (route link).
+- "See Case Studies" → in-page smooth scroll to `#featured-case-studies` (anchor on the same homepage).
+
+### 4. FinalCTA (`src/components/site/FinalCTA.tsx`)
+
+- "Schedule a Consultation" → `/contact#consultation-form`.
+- "Explore Case Studies" → `/case-studies`.
+
+### 5. FeaturedCaseStudies (`src/components/site/FeaturedCaseStudies.tsx`)
+
+Revert the section id from `case-studies` back to `featured-case-studies` (was changed for the single-page version; on the homepage it's now just an in-page anchor target).
+
+### 6. Styles (`src/styles.css`)
+
+Keep:
+- `html { scroll-behavior: smooth }` — so all `<a href="#...">` and same-page hash navigations scroll smoothly.
+- `section[id] { scroll-margin-top: 80px }` — so any in-page anchor (e.g. `#consultation-form` on `/contact`) lands below the fixed 80px navbar instead of being hidden under it.
+
+### 7. Cross-route anchor scrolling (TanStack Router)
+
+When navigating from one route to another with a hash (e.g. Navbar CTA → `/contact#consultation-form`), TanStack Router scrolls to the matching `id` on mount. Combined with the `scroll-margin-top` rule above, this lands the user at the right spot under the fixed navbar. Contact page's existing `useEffect` on `#consultation-form` also focuses the first input after that scroll.
+
+### 8. Unchanged
+
+- `/about`, `/services`, `/framework`, `/case-studies`, `/contact` route files keep their existing content and `head()` metadata.
+- `useReveal` runtime-error fix from the last change stays.
+
+## Validation
+
+- Each nav item loads its own route. Footer only appears at the bottom of the current route.
+- Home stays a short landing page; footer no longer appears mid-scroll.
+- "Book CRM Strategy Call" from any page navigates to `/contact`, smooth-scrolls to the consultation form, and focuses the first input.
+- "See Case Studies" on the homepage smooth-scrolls down to the featured case studies block.
+- Mobile menu auto-closes on every selection.

@@ -2,12 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
 import { WhoIHelp } from "@/components/site/WhoIHelp";
-import { About } from "@/components/site/About";
 import { Workflow } from "@/components/site/Workflow";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
 import { HealthCheck } from "@/components/site/HealthCheck";
-import { Contact } from "@/components/site/Contact";
+import { FinalCTA } from "@/components/site/FinalCTA";
 
 
 const title = "Dhruv Kaushik — Independent CRM & Revenue Operations Consultant";
@@ -57,12 +56,11 @@ function HomePage() {
     <SiteLayout>
       <Hero />
       <WhoIHelp />
-      <About />
       <HomeServicesPreview />
       <Workflow />
       <FeaturedCaseStudies />
       <HealthCheck />
-      <Contact />
+      <FinalCTA />
     </SiteLayout>
   );
 }
