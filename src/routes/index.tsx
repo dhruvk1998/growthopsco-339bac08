@@ -7,7 +7,7 @@ import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { BeyondCRM } from "@/components/site/BeyondCRM";
 import { WhoIHelp } from "@/components/site/WhoIHelp";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
-import { HealthCheck } from "@/components/site/HealthCheck";
+import { HealthCheckTeaser } from "@/components/site/HealthCheckTeaser";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
 
@@ -64,7 +64,7 @@ function HomePage() {
       <BeyondCRM />
       <WhoIHelp />
       <FeaturedCaseStudies />
-      <HealthCheck />
+      <HealthCheckTeaser />
       <FinalCTA />
 
     </SiteLayout>
