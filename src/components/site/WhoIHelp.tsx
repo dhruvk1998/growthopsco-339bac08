@@ -1,27 +1,27 @@
 const segments = [
   {
-    title: "Growing service businesses",
-    body: "Scaling past the spreadsheet phase and need a CRM that matches how the team actually sells.",
+    title: "Professional Service Firms",
+    body: "Consultancies, accountants, lawyers, and agencies that win business through relationships and need every inquiry handled well.",
   },
   {
-    title: "First-time CRM implementations",
-    body: "Selecting and rolling out a CRM for the first time — and want it done right instead of redone in a year.",
+    title: "Education Providers",
+    body: "Institutes, training companies, and ed-tech businesses managing high inquiry volumes across multiple programs and counsellors.",
   },
   {
-    title: "Teams migrating from spreadsheets",
-    body: "Moving lead, deal, and customer data out of disconnected sheets into one source of truth.",
+    title: "Real Estate Businesses",
+    body: "Brokerages and developers juggling buyer leads, site visits, and follow-up across distributed sales teams.",
   },
   {
-    title: "Struggling lead management",
-    body: "Leads going cold, ownership unclear, follow-ups inconsistent, and no SLA enforcement.",
+    title: "Agencies",
+    body: "Marketing, creative, and services agencies that need to professionalize how they capture, qualify, and convert opportunities.",
   },
   {
-    title: "Workflow automation needs",
-    body: "Repetitive manual work, slow handoffs, and missed follow-ups draining rep productivity.",
+    title: "Growing Small & Medium Businesses",
+    body: "Owner-led businesses past the startup phase, hiring their second or third salesperson and feeling the seams of informal process.",
   },
   {
-    title: "Freshworks or LeadSquared users",
-    body: "Already on the platform but underutilizing it — looking to optimize, audit, or extend the implementation.",
+    title: "Businesses Scaling Beyond Spreadsheets",
+    body: "Teams who built their process in Excel and Google Sheets — and now need a real system that grows with them.",
   },
 ];
 
@@ -32,10 +32,10 @@ export function WhoIHelp() {
         <div className="mb-12 max-w-2xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Who I Help</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            Built for operators ready to professionalize their revenue process.
+            Built for growing businesses ready to operate with structure.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            Engagements are scoped for businesses with real lead volume, real teams, and real operational complexity — not pre-revenue setups.
+            Engagements work best for owner-led and growth-stage businesses with real customers, real teams, and operational complexity that's outgrown spreadsheets and informal process.
           </p>
         </div>
 
