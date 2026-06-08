@@ -58,6 +58,92 @@ const LeadSchema = z.object({
 
 type Lead = z.infer<typeof LeadSchema>;
 
+// --- Transport 0: Gmail via Lovable connector gateway ----------------------
+
+function buildEmailBody(data: Lead, timestamp: string) {
+  const a = data.assessment;
+  const lines = [
+    "A new consultation request has been submitted.",
+    "",
+    `Name: ${data.fullName || "—"}`,
+    `Company: ${data.companyName || "—"}`,
+    `Company Size: ${data.companySize || "—"}`,
+    `Email: ${data.email || "—"}`,
+    `Phone: ${data.phone || "—"}`,
+    `Website: ${data.website || "—"}`,
+    `Engagement Type: ${data.engagementType || "—"}`,
+    `Current CRM: ${data.crmUsed || "—"}`,
+    `Preferred Time: ${data.preferredMeetingTime || "—"}`,
+    `Lead Source: ${data.leadSource || "—"}`,
+    "",
+    "Requirements:",
+    data.requirements || "",
+    "",
+    `Submitted At: ${timestamp}`,
+  ];
+  if (a) {
+    lines.push(
+      "",
+      "— CRM Health Check —",
+      `Score: ${a.score ?? "—"}`,
+      `Rating: ${a.rating ?? "—"}`,
+      `Problem Areas: ${(a.problemAreas ?? []).join(", ") || "—"}`,
+      `Summary: ${a.summary ?? "—"}`,
+      `Completed At: ${a.completedAt ?? "—"}`,
+    );
+    if (a.answers?.length) {
+      lines.push("", "Answers:");
+      for (const x of a.answers) {
+        lines.push(`  • [${x.category}] ${x.question} → ${x.answer ?? "—"}`);
+      }
+    }
+  }
+  return lines.join("\n");
+}
+
+function base64UrlEncode(input: string) {
+  // btoa works on latin1; encode UTF-8 first.
+  const utf8 = unescape(encodeURIComponent(input));
+  return btoa(utf8).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+async function submitViaGmail(data: Lead, timestamp: string) {
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
+  if (!lovableKey || !gmailKey) {
+    throw new Error("Missing Gmail connector secrets");
+  }
+  const subject = `New CRM Consultation Request — ${data.fullName}`;
+  const body = buildEmailBody(data, timestamp);
+  const rfc2822 = [
+    `To: ${NOTIFY_EMAIL}`,
+    `Reply-To: ${data.email}`,
+    `Subject: ${subject}`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/plain; charset="UTF-8"',
+    "Content-Transfer-Encoding: 7bit",
+    "",
+    body,
+  ].join("\r\n");
+
+  const res = await fetch(
+    "https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": gmailKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ raw: base64UrlEncode(rfc2822) }),
+    },
+  );
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Gmail send failed (${res.status}): ${text.slice(0, 400)}`);
+  }
+}
+
 // --- Transport 1: FormSubmit.co (default, no setup) ------------------------
 
 async function submitViaFormSubmit(data: Lead, timestamp: string) {
