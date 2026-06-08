@@ -173,15 +173,6 @@ export const Route = createFileRoute("/api/consultation-lead")({
               fn: () => submitViaAppsScript(appsScriptUrl, data, timestamp),
             });
           }
-          emailAttempts.push({
-            name: "PublishedLovableEmail",
-            fn: async () => {
-              if (isLovableHost || isRemoteBridge) {
-                throw new Error("No local email transport configured (APPS_SCRIPT_URL missing)");
-              }
-              await submitViaPublishedLovableEndpoint(data);
-            },
-          });
 
           const bridgeAttempt =
             !isLovableHost && !isRemoteBridge
