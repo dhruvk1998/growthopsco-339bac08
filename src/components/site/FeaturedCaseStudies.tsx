@@ -5,7 +5,7 @@ const cases = [
     slug: "freshworks-crm-rollout",
     category: "CRM Implementation",
     title: "Company-Wide Freshworks CRM Rollout",
-    metric: "Centralized pipeline across departments",
+    metric: "CRM rolled out across 5 departments",
     challenge:
       "Leads scattered across channels with no unified owner, no SLA, and zero leadership visibility.",
     solution:
@@ -15,31 +15,31 @@ const cases = [
     slug: "sales-pipeline-automation",
     category: "Workflow Automation",
     title: "Sales Pipeline & Workflow Automation",
-    metric: "~50% productivity improvement",
+    metric: "50% productivity improvement; 40% less manual effort",
     challenge:
       "Reps spent hours on manual data entry, stage updates, and reporting instead of selling.",
     solution:
-      "Built automation flows for stage transitions, task creation, follow-up reminders, and pipeline hygiene.",
+      "Automated quotation-to-pipeline workflows, stage transitions, follow-up reminders, and reporting triggers — removing repetitive sales administration.",
   },
   {
     slug: "chatbot-crm-integration",
     category: "Website ↔ CRM Integration",
     title: "Chatbot ↔ CRM Integration Sprint",
-    metric: "Up to 95% faster lead response",
+    metric: "Lead response cut from ~20 min to under 1 min",
     challenge:
       "Website inquiries were captured manually, slow to route, and frequently lost before follow-up.",
     solution:
-      "Designed an API integration mapping chatbot fields to CRM records with validation, routing, and instant assignment.",
+      "Built an API integration that pushes chatbot conversations into the CRM with validation, instant routing, and automated first-response emails.",
   },
   {
     slug: "ai-lead-qualification",
     category: "AI Automation",
     title: "AI-Powered Lead Qualification System",
-    metric: "~99% qualified lead growth",
+    metric: "Automated lead scoring & sales-ready prioritization",
     challenge:
       "High lead volume with low MQL-to-SQL conversion — sales wasted time on poor-fit prospects.",
     solution:
-      "Integrated an AI scoring layer with CRM workflows to auto-qualify, prioritize, and route only sales-ready leads.",
+      "Implemented automated lead scoring and qualification workflows so sales teams could focus on high-intent, sales-ready opportunities.",
   },
 ];
 

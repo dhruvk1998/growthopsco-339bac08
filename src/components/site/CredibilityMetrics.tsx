@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 const metrics = [
-  { value: 95, suffix: "%", label: "Lead Response Time Reduction" },
-  { value: 99, suffix: "%", label: "Manual Process Reduction" },
+  { value: 95, suffix: "%", label: "Faster Lead Response Times" },
+  { value: 40, suffix: "%", label: "Reduction in Manual Effort" },
+  { value: 12, suffix: "%", label: "Increase in Lead Conversion Rates" },
   { value: 50, suffix: "%", label: "Productivity Improvement" },
-  { value: 99, suffix: "%", label: "Qualified Lead Growth" },
+  { value: 34, suffix: "+", label: "Automated Campaigns Delivered" },
+  { value: 5, suffix: "", label: "Departments Onboarded to CRM" },
 ];
 
 function CountUp({ to, suffix }: { to: number; suffix: string }) {
@@ -49,7 +51,7 @@ export function CredibilityMetrics() {
   return (
     <section className="px-6 pb-12 pt-4">
       <div className="reveal mx-auto max-w-6xl rounded-2xl border border-border bg-card/60 px-6 py-8 backdrop-blur-sm">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
           {metrics.map((m) => (
             <div key={m.label} className="text-center">
               <div className="text-4xl font-bold tracking-tight text-accent lg:text-5xl">
