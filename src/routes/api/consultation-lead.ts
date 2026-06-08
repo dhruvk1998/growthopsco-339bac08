@@ -17,7 +17,7 @@ const NOTIFY_EMAIL = "dhruv.kaushik866@gmail.com";
 const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
 const PUBLISHED_LOVABLE_ENDPOINT = "https://growthopsco.lovable.app/api/consultation-lead";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
-const SHEET_RANGE = "Sheet1!A:L";
+const SHEET_RANGE = "Database!A:L";
 const GATEWAY = "https://connector-gateway.lovable.dev";
 
 const AssessmentSchema = z
