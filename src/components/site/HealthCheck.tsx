@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 type Category = "Lead Management" | "Automation" | "Integration" | "Reporting";
@@ -25,6 +25,8 @@ const recommendations: Record<Category, string> = {
 
 type Answer = "yes" | "no" | null;
 
+const STORAGE_KEY = "crmHealthCheck";
+
 export function HealthCheck() {
   const [answers, setAnswers] = useState<Answer[]>(Array(questions.length).fill(null));
   const [submitted, setSubmitted] = useState(false);
@@ -47,13 +49,52 @@ export function HealthCheck() {
   }, [answers]);
 
   const verdict =
-    score >= 80
-      ? { label: "Mature", color: "text-accent", note: "Your CRM is in great shape — optimization will compound." }
-      : score >= 50
-        ? { label: "Developing", color: "text-yellow-400", note: "A few targeted automations will compound quickly." }
-        : { label: "At Risk", color: "text-red-400", note: "You're likely losing leads. A structured audit is the fastest win." };
+    score >= 90
+      ? { label: "Excellent", color: "text-accent", note: "Your CRM is in great shape — optimization will compound." }
+      : score >= 70
+        ? { label: "Good", color: "text-accent", note: "Solid foundation. A few targeted improvements will unlock more capacity." }
+        : score >= 40
+          ? { label: "Needs Attention", color: "text-yellow-400", note: "Important gaps are slowing your team and risking leads. Worth addressing soon." }
+          : { label: "Critical", color: "text-red-400", note: "You're likely losing leads daily. A structured audit is the fastest win." };
 
   const allAnswered = answers.every((a) => a !== null);
+
+  const summary = useMemo(() => {
+    if (problemAreas.length === 0) {
+      return "Your assessment shows strong fundamentals across lead management, automation, integration, and reporting.";
+    }
+    const areas = problemAreas.map(([cat]) => cat.toLowerCase());
+    const joined =
+      areas.length === 1
+        ? areas[0]
+        : areas.slice(0, -1).join(", ") + " and " + areas[areas.length - 1];
+    return `Your assessment suggests opportunities to improve ${joined}.`;
+  }, [problemAreas]);
+
+  // Persist results to sessionStorage so the consultation form can attach them
+  // when (and only when) the visitor later books a call.
+  useEffect(() => {
+    if (!submitted) return;
+    if (typeof window === "undefined") return;
+    try {
+      const payload = {
+        score,
+        rating: verdict.label,
+        summary,
+        problemAreas: problemAreas.map(([cat]) => cat),
+        answers: questions.map((q, i) => ({
+          id: q.id,
+          question: q.text,
+          category: q.category,
+          answer: answers[i],
+        })),
+        completedAt: new Date().toISOString(),
+      };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      // ignore storage errors (private mode, etc.)
+    }
+  }, [submitted, score, verdict.label, summary, problemAreas, answers]);
 
   return (
     <section id="health-check" className="px-6 py-24">
@@ -66,43 +107,62 @@ export function HealthCheck() {
           </p>
         </div>
 
-        <div className="mt-10 space-y-3">
-          {questions.map((q, i) => (
-            <div
-              key={q.id}
-              className="flex flex-col gap-3 rounded-xl border border-border bg-background/50 p-4 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <span className="text-sm font-medium sm:text-base">
-                <span className="mr-2 font-mono text-xs text-accent">0{i + 1}</span>
-                {q.text}
+        {!submitted && (
+          <>
+            <div className="mt-8 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              <span>Progress</span>
+              <span>
+                {answers.filter(Boolean).length} / {questions.length}
               </span>
-              <div className="flex shrink-0 gap-2">
-                {(["yes", "no"] as const).map((opt) => {
-                  const isSelected = answers[i] === opt;
-                  return (
-                    <button
-                      key={opt}
-                      onClick={() => {
-                        const next = [...answers];
-                        next[i] = opt;
-                        setAnswers(next);
-                      }}
-                      className={`min-w-16 rounded-lg border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all ${
-                        isSelected
-                          ? opt === "yes"
-                            ? "border-accent bg-accent text-accent-foreground"
-                            : "border-red-400/60 bg-red-400/10 text-red-300"
-                          : "border-border text-muted-foreground hover:border-accent/50 hover:text-foreground"
-                      }`}
-                    >
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
             </div>
-          ))}
-        </div>
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full bg-accent transition-all duration-300"
+                style={{ width: `${(answers.filter(Boolean).length / questions.length) * 100}%` }}
+              />
+            </div>
+          </>
+        )}
+
+        {!submitted && (
+          <div className="mt-6 space-y-3">
+            {questions.map((q, i) => (
+              <div
+                key={q.id}
+                className="flex flex-col gap-3 rounded-xl border border-border bg-background/50 p-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <span className="text-sm font-medium sm:text-base">
+                  <span className="mr-2 font-mono text-xs text-accent">0{i + 1}</span>
+                  {q.text}
+                </span>
+                <div className="flex shrink-0 gap-2">
+                  {(["yes", "no"] as const).map((opt) => {
+                    const isSelected = answers[i] === opt;
+                    return (
+                      <button
+                        key={opt}
+                        onClick={() => {
+                          const next = [...answers];
+                          next[i] = opt;
+                          setAnswers(next);
+                        }}
+                        className={`min-w-16 rounded-lg border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all ${
+                          isSelected
+                            ? opt === "yes"
+                              ? "border-accent bg-accent text-accent-foreground"
+                              : "border-red-400/60 bg-red-400/10 text-red-300"
+                            : "border-border text-muted-foreground hover:border-accent/50 hover:text-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {!submitted ? (
           <button
@@ -110,12 +170,12 @@ export function HealthCheck() {
             onClick={() => setSubmitted(true)}
             className="mt-8 w-full rounded-xl bg-accent px-8 py-4 font-bold text-accent-foreground transition-all hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {allAnswered ? "Get My CRM Health Score" : `Answer all ${questions.length} questions (${answers.filter(Boolean).length}/${questions.length})`}
+            {allAnswered ? "Calculate My CRM Health Score" : `Answer all ${questions.length} questions (${answers.filter(Boolean).length}/${questions.length})`}
           </button>
         ) : (
           <div className="mt-8 space-y-5">
             <div className="rounded-2xl border border-border bg-background/60 p-8 text-center">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">CRM Health Score</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Your CRM Health Score</p>
               <div className={`mt-2 text-6xl font-bold ${verdict.color}`}>
                 {score}
                 <span className="text-2xl text-muted-foreground">/100</span>
@@ -138,18 +198,32 @@ export function HealthCheck() {
               </div>
             )}
 
-            <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 text-center">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Suggested Next Step</p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-                Book a free 30-minute CRM strategy call. We'll review your score, walk through the problem areas, and outline the right engagement.
+            <div className="rounded-2xl border border-border bg-background/60 p-6">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Recommendation Summary</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{summary}</p>
+            </div>
+
+            <div className="rounded-2xl border border-accent/30 bg-accent/5 p-7 text-center">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Next Step</p>
+              <h3 className="mt-2 text-2xl font-bold tracking-tight">Want a deeper review of your results?</h3>
+              <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+                Book a CRM Strategy Call and we'll review your assessment together, identify the biggest opportunities for improvement, and discuss practical next steps.
               </p>
-              <Link
-                to="/contact"
-                hash="consultation-form"
-                className="mt-5 inline-block rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground shadow-glow transition-all duration-300 hover:scale-[1.02] hover:opacity-95"
-              >
-                Book a CRM Strategy Call →
-              </Link>
+              <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  to="/contact"
+                  hash="consultation-form"
+                  className="inline-block rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground shadow-glow transition-all duration-300 hover:scale-[1.02] hover:opacity-95"
+                >
+                  Schedule Consultation →
+                </Link>
+                <Link
+                  to="/case-studies"
+                  className="inline-block rounded-xl border border-border bg-transparent px-7 py-3.5 font-bold text-foreground transition-all hover:border-accent/50 hover:text-accent"
+                >
+                  Explore Case Studies
+                </Link>
+              </div>
             </div>
           </div>
         )}
