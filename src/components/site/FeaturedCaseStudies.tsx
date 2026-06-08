@@ -45,8 +45,8 @@ const cases = [
 
 export function FeaturedCaseStudies() {
   return (
-    <section id="featured-case-studies" className="relative px-6 py-24">
-      <div className="reveal mx-auto max-w-7xl">
+    <section id="featured-case-studies" className="relative px-6 py-16">
+      <div className="reveal mx-auto max-w-[88rem]">
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
             Featured Case Studies

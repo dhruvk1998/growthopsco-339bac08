@@ -61,9 +61,9 @@ function HomePage() {
       <ProblemSection />
       <WhatIsCRM />
       <HomeServicesPreview />
+      <FeaturedCaseStudies />
       <BeyondCRM />
       <WhoIHelp />
-      <FeaturedCaseStudies />
       <HealthCheckTeaser />
       <FinalCTA />
 

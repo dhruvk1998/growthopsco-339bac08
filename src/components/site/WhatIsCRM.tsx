@@ -7,8 +7,8 @@ const pillars = [
 
 export function WhatIsCRM() {
   return (
-    <section id="what-is-crm" className="px-6 py-20">
-      <div className="reveal mx-auto max-w-6xl">
+    <section id="what-is-crm" className="px-6 py-16">
+      <div className="reveal mx-auto max-w-[88rem]">
         <div className="mb-10 max-w-2xl">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">The Solution</p>
           <h2 className="text-3xl font-bold leading-tight tracking-tight lg:text-4xl">

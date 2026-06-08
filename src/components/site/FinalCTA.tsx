@@ -10,8 +10,8 @@ export function FinalCTA({
   subtitle?: string;
 }) {
   return (
-    <section className="px-6 py-24">
-      <div className="reveal mx-auto max-w-5xl overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-card/80 to-transparent p-10 text-center sm:p-14">
+    <section className="px-6 py-20">
+      <div className="reveal mx-auto max-w-6xl overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-card/80 to-transparent p-10 text-center sm:p-14">
         <p className="text-xs font-bold uppercase tracking-widest text-accent">{eyebrow}</p>
         <h2 className="mx-auto mt-3 max-w-2xl text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
           {title}
