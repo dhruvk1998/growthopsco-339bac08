@@ -89,80 +89,80 @@ export function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled || open
-          ? "border-b border-border/60 bg-background/85 backdrop-blur-lg"
-          : "border-b border-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link
-          to="/"
-          onClick={handleNavClick("/")}
-          className="relative z-10 flex items-center gap-2.5 font-bold tracking-tight"
-        >
-          <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
-            DK
-          </span>
-          <span className="text-base">Dhruv Kaushik</span>
-        </Link>
-
-        <div className="hidden items-center gap-6 text-sm font-medium text-muted-foreground lg:flex">
-          {navItems.map((n) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              onClick={handleNavClick(n.to)}
-              className="transition-colors hover:text-accent data-[status=active]:text-accent"
-            >
-              {n.label}
-            </Link>
-          ))}
+    <>
+      <nav
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled || open
+            ? "border-b border-border/60 bg-background/85 backdrop-blur-lg"
+            : "border-b border-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
           <Link
-            to="/contact"
-            hash="consultation-form"
-            onClick={handleBookClick}
-            className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
+            to="/"
+            onClick={handleNavClick("/")}
+            className="relative z-10 flex items-center gap-2.5 font-bold tracking-tight"
           >
-            Book CRM Strategy Call
+            <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
+              DK
+            </span>
+            <span className="text-base">Dhruv Kaushik</span>
           </Link>
+
+          <div className="hidden items-center gap-6 text-sm font-medium text-muted-foreground lg:flex">
+            {navItems.map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                onClick={handleNavClick(n.to)}
+                className="transition-colors hover:text-accent data-[status=active]:text-accent"
+              >
+                {n.label}
+              </Link>
+            ))}
+            <Link
+              to="/contact"
+              hash="consultation-form"
+              onClick={handleBookClick}
+              className="rounded-full bg-accent px-5 py-2.5 font-semibold text-accent-foreground transition-all hover:shadow-glow"
+            >
+              Book CRM Strategy Call
+            </Link>
+          </div>
+
+          <button
+            ref={toggleRef}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav-panel"
+            onClick={() => setOpen((v) => !v)}
+            className="relative z-[60] grid size-10 place-items-center rounded-lg border border-border bg-card/60 lg:hidden"
+          >
+            <span className="relative block h-4 w-5">
+              <span
+                className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ease-out ${
+                  open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 bg-current transition-opacity duration-200 ${
+                  open ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ease-out ${
+                  open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"
+                }`}
+              />
+            </span>
+          </button>
         </div>
+      </nav>
 
-        <button
-          ref={toggleRef}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-nav-panel"
-          onClick={() => setOpen((v) => !v)}
-          className="relative z-[60] grid size-10 place-items-center rounded-lg border border-border bg-card/60 lg:hidden"
-        >
-          <span className="relative block h-4 w-5">
-            <span
-              className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ease-out ${
-                open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 bg-current transition-opacity duration-200 ${
-                open ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`absolute left-0 block h-0.5 w-5 bg-current transition-all duration-300 ease-out ${
-                open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"
-              }`}
-            />
-          </span>
-        </button>
-      </div>
-
-      {/* Mobile full-screen overlay */}
       <div
         className={`fixed inset-0 z-40 lg:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
-        {/* Backdrop */}
         <div
           onClick={() => setOpen(false)}
           className={`absolute inset-0 bg-background/80 backdrop-blur-md transition-opacity duration-300 ${
@@ -170,7 +170,6 @@ export function Navbar() {
           }`}
         />
 
-        {/* Panel */}
         <div
           ref={panelRef}
           id="mobile-nav-panel"
@@ -200,7 +199,13 @@ export function Navbar() {
                     className="flex items-center justify-between border-b border-border/40 py-5 text-2xl font-semibold tracking-tight text-foreground transition-colors hover:text-accent data-[status=active]:text-accent"
                   >
                     <span>{n.label}</span>
-                    <svg viewBox="0 0 24 24" className="size-5 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="size-5 text-muted-foreground"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
                       <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </Link>
@@ -237,6 +242,6 @@ export function Navbar() {
           </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 }
