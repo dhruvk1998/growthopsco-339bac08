@@ -61,6 +61,19 @@ type Lead = z.infer<typeof LeadSchema>;
 // --- Transport 1: FormSubmit.co (default, no setup) ------------------------
 
 async function submitViaFormSubmit(data: Lead, timestamp: string) {
+  const a = data.assessment;
+  const assessmentFields = a
+    ? {
+        crm_health_score: a.score ?? "",
+        crm_health_rating: a.rating ?? "",
+        crm_health_problem_areas: (a.problemAreas ?? []).join(", "),
+        crm_health_summary: a.summary ?? "",
+        crm_health_completed_at: a.completedAt ?? "",
+        crm_health_answers: (a.answers ?? [])
+          .map((x) => `${x.category} — ${x.question} → ${x.answer ?? "—"}`)
+          .join("\n"),
+      }
+    : {};
   const res = await fetch(FORMSUBMIT_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -80,6 +93,7 @@ async function submitViaFormSubmit(data: Lead, timestamp: string) {
       preferred_meeting_time: data.preferredMeetingTime,
       lead_source: data.leadSource,
       requirements: data.requirements,
+      ...assessmentFields,
     }),
   });
   if (!res.ok) {
