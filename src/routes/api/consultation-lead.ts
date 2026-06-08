@@ -190,15 +190,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
           const isLovableHost = requestHost.endsWith("lovable.app");
           const isRemoteBridge = request.headers.get("X-GrowthOps-Remote-Bridge") === "1";
 
-          const attempts: Array<{ name: string; fn: () => Promise<void> }> = [];
-          if (appsScriptUrl) {
-            attempts.push({
-              name: "AppsScript",
-              fn: () => submitViaAppsScript(appsScriptUrl, data, timestamp),
-            });
-          }
+          // Sheet-write transports (first success wins).
+          const sheetAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
           if (process.env.LOVABLE_API_KEY && process.env.GOOGLE_SHEETS_API_KEY) {
-            attempts.push({
+            sheetAttempts.push({
               name: "LovableGateway",
               fn: () =>
                 appendToSheetViaGateway([
@@ -217,20 +212,34 @@ export const Route = createFileRoute("/api/consultation-lead")({
                 ]),
             });
           }
-          if (!isLovableHost && !isRemoteBridge) {
-            attempts.push({
-              name: "PublishedLovable",
-              fn: () => submitViaPublishedLovableEndpoint(data),
+
+          // Email-notify transports (first success wins). Apps Script writes
+          // the sheet AND emails Dhruv in one call, so it counts for both.
+          const emailAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
+          if (appsScriptUrl) {
+            emailAttempts.push({
+              name: "AppsScript",
+              fn: () => submitViaAppsScript(appsScriptUrl, data, timestamp),
             });
           }
-          attempts.push({ name: "FormSubmit", fn: () => submitViaFormSubmit(data, timestamp) });
+          emailAttempts.push({
+            name: "FormSubmit",
+            fn: () => submitViaFormSubmit(data, timestamp),
+          });
 
-          let delivered = false;
+          const bridgeAttempt =
+            !isLovableHost && !isRemoteBridge
+              ? { name: "PublishedLovable", fn: () => submitViaPublishedLovableEndpoint(data) }
+              : null;
+
           const errors: string[] = [];
-          for (const attempt of attempts) {
+          let sheetDelivered = false;
+          let emailDelivered = false;
+
+          for (const attempt of sheetAttempts) {
             try {
               await attempt.fn();
-              delivered = true;
+              sheetDelivered = true;
               break;
             } catch (err) {
               const msg = err instanceof Error ? err.message : String(err);
@@ -239,10 +248,33 @@ export const Route = createFileRoute("/api/consultation-lead")({
             }
           }
 
-          if (!delivered) {
-            throw new Error(
-              `All transports failed. ${errors.join(" | ")}`,
-            );
+          for (const attempt of emailAttempts) {
+            try {
+              await attempt.fn();
+              emailDelivered = true;
+              if (attempt.name === "AppsScript") sheetDelivered = true;
+              break;
+            } catch (err) {
+              const msg = err instanceof Error ? err.message : String(err);
+              console.error(`[consultation-lead] ${attempt.name} transport failed:`, msg);
+              errors.push(`${attempt.name}: ${msg}`);
+            }
+          }
+
+          if (!sheetDelivered && !emailDelivered && bridgeAttempt) {
+            try {
+              await bridgeAttempt.fn();
+              sheetDelivered = true;
+              emailDelivered = true;
+            } catch (err) {
+              const msg = err instanceof Error ? err.message : String(err);
+              console.error(`[consultation-lead] ${bridgeAttempt.name} transport failed:`, msg);
+              errors.push(`${bridgeAttempt.name}: ${msg}`);
+            }
+          }
+
+          if (!sheetDelivered && !emailDelivered) {
+            throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
 
           return Response.json({ ok: true });
