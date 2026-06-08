@@ -13,7 +13,7 @@ import { z } from "zod";
  *   3. Lovable connector gateway (only inside *.lovable.app runtime).
  */
 
-const NOTIFY_EMAIL = "dhruv.kaushik866@gmail.com";
+const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
 const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
 const PUBLISHED_LOVABLE_ENDPOINT = "https://growthopsco.lovable.app/api/consultation-lead";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
@@ -377,7 +377,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
             {
               ok: false,
               error:
-                "We couldn't save your request right now. Please email dhruv.kaushik866@gmail.com or try again in a moment.",
+                "We couldn't save your request right now. Please email dhruvozone38@gmail.com or try again in a moment.",
               detail,
             },
             { status: 500 },
