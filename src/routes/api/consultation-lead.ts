@@ -275,6 +275,9 @@ export const Route = createFileRoute("/api/consultation-lead")({
           const requestHost = new URL(request.url).host;
           const isLovableHost = requestHost.endsWith("lovable.app");
           const isRemoteBridge = request.headers.get("X-GrowthOps-Remote-Bridge") === "1";
+          console.log(
+            `[consultation-lead] env: LOVABLE=${!!process.env.LOVABLE_API_KEY} GMAIL=${!!process.env.GOOGLE_MAIL_API_KEY} SHEETS=${!!process.env.GOOGLE_SHEETS_API_KEY} APPS_SCRIPT=${!!appsScriptUrl}`,
+          );
 
           // Sheet-write transports (first success wins).
           const sheetAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
