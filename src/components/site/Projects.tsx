@@ -33,12 +33,12 @@ const categories: { id: string; label: string; description: string; projects: Pr
         ],
         tools: ["Freshworks CRM", "LeadSquared", "Workflow Automation", "API Integration", "Chatbot Integration"],
         value: [
-          "95% reduction in lead response time",
+          "Reduced average lead response time from ~20 min to under 1 min via automated CRM-triggered engagement",
           "Centralized lead visibility across teams",
           "Standardized intake and follow-up process",
           "Scalable foundation for future CRM growth",
         ],
-        metric: { value: "‑95%", label: "Lead response time" },
+        metric: { value: "<1 min", label: "First response time" },
       },
       {
         title: "SLA & Business-Hours Automation Engine",

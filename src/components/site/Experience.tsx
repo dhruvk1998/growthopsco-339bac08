@@ -4,7 +4,7 @@ const roles = [
     title: "CRM Automation Executive",
     period: "2023 — 2024",
     summary:
-      "Owned LeadSquared and Freshworks automation end-to-end. Re-architected lead intake, routing, and SLA logic — cutting lead response time by 95% and lifting conversion across the funnel.",
+      "Owned LeadSquared and Freshworks automation end-to-end. Re-architected lead intake, routing, and SLA logic — cutting average first-response time from ~20 minutes to under 1 minute and improving conversion across the funnel.",
     highlights: [
       "Designed lifecycle stages and routing rules adopted company-wide",
       "Coordinated API integrations between website, chatbot and CRM",

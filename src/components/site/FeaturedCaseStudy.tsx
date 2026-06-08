@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 
 const outcomes = [
-  { value: "‑95%", label: "Lead response time" },
+  { value: "<1 min", label: "First response time (from ~20 min)" },
+  { value: "5", label: "Departments onboarded" },
   { value: "100%", label: "Standardized intake" },
-  { value: "↑", label: "Workflow efficiency" },
-  { value: "∞", label: "Scalable foundation" },
+  { value: "↑", label: "Pipeline visibility" },
 ];
 
 export function FeaturedCaseStudy() {
