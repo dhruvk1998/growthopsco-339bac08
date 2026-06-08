@@ -20,6 +20,27 @@ const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_RANGE = "Sheet1!A:L";
 const GATEWAY = "https://connector-gateway.lovable.dev";
 
+const AssessmentSchema = z
+  .object({
+    score: z.number().min(0).max(100).optional(),
+    rating: z.string().max(40).optional(),
+    summary: z.string().max(2000).optional(),
+    problemAreas: z.array(z.string().max(60)).max(20).optional(),
+    answers: z
+      .array(
+        z.object({
+          id: z.string().max(20),
+          question: z.string().max(500),
+          category: z.string().max(60),
+          answer: z.union([z.literal("yes"), z.literal("no"), z.null()]),
+        }),
+      )
+      .max(40)
+      .optional(),
+    completedAt: z.string().max(40).optional(),
+  })
+  .optional();
+
 const LeadSchema = z.object({
   fullName: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(200),
@@ -32,6 +53,7 @@ const LeadSchema = z.object({
   engagementType: z.string().trim().max(120).optional().default(""),
   companySize: z.string().trim().max(40).optional().default(""),
   leadSource: z.string().trim().max(120).optional().default("Website Contact Form"),
+  assessment: AssessmentSchema,
 });
 
 type Lead = z.infer<typeof LeadSchema>;
@@ -39,6 +61,19 @@ type Lead = z.infer<typeof LeadSchema>;
 // --- Transport 1: FormSubmit.co (default, no setup) ------------------------
 
 async function submitViaFormSubmit(data: Lead, timestamp: string) {
+  const a = data.assessment;
+  const assessmentFields = a
+    ? {
+        crm_health_score: a.score ?? "",
+        crm_health_rating: a.rating ?? "",
+        crm_health_problem_areas: (a.problemAreas ?? []).join(", "),
+        crm_health_summary: a.summary ?? "",
+        crm_health_completed_at: a.completedAt ?? "",
+        crm_health_answers: (a.answers ?? [])
+          .map((x) => `${x.category} — ${x.question} → ${x.answer ?? "—"}`)
+          .join("\n"),
+      }
+    : {};
   const res = await fetch(FORMSUBMIT_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -58,6 +93,7 @@ async function submitViaFormSubmit(data: Lead, timestamp: string) {
       preferred_meeting_time: data.preferredMeetingTime,
       lead_source: data.leadSource,
       requirements: data.requirements,
+      ...assessmentFields,
     }),
   });
   if (!res.ok) {

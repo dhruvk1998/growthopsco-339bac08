@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -25,6 +26,16 @@ export function Contact() {
 
     const form = e.currentTarget;
     const fd = new FormData(form);
+
+    // Pull any completed CRM Health Check from sessionStorage and attach.
+    let assessment: unknown = undefined;
+    try {
+      const raw = typeof window !== "undefined" ? sessionStorage.getItem("crmHealthCheck") : null;
+      if (raw) assessment = JSON.parse(raw);
+    } catch {
+      // ignore
+    }
+
     const payload = {
       fullName: String(fd.get("fullName") || "").trim(),
       email: String(fd.get("email") || "").trim(),
@@ -36,7 +47,8 @@ export function Contact() {
       preferredMeetingTime: String(fd.get("preferredMeetingTime") || "").trim(),
       engagementType: String(fd.get("engagementType") || "").trim(),
       companySize: String(fd.get("companySize") || "").trim(),
-      leadSource: "Website Contact Form",
+      leadSource: assessment ? "Website Contact Form (CRM Health Check)" : "Website Contact Form",
+      assessment,
     };
 
     setStatus("submitting");
@@ -54,6 +66,11 @@ export function Contact() {
       }
       setStatus("success");
       form.reset();
+      try {
+        sessionStorage.removeItem("crmHealthCheck");
+      } catch {
+        // ignore
+      }
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Unable to submit. Please try again.");
@@ -265,6 +282,20 @@ export function Contact() {
             )}
           </form>
         </div>
+      </div>
+
+      <div className="reveal mx-auto mt-16 flex max-w-3xl flex-col items-center gap-4 rounded-2xl border border-border bg-card/60 px-6 py-8 text-center sm:px-10">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Not Sure Yet?</p>
+        <h3 className="text-2xl font-bold tracking-tight">Not sure if you need a CRM project yet?</h3>
+        <p className="max-w-xl text-sm text-muted-foreground">
+          Take the free CRM Health Check to identify potential gaps in lead management, automation, follow-up, reporting, and system adoption.
+        </p>
+        <Link
+          to="/crm-assessment"
+          className="mt-2 inline-block rounded-xl border border-accent/40 bg-accent/10 px-7 py-3.5 font-bold text-accent transition-all hover:bg-accent hover:text-accent-foreground"
+        >
+          Take the CRM Health Check →
+        </Link>
       </div>
     </section>
   );
