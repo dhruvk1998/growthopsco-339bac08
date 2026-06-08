@@ -39,9 +39,9 @@ const capabilities = [
 
 export function BeyondCRM() {
   return (
-    <section id="beyond-crm" className="px-6 py-24">
-      <div className="reveal mx-auto max-w-7xl">
-        <div className="mb-12 max-w-2xl">
+    <section id="beyond-crm" className="px-6 py-16">
+      <div className="reveal mx-auto max-w-[88rem]">
+        <div className="mb-10 max-w-2xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Capabilities</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
             Beyond CRM: automation & business systems.

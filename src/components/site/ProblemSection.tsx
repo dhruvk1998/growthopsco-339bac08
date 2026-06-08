@@ -33,9 +33,9 @@ const problems = [
 
 export function ProblemSection() {
   return (
-    <section id="does-this-sound-familiar" className="px-6 py-24">
-      <div className="reveal mx-auto max-w-7xl">
-        <div className="mb-12 max-w-2xl">
+    <section id="does-this-sound-familiar" className="px-6 py-16">
+      <div className="reveal mx-auto max-w-[88rem]">
+        <div className="mb-10 max-w-2xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">The Problem</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
             Does this sound familiar?

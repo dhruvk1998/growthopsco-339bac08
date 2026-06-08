@@ -26,7 +26,7 @@ const expertise = [
 function SiteFooter() {
   return (
     <footer className="border-t border-border/60 bg-background">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-[88rem] gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
             <span className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
@@ -79,7 +79,7 @@ function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border/60">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <div className="mx-auto flex max-w-[88rem] flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <div>© {new Date().getFullYear()} Dhruv Kaushik · CRM, Automation & Revenue Operations</div>
           <div>Built for operators who care about pipeline.</div>
         </div>
