@@ -283,6 +283,20 @@ export function Contact() {
           </form>
         </div>
       </div>
+
+      <div className="reveal mx-auto mt-16 flex max-w-3xl flex-col items-center gap-4 rounded-2xl border border-border bg-card/60 px-6 py-8 text-center sm:px-10">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-accent">Not Sure Yet?</p>
+        <h3 className="text-2xl font-bold tracking-tight">Not sure if you need a CRM project yet?</h3>
+        <p className="max-w-xl text-sm text-muted-foreground">
+          Take the free CRM Health Check to identify potential gaps in lead management, automation, follow-up, reporting, and system adoption.
+        </p>
+        <Link
+          to="/crm-assessment"
+          className="mt-2 inline-block rounded-xl border border-accent/40 bg-accent/10 px-7 py-3.5 font-bold text-accent transition-all hover:bg-accent hover:text-accent-foreground"
+        >
+          Take the CRM Health Check →
+        </Link>
+      </div>
     </section>
   );
 }
