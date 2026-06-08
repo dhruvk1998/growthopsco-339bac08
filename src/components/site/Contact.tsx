@@ -25,6 +25,16 @@ export function Contact() {
 
     const form = e.currentTarget;
     const fd = new FormData(form);
+
+    // Pull any completed CRM Health Check from sessionStorage and attach.
+    let assessment: unknown = undefined;
+    try {
+      const raw = typeof window !== "undefined" ? sessionStorage.getItem("crmHealthCheck") : null;
+      if (raw) assessment = JSON.parse(raw);
+    } catch {
+      // ignore
+    }
+
     const payload = {
       fullName: String(fd.get("fullName") || "").trim(),
       email: String(fd.get("email") || "").trim(),
@@ -36,7 +46,8 @@ export function Contact() {
       preferredMeetingTime: String(fd.get("preferredMeetingTime") || "").trim(),
       engagementType: String(fd.get("engagementType") || "").trim(),
       companySize: String(fd.get("companySize") || "").trim(),
-      leadSource: "Website Contact Form",
+      leadSource: assessment ? "Website Contact Form (CRM Health Check)" : "Website Contact Form",
+      assessment,
     };
 
     setStatus("submitting");
@@ -54,6 +65,11 @@ export function Contact() {
       }
       setStatus("success");
       form.reset();
+      try {
+        sessionStorage.removeItem("crmHealthCheck");
+      } catch {
+        // ignore
+      }
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Unable to submit. Please try again.");
