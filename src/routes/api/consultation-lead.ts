@@ -328,12 +328,16 @@ export const Route = createFileRoute("/api/consultation-lead")({
               : null;
 
           const errors: string[] = [];
+          const tried: string[] = [];
+          const succeeded: string[] = [];
           let sheetDelivered = false;
           let emailDelivered = false;
 
           for (const attempt of sheetAttempts) {
+            tried.push(`sheet:${attempt.name}`);
             try {
               await attempt.fn();
+              succeeded.push(`sheet:${attempt.name}`);
               sheetDelivered = true;
               break;
             } catch (err) {
@@ -344,8 +348,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
           }
 
           for (const attempt of emailAttempts) {
+            tried.push(`email:${attempt.name}`);
             try {
               await attempt.fn();
+              succeeded.push(`email:${attempt.name}`);
               emailDelivered = true;
               if (attempt.name === "AppsScript") sheetDelivered = true;
               break;
@@ -357,8 +363,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
           }
 
           if (!sheetDelivered && !emailDelivered && bridgeAttempt) {
+            tried.push(`bridge:${bridgeAttempt.name}`);
             try {
               await bridgeAttempt.fn();
+              succeeded.push(`bridge:${bridgeAttempt.name}`);
               sheetDelivered = true;
               emailDelivered = true;
             } catch (err) {
@@ -368,11 +376,16 @@ export const Route = createFileRoute("/api/consultation-lead")({
             }
           }
 
+          console.log(
+            `[consultation-lead] tried=[${tried.join(",")}] succeeded=[${succeeded.join(",")}] errors=[${errors.join(" | ")}]`,
+          );
+
           if (!sheetDelivered && !emailDelivered) {
             throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
 
-          return Response.json({ ok: true });
+          return Response.json({ ok: true, tried, succeeded, errors });
+
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           console.error("Consultation lead error:", detail);
