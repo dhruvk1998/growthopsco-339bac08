@@ -13,7 +13,8 @@ import { z } from "zod";
  *   3. Lovable connector gateway (only inside *.lovable.app runtime).
  */
 
-const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
+const NOTIFY_EMAIL = "dhruv.kaushik866@gmail.com";
+const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
 const PUBLISHED_LOVABLE_ENDPOINT = "https://growthopsco.lovable.app/api/consultation-lead";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_RANGE = "Database!A:L";
@@ -57,7 +58,55 @@ const LeadSchema = z.object({
 
 type Lead = z.infer<typeof LeadSchema>;
 
-// FormSubmit transport removed — replaced by Google Apps Script (Transport 2).
+// --- Transport 1: FormSubmit.co (default, no setup) ------------------------
+
+async function submitViaFormSubmit(data: Lead, timestamp: string) {
+  const a = data.assessment;
+  const assessmentFields = a
+    ? {
+        crm_health_score: a.score ?? "",
+        crm_health_rating: a.rating ?? "",
+        crm_health_problem_areas: (a.problemAreas ?? []).join(", "),
+        crm_health_summary: a.summary ?? "",
+        crm_health_completed_at: a.completedAt ?? "",
+        crm_health_answers: (a.answers ?? [])
+          .map((x) => `${x.category} — ${x.question} → ${x.answer ?? "—"}`)
+          .join("\n"),
+      }
+    : {};
+  const res = await fetch(FORMSUBMIT_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      _subject: `New CRM Consultation Request — ${data.fullName}`,
+      _replyto: data.email,
+      _template: "table",
+      submitted_at: timestamp,
+      full_name: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      company_name: data.companyName,
+      company_size: data.companySize,
+      website: data.website,
+      engagement_type: data.engagementType,
+      current_crm: data.crmUsed,
+      preferred_meeting_time: data.preferredMeetingTime,
+      lead_source: data.leadSource,
+      requirements: data.requirements,
+      ...assessmentFields,
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`FormSubmit failed (${res.status}): ${body.slice(0, 300)}`);
+  }
+  const json = (await res.json().catch(() => ({}))) as { success?: string | boolean };
+  // FormSubmit returns `{ success: "true" }` on success and `{ success: "false", message }` on first call (activation).
+  // We treat the activation response as success since the lead is queued and Dhruv just needs to confirm once.
+  if (json && json.success === false) {
+    throw new Error("FormSubmit rejected the submission");
+  }
+}
 
 // --- Transport 2: Google Apps Script (optional override) -------------------
 
@@ -173,6 +222,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
               fn: () => submitViaAppsScript(appsScriptUrl, data, timestamp),
             });
           }
+          emailAttempts.push({
+            name: "FormSubmit",
+            fn: () => submitViaFormSubmit(data, timestamp),
+          });
 
           const bridgeAttempt =
             !isLovableHost && !isRemoteBridge
