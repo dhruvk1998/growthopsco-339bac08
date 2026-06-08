@@ -13,8 +13,7 @@ import { z } from "zod";
  *   3. Lovable connector gateway (only inside *.lovable.app runtime).
  */
 
-const NOTIFY_EMAIL = "dhruv.kaushik866@gmail.com";
-const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${NOTIFY_EMAIL}`;
+const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
 const PUBLISHED_LOVABLE_ENDPOINT = "https://growthopsco.lovable.app/api/consultation-lead";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_RANGE = "Database!A:L";
