@@ -299,9 +299,15 @@ export const Route = createFileRoute("/api/consultation-lead")({
             });
           }
 
-          // Email-notify transports (first success wins). Apps Script writes
-          // the sheet AND emails Dhruv in one call, so it counts for both.
+          // Email-notify transports (first success wins). Gmail connector is
+          // preferred; Apps Script and FormSubmit remain as fallbacks.
           const emailAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
+          if (process.env.LOVABLE_API_KEY && process.env.GOOGLE_MAIL_API_KEY) {
+            emailAttempts.push({
+              name: "Gmail",
+              fn: () => submitViaGmail(data, timestamp),
+            });
+          }
           if (appsScriptUrl) {
             emailAttempts.push({
               name: "AppsScript",
