@@ -30,11 +30,6 @@ function CRMAssessmentPage() {
         description="Eight quick questions across lead management, automation, integration, and reporting. Get a CRM Health Score, identified problem areas, and recommended next steps — in under two minutes."
       />
       <HealthCheck />
-      <FinalCTA
-        eyebrow="Next Step"
-        title="Want a deeper review of your results?"
-        subtitle="Book a free 30-minute strategy call. We'll walk through your score, the problem areas, and the right path forward."
-      />
     </SiteLayout>
   );
 }
