@@ -1,107 +1,231 @@
 import { useState } from "react";
 
-const services = [
+type ServiceSection = {
+  label: string;
+  items: string[];
+};
+
+type Service = {
+  title: string;
+  summary: string;
+  sections: ServiceSection[];
+};
+
+const services: Service[] = [
   {
-    title: "CRM Setup & Implementation",
-    summary: "Ground-up Freshworks or LeadSquared deployment across departments.",
-    details: [
-      "Account structure, pipelines, custom fields & roles",
-      "Stakeholder discovery and process mapping",
-      "Team onboarding, training & adoption tracking",
+    title: "CRM Implementation",
+    summary: "Build a sales process your team actually follows.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "CRM platform selection guidance",
+          "Pipeline architecture",
+          "Custom field configuration",
+          "Dashboard and reporting setup",
+          "User onboarding and adoption support",
+        ],
+      },
+      {
+        label: "Best For",
+        items: [
+          "Teams currently using spreadsheets",
+          "Businesses implementing a CRM for the first time",
+          "Organizations struggling with visibility",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Workflow Automation",
+    summary: "Reduce manual work and improve response times.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "Lead routing automation",
+          "Follow-up automation",
+          "Task creation workflows",
+          "Internal notifications",
+          "Process optimization",
+        ],
+      },
+      {
+        label: "Expected Outcomes",
+        items: [
+          "Faster response times",
+          "Reduced manual work",
+          "Improved accountability",
+        ],
+      },
     ],
   },
   {
     title: "Lead Process Design",
-    summary: "Lead lifecycle stages engineered to match how your business actually sells.",
-    details: [
-      "End-to-end lifecycle from capture to close",
-      "Source attribution, lead scoring & qualification rules",
-      "SLA design and ownership matrices",
+    summary: "Make sure no inquiry falls through the cracks.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "Lead lifecycle mapping",
+          "Qualification framework design",
+          "Sales handoff process",
+          "Pipeline stage optimization",
+          "Ownership definitions",
+        ],
+      },
+      {
+        label: "Expected Outcomes",
+        items: [
+          "Fewer lost opportunities",
+          "Consistent sales execution",
+          "Better conversion visibility",
+        ],
+      },
     ],
   },
   {
-    title: "CRM Automation",
-    summary: "Workflow automations that remove manual steps and accelerate response time.",
-    details: [
-      "Lead routing & round-robin assignment",
-      "Trigger-based sequences and internal alerts",
-      "Escalations, stuck-deal recovery, re-engagement loops",
+    title: "Integration Project",
+    summary: "Connect your website and tools to your CRM.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "Website-to-CRM integration",
+          "Form integration",
+          "Marketing platform integration",
+          "Data synchronization",
+          "Workflow connectivity",
+        ],
+      },
+      {
+        label: "Expected Outcomes",
+        items: [
+          "Elimination of duplicate data entry",
+          "Better system visibility",
+          "Unified operations",
+        ],
+      },
     ],
   },
   {
-    title: "Website ↔ CRM Integration",
-    summary: "Coordinated API integration between marketing site, chatbot, and CRM.",
-    details: [
-      "Webform & chatbot lead capture into CRM",
-      "API specs in partnership with web developers",
-      "QA, monitoring, and fallback handling",
+    title: "Chatbot & AI Integration",
+    summary: "Turn chatbot conversations into real opportunities.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "AI chatbot implementation",
+          "Lead capture workflows",
+          "CRM synchronization",
+          "Automated qualification",
+          "AI-assisted routing",
+        ],
+      },
+      {
+        label: "Expected Outcomes",
+        items: [
+          "Faster engagement",
+          "Better lead qualification",
+          "Increased efficiency",
+        ],
+      },
     ],
   },
   {
-    title: "CRM Optimization & Audit",
-    summary: "A health check of your current CRM — where leads leak, where automation breaks.",
-    details: [
-      "Lifecycle audit & pipeline-stage diagnostic",
-      "Data quality, duplication, and adoption review",
-      "Prioritized roadmap of fixes and quick wins",
+    title: "CRM Audit",
+    summary: "Identify where leads, visibility, and accountability are breaking down.",
+    sections: [
+      {
+        label: "What You'll Get",
+        items: [
+          "Current-state assessment",
+          "Process review",
+          "Pipeline analysis",
+          "Automation review",
+          "Reporting evaluation",
+        ],
+      },
+      {
+        label: "Expected Outcomes",
+        items: [
+          "Identification of bottlenecks",
+          "Improved visibility",
+          "Actionable recommendations",
+        ],
+      },
     ],
   },
 ];
 
 export function Services() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
+
   return (
-    <section id="services" className="px-6 py-24">
-      <div className="reveal mx-auto max-w-7xl">
-        <div className="mb-14 max-w-2xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Services</p>
+    <section id="services" className="px-6 py-16">
+      <div className="reveal mx-auto max-w-[88rem]">
+        <div className="mb-10 max-w-2xl">
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">Services</p>
           <h2 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
-            Consulting engagements built for operators.
+            Six engagements, one operating model.
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            A quick look at each engagement. Click a card to see detailed scope, deliverables, and outcomes.
+          </p>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => {
             const isOpen = open === i;
             return (
               <div
                 key={s.title}
-                className={`rounded-2xl border bg-card/70 p-6 transition-all ${
-                  isOpen ? "border-accent/50" : "border-border hover:border-accent/30"
+                className={`rounded-2xl border p-5 text-left transition-all duration-300 ${
+                  isOpen
+                    ? "border-accent/40 bg-card/70"
+                    : "border-border bg-card/70 hover:-translate-y-0.5 hover:border-accent/40"
                 }`}
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-start justify-between gap-6 text-left"
+                  className="flex w-full items-start justify-between gap-4 text-left"
                   aria-expanded={isOpen}
                 >
-                  <div>
-                    <h3 className="text-xl font-bold">{s.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{s.summary}</p>
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-bold leading-snug">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.summary}</p>
                   </div>
                   <span
-                    className={`grid size-9 shrink-0 place-items-center rounded-full border border-border text-accent transition-transform ${
-                      isOpen ? "rotate-45" : ""
+                    className={`mt-1 shrink-0 text-sm text-accent transition-transform duration-300 ${
+                      isOpen ? "rotate-90" : ""
                     }`}
+                    aria-hidden="true"
                   >
-                    <svg viewBox="0 0 20 20" className="size-4" fill="currentColor">
-                      <path d="M10 4a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H5a1 1 0 110-2h4V5a1 1 0 011-1z" />
-                    </svg>
+                    {isOpen ? "▼" : "▶"}
                   </span>
                 </button>
                 <div
-                  className={`grid overflow-hidden transition-all duration-300 ${
-                    isOpen ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  className={`grid overflow-hidden transition-all duration-300 ease-out ${
+                    isOpen ? "mt-5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
-                  <ul className="min-h-0 space-y-2 border-t border-border pt-4 text-sm text-muted-foreground">
-                    {s.details.map((d) => (
-                      <li key={d} className="flex items-start gap-3">
-                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
-                        {d}
-                      </li>
+                  <div className="min-h-0 space-y-5 border-t border-border pt-5">
+                    {s.sections.map((section) => (
+                      <div key={section.label}>
+                        <p className="text-[11px] font-bold uppercase tracking-widest text-accent">
+                          {section.label}
+                        </p>
+                        <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                          {section.items.map((item) => (
+                            <li key={item} className="flex items-start gap-3">
+                              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               </div>
             );
