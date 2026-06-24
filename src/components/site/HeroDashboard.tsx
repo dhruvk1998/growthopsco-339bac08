@@ -92,8 +92,8 @@ function LineChart({ start }: { start: boolean }) {
       <svg viewBox={`0 0 ${W} ${H}`} className="h-28 w-full overflow-visible" preserveAspectRatio="none">
         <defs>
           <linearGradient id="hgArea" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
           </linearGradient>
           <filter id="hgGlow" x="-20%" y="-50%" width="140%" height="200%">
             <feGaussianBlur stdDeviation="2.2" result="blur" />
@@ -110,7 +110,7 @@ function LineChart({ start }: { start: boolean }) {
             x2={W}
             y1={(H / 3) * i + 4}
             y2={(H / 3) * i + 4}
-            stroke="hsl(var(--foreground))"
+            stroke="var(--foreground)"
             strokeOpacity="0.06"
             strokeWidth="0.5"
           />
@@ -124,7 +124,7 @@ function LineChart({ start }: { start: boolean }) {
         <path
           d={smooth}
           fill="none"
-          stroke="hsl(var(--accent))"
+          stroke="var(--accent)"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -141,8 +141,8 @@ function LineChart({ start }: { start: boolean }) {
             cx={c.x}
             cy={c.y}
             r="3"
-            fill="hsl(var(--accent))"
-            stroke="hsl(var(--background))"
+            fill="var(--accent)"
+            stroke="var(--background)"
             strokeWidth="1.5"
             filter="url(#hgGlow)"
             className="opacity-0 transition-opacity duration-300 group-hover/chart:opacity-100"
