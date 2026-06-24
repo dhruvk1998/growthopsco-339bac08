@@ -1,5 +1,5 @@
-const corbettLogo = { url: "/images/logos/corbett-vanvaas.png" };
-const ozoneLogo = { url: "/images/logos/ozone-group.png" };
+import corbettLogo from "@/assets/corbett-vanvaas.png.asset.json";
+import ozoneLogo from "@/assets/ozone-group.png.asset.json";
 
 export type Testimonial = {
   name: string;
