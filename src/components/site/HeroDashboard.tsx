@@ -53,32 +53,55 @@ function KpiCard({ kpi, start }: { kpi: KPI; start: boolean }) {
 }
 
 function LineChart({ start }: { start: boolean }) {
-  // Build a smooth path
   const points = [12, 22, 18, 30, 26, 38, 34, 48, 52, 62, 58, 74];
   const W = 400;
   const H = 120;
   const stepX = W / (points.length - 1);
   const maxY = 80;
   const toY = (v: number) => H - (v / maxY) * (H - 16) - 8;
-  const d = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${i * stepX} ${toY(p)}`)
-    .join(" ");
-  const area = `${d} L ${W} ${H} L 0 ${H} Z`;
+  const coords = points.map((p, i) => ({ x: i * stepX, y: toY(p) }));
+
+  // Smooth Catmull-Rom -> Bezier path
+  const smooth = (() => {
+    if (coords.length < 2) return "";
+    let d = `M ${coords[0].x} ${coords[0].y}`;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const p0 = coords[i - 1] ?? coords[i];
+      const p1 = coords[i];
+      const p2 = coords[i + 1];
+      const p3 = coords[i + 2] ?? p2;
+      const t = 0.18;
+      const c1x = p1.x + (p2.x - p0.x) * t;
+      const c1y = p1.y + (p2.y - p0.y) * t;
+      const c2x = p2.x - (p3.x - p1.x) * t;
+      const c2y = p2.y - (p3.y - p1.y) * t;
+      d += ` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p2.x} ${p2.y}`;
+    }
+    return d;
+  })();
+  const area = `${smooth} L ${W} ${H} L 0 ${H} Z`;
 
   return (
-    <div className="rounded-xl border border-border bg-background/60 p-4">
+    <div className="group/chart rounded-xl border border-border bg-background/60 p-4">
       <div className="mb-2 flex items-center justify-between">
         <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           Pipeline Velocity · last 12 weeks
         </div>
         <div className="text-[11px] font-bold text-accent">+42%</div>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="h-28 w-full" preserveAspectRatio="none">
+      <svg viewBox={`0 0 ${W} ${H}`} className="h-28 w-full overflow-visible" preserveAspectRatio="none">
         <defs>
           <linearGradient id="hgArea" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.35" />
+            <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.18" />
             <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0" />
           </linearGradient>
+          <filter id="hgGlow" x="-20%" y="-50%" width="140%" height="200%">
+            <feGaussianBlur stdDeviation="2.2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
         {[0, 1, 2, 3].map((i) => (
           <line
@@ -87,25 +110,44 @@ function LineChart({ start }: { start: boolean }) {
             x2={W}
             y1={(H / 3) * i + 4}
             y2={(H / 3) * i + 4}
-            stroke="hsl(var(--border))"
-            strokeDasharray="2 4"
+            stroke="hsl(var(--foreground))"
+            strokeOpacity="0.06"
             strokeWidth="0.5"
           />
         ))}
-        <path d={area} fill="url(#hgArea)" opacity={start ? 1 : 0} style={{ transition: "opacity 800ms ease 600ms" }} />
         <path
-          d={d}
+          d={area}
+          fill="url(#hgArea)"
+          opacity={start ? 1 : 0}
+          style={{ transition: "opacity 800ms ease 500ms" }}
+        />
+        <path
+          d={smooth}
           fill="none"
           stroke="hsl(var(--accent))"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
+          filter="url(#hgGlow)"
           style={{
-            strokeDasharray: 1200,
-            strokeDashoffset: start ? 0 : 1200,
-            transition: "stroke-dashoffset 1400ms ease-out",
+            strokeDasharray: 1400,
+            strokeDashoffset: start ? 0 : 1400,
+            transition: "stroke-dashoffset 900ms ease-out",
           }}
         />
+        {coords.map((c, i) => (
+          <circle
+            key={i}
+            cx={c.x}
+            cy={c.y}
+            r="3"
+            fill="hsl(var(--accent))"
+            stroke="hsl(var(--background))"
+            strokeWidth="1.5"
+            filter="url(#hgGlow)"
+            className="opacity-0 transition-opacity duration-300 group-hover/chart:opacity-100"
+          />
+        ))}
       </svg>
     </div>
   );
