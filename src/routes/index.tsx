@@ -5,8 +5,8 @@ import { ProblemSection } from "@/components/site/ProblemSection";
 import { WhatIsCRM } from "@/components/site/WhatIsCRM";
 import { HomeServicesPreview } from "@/components/site/HomeServicesPreview";
 import { BeyondCRM } from "@/components/site/BeyondCRM";
-import { WhoIHelp } from "@/components/site/WhoIHelp";
 import { FeaturedCaseStudies } from "@/components/site/FeaturedCaseStudies";
+import { TestimonialsPreview } from "@/components/site/TestimonialsPreview";
 import { HealthCheckTeaser } from "@/components/site/HealthCheckTeaser";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
@@ -62,8 +62,8 @@ function HomePage() {
       <WhatIsCRM />
       <HomeServicesPreview />
       <FeaturedCaseStudies />
+      <TestimonialsPreview />
       <BeyondCRM />
-      <WhoIHelp />
       <HealthCheckTeaser />
       <FinalCTA />
 
