@@ -4,8 +4,11 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { About } from "@/components/site/About";
 import { MyApproach } from "@/components/site/MyApproach";
 import { TechExpertise } from "@/components/site/TechExpertise";
-import { Experience } from "@/components/site/Experience";
 import { TechPlatforms } from "@/components/site/TechPlatforms";
+import { ConsultingPhilosophy } from "@/components/site/ConsultingPhilosophy";
+import { ProblemsSolved } from "@/components/site/ProblemsSolved";
+import { CorePrinciples } from "@/components/site/CorePrinciples";
+import { TestimonialsFull } from "@/components/site/TestimonialsFull";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
 const journey = [
@@ -88,19 +91,28 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Section 3: My Approach */}
+      {/* Consulting Philosophy */}
+      <ConsultingPhilosophy />
+
+      {/* My Approach */}
       <MyApproach />
 
-      {/* Section 4: Technology & Automation Expertise */}
+      {/* Technology & Automation Expertise */}
       <TechExpertise />
 
-      {/* Section 5: Credentials & experience */}
-      <Experience />
+      {/* Real Business Problems Solved (replaces resume-style Experience) */}
+      <ProblemsSolved />
 
-      {/* Section 6: Technology platforms */}
+      {/* Core Principles */}
+      <CorePrinciples />
+
+      {/* Technology platforms */}
       <TechPlatforms />
 
-      {/* Section 7: Contact CTA */}
+      {/* Testimonials */}
+      <TestimonialsFull />
+
+      {/* Contact CTA */}
       <FinalCTA />
     </SiteLayout>
   );
