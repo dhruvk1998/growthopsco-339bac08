@@ -16,7 +16,7 @@ export const Route = createFileRoute("/case-studies")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "/case-studies" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/case-studies" }],
   }),
   component: CaseStudiesPage,
 });
