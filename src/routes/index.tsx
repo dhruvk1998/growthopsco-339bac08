@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: "Dhruv Kaushik",
           jobTitle: "CRM, Automation & Business Systems Consultant",
-          url: "https://dhruvrevops.lovable.app",
+          url: "https://growthopsco.vercel.app",
           sameAs: ["https://www.linkedin.com/in/dhruv-kaushik-95231a175/"],
           address: { "@type": "PostalAddress", addressLocality: "Burnaby", addressRegion: "BC", addressCountry: "CA" },
           knowsAbout: [
