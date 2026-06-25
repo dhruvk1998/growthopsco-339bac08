@@ -9,9 +9,9 @@ type KPI = {
 };
 
 const kpis: KPI[] = [
-  { label: "New Leads", value: 1284, delta: "+18%" },
+  { label: "Leads Captured", value: 1284, delta: "+18%" },
   { label: "Conversion Rate", value: 34, suffix: "%", delta: "+6.2%" },
-  { label: "Tasks Completed", value: 962, delta: "+24%" },
+  { label: "Tasks Automated", value: 962, delta: "+24%" },
   { label: "Revenue Impact", value: 412, prefix: "$", suffix: "K", delta: "+31%" },
 ];
 
