@@ -1,5 +1,5 @@
-import corbettLogo from "@/assets/corbett-vanvaas.png.asset.json";
-import ozoneLogo from "@/assets/ozone-group.png.asset.json";
+import corbettLogo from "@/assets/CORBETT-e1726479103131.png";
+import ozoneLogo from "@/assets/oz6849ac6d-ozone-logo-amazon-in-ozone.png";
 
 export type Testimonial = {
   name: string;
@@ -16,7 +16,7 @@ export const testimonials: Testimonial[] = [
     name: "Sunakshi Vashisht",
     title: "",
     company: "Corbett Vanvaas Resort",
-    logo: corbettLogo.url,
+    logo: corbettLogo,
     logoAlt: "Corbett Vanvaas Resort logo",
     excerpt:
       "We've had a great experience working with GrowthOps. Their team is proactive, professional, and genuinely invested in our success. They took the time to understand our business, provided valuable insights, and delivered exactly what was promised.",
@@ -26,7 +26,7 @@ export const testimonials: Testimonial[] = [
     name: "Vaibhav Gupta",
     title: "Customer Service Manager",
     company: "Ozone Group",
-    logo: ozoneLogo.url,
+    logo: ozoneLogo,
     logoAlt: "Ozone Group logo",
     excerpt:
       "I had the opportunity to work closely with Dhruv during our CRM modernization initiative, where we transitioned from LeadSquared to Freshworks. He quickly understood our operational requirements and translated them into efficient workflows and automations that simplified our processes and improved team efficiency.",
@@ -36,7 +36,7 @@ export const testimonials: Testimonial[] = [
     name: "Ekta Verma",
     title: "Digital Commerce Head",
     company: "Ozone Group",
-    logo: ozoneLogo.url,
+    logo: ozoneLogo,
     logoAlt: "Ozone Group logo",
     excerpt:
       "Working with Dhruv was a seamless experience. He quickly understood our marketing and business requirements and translated them into practical solutions that improved our lead management process.",
