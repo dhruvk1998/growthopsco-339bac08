@@ -84,10 +84,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Dhruv Kaushik | CRM Consultant" },
       { property: "og:description", content: "CRM consultant helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations using Freshworks, LeadSquared and modern automation platforms." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://growthopsco.lovable.app/" },
+      { property: "og:url", content: "https://growthopsco.vercel.app/" },
       { property: "og:site_name", content: "Dhruv Kaushik" },
-      { property: "og:image", content: "https://growthopsco.lovable.app/og-image.jpg" },
-      { property: "og:image:secure_url", content: "https://growthopsco.lovable.app/og-image.jpg" },
+      { property: "og:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
+      { property: "og:image:secure_url", content: "https://growthopsco.vercel.app/og-image.jpg" },
       { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Dhruv Kaushik | CRM Consultant" },
       { name: "twitter:description", content: "CRM consultant helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations using Freshworks, LeadSquared and modern automation platforms." },
-      { name: "twitter:image", content: "https://growthopsco.lovable.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
     ],
     links: [
       {
