@@ -46,7 +46,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "https://dhruvrevops.lovable.app/about" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/about" }],
   }),
   component: AboutPage,
 });

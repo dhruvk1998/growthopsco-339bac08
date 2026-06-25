@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "https://dhruvrevops.lovable.app/" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: "Dhruv Kaushik",
           jobTitle: "CRM, Automation & Business Systems Consultant",
-          url: "https://dhruvrevops.lovable.app",
+          url: "https://growthopsco.vercel.app",
           sameAs: ["https://www.linkedin.com/in/dhruv-kaushik-95231a175/"],
           address: { "@type": "PostalAddress", addressLocality: "Burnaby", addressRegion: "BC", addressCountry: "CA" },
           knowsAbout: [

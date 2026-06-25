@@ -9,9 +9,9 @@ type KPI = {
 };
 
 const kpis: KPI[] = [
-  { label: "New Leads", value: 1284, delta: "+18%" },
+  { label: "Leads Captured", value: 1284, delta: "+18%" },
   { label: "Conversion Rate", value: 34, suffix: "%", delta: "+6.2%" },
-  { label: "Tasks Completed", value: 962, delta: "+24%" },
+  { label: "Tasks Automated", value: 962, delta: "+24%" },
   { label: "Revenue Impact", value: 412, prefix: "$", suffix: "K", delta: "+31%" },
 ];
 
@@ -168,11 +168,16 @@ export function HeroDashboard() {
     >
       <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
       <div className="relative">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-accent" />
-            <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Revenue Operations · Live
+        <div className="mb-4 flex items-start justify-between">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-accent" />
+              <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Revenue Operations · Live
+              </div>
+            </div>
+            <div className="pl-4 text-[10px] italic text-muted-foreground/60">
+              Typical client outcomes across active engagements
             </div>
           </div>
           <div className="flex gap-1.5">

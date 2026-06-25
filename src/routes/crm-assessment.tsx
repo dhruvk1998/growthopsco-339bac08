@@ -16,7 +16,7 @@ export const Route = createFileRoute("/crm-assessment")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "https://dhruvrevops.lovable.app/crm-assessment" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/crm-assessment" }],
   }),
   component: CRMAssessmentPage,
 });
