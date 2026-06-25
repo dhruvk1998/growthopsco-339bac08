@@ -1,0 +1,49 @@
+# GrowthOpsCo 🚀
+
+GrowthOpsCo is a modern consulting website focused on helping startups and small businesses streamline their operations through CRM optimization, workflow automation, and business system integrations.
+
+## 🌟 Features
+
+- Modern responsive UI
+- CRM Health Check & Assessment
+- Consultation booking
+- Business case studies
+- Testimonials
+- Contact & lead capture forms
+- Mobile-first design
+- Fast Vercel deployment
+
+## 💼 Services
+
+- CRM Setup & Optimization
+- Workflow Automation
+- Lead Management Systems
+- Business Process Improvement
+- Website & CRM Integration
+- Reporting & Operational Visibility
+
+## 🛠️ Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Shadcn UI
+- Lucide Icons
+- Vercel
+
+## 🎯 Purpose
+
+GrowthOpsCo is built to help growing businesses eliminate operational bottlenecks and create scalable systems that improve efficiency, visibility, and customer experience.
+
+## 🌐 Live Website
+
+**https://growthopsco.vercel.app**
+
+## 📩 Contact
+
+Feel free to connect if you're looking to optimize your CRM, automate workflows, or build better business systems.
+
+---
+
+*"Better systems. Better operations. Better growth."*
