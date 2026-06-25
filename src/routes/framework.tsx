@@ -26,7 +26,7 @@ export const Route = createFileRoute("/framework")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "/framework" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/framework" }],
   }),
   component: FrameworkPage,
 });
