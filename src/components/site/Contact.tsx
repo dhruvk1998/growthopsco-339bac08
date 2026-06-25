@@ -266,9 +266,20 @@ export function Contact() {
 
             {status === "success" ? (
               <div className="mt-6 rounded-xl border border-accent/40 bg-accent/10 px-5 py-4 text-sm text-foreground">
-                <p className="font-semibold text-accent">Thank you for your inquiry.</p>
-                <p className="mt-1 text-muted-foreground">
-                  Your consultation request has been received. We will contact you shortly.
+                <p className="font-semibold text-accent">✓ Request received!</p>
+                <p className="mt-2 text-muted-foreground">
+                  Your consultation inquiry has been sent successfully. Dhruv will review your requirements and follow up within one business day.
+                </p>
+                <p className="mt-3 text-muted-foreground">
+                  In the meantime, you're welcome to explore the{" "}
+                  <Link to="/case-studies" className="font-semibold text-accent hover:underline">
+                    case studies
+                  </Link>{" "}
+                  or take the{" "}
+                  <Link to="/crm-assessment" className="font-semibold text-accent hover:underline">
+                    CRM Health Check
+                  </Link>{" "}
+                  if you haven't already.
                 </p>
               </div>
             ) : (
