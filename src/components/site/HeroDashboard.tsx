@@ -168,11 +168,16 @@ export function HeroDashboard() {
     >
       <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
       <div className="relative">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-accent" />
-            <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Revenue Operations · Live
+        <div className="mb-4 flex items-start justify-between">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-accent" />
+              <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Revenue Operations · Live
+              </div>
+            </div>
+            <div className="pl-4 text-[10px] italic text-muted-foreground/60">
+              Typical client outcomes across active engagements
             </div>
           </div>
           <div className="flex gap-1.5">
