@@ -37,6 +37,7 @@ export function Contact() {
     }
 
     const payload = {
+      _honeypot: String(fd.get("_honeypot") || ""),
       fullName: String(fd.get("fullName") || "").trim(),
       email: String(fd.get("email") || "").trim(),
       requirements: String(fd.get("requirements") || "").trim(),
@@ -142,6 +143,16 @@ export function Contact() {
           >
             <h3 className="text-lg font-bold">Consultation Inquiry</h3>
             <p className="mt-1 text-sm text-muted-foreground">No-pressure intro call to scope your CRM needs.</p>
+
+            {/* Honeypot — hidden from real users, bots fill it in */}
+            <input
+              name="_honeypot"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+            />
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <Field label="Full Name *" className="sm:col-span-2">
