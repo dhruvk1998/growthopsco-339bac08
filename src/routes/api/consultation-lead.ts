@@ -261,7 +261,11 @@ export const Route = createFileRoute("/api/consultation-lead")({
     handlers: {
       POST: async ({ request }) => {
         try {
-          const json = await request.json().catch(() => null);
+          const json = (await request.json().catch(() => null)) as Record<string, unknown> | null;
+          // Honeypot check — bots fill hidden fields, humans don't.
+          if (json && typeof json._honeypot === "string" && json._honeypot.length > 0) {
+            return Response.json({ ok: true });
+          }
           const parsed = LeadSchema.safeParse(json);
           if (!parsed.success) {
             return Response.json(
@@ -275,9 +279,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
           const requestHost = new URL(request.url).host;
           const isLovableHost = requestHost.endsWith("lovable.app");
           const isRemoteBridge = request.headers.get("X-GrowthOps-Remote-Bridge") === "1";
-          console.log(
-            `[consultation-lead] env: LOVABLE=${!!process.env.LOVABLE_API_KEY} GMAIL=${!!process.env.GOOGLE_MAIL_API_KEY} SHEETS=${!!process.env.GOOGLE_SHEETS_API_KEY} APPS_SCRIPT=${!!appsScriptUrl}`,
-          );
+
 
           // Sheet-write transports (first success wins).
           const sheetAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
@@ -394,7 +396,6 @@ export const Route = createFileRoute("/api/consultation-lead")({
               ok: false,
               error:
                 "We couldn't save your request right now. Please email dhruvozone38@gmail.com or try again in a moment.",
-              detail,
             },
             { status: 500 },
           );

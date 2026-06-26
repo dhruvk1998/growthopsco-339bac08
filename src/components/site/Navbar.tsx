@@ -91,6 +91,7 @@ export function Navbar() {
   return (
     <>
       <nav
+        aria-label="Main navigation"
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled || open
             ? "border-b border-border/60 bg-background/85 backdrop-blur-lg"
