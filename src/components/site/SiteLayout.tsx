@@ -7,8 +7,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   useReveal();
   return (
     <div className="min-h-screen bg-background text-foreground antialiased selection:bg-accent/30 selection:text-accent-foreground">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-accent-foreground focus:outline-none"
+      >
+        Skip to main content
+      </a>
       <Navbar />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <SiteFooter />
     </div>
   );
@@ -66,6 +72,7 @@ function SiteFooter() {
                 href="https://www.linkedin.com/in/dhruv-kaushik-95231a175/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Connect with Dhruv Kaushik on LinkedIn (opens in new tab)"
                 className="inline-flex items-center gap-1.5 hover:text-accent"
               >
                 <svg viewBox="0 0 24 24" className="size-3.5" fill="currentColor" aria-hidden="true">

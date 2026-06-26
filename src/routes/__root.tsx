@@ -78,6 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#0f0f14" },
+      { name: "robots", content: "index, follow" },
+      { name: "googlebot", content: "index, follow" },
       { title: "Dhruv Kaushik | CRM Consultant" },
       { name: "description", content: "CRM consultant helping businesses streamline lead management, automate workflows, optimize sales pipelines, and improve CRM operations using Freshworks, LeadSquared and modern automation platforms." },
       { name: "author", content: "Dhruv Kaushik" },
@@ -98,10 +101,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.json" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/og-image.jpg", type: "image/jpeg" },
+      { rel: "apple-touch-icon", href: "/og-image.jpg" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "dns-prefetch", href: "https://va.vercel-scripts.com" },
     ],
   }),
   shellComponent: RootShell,
