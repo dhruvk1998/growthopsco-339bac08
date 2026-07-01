@@ -30,11 +30,10 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         return new Response(buildSitemap(), {
           status: 200,
-          headers: {
-            "Content-Type": "text/xml; charset=utf-8",
-            "Cache-Control": "public, max-age=86400, s-maxage=86400",
-            "X-Robots-Tag": "noindex",
-          },
+        headers: {
+          "Content-Type": "text/xml; charset=utf-8",
+          "Cache-Control": "public, max-age=86400, s-maxage=86400",
+        },
         });
       },
     },
