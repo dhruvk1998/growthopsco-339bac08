@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as FrameworkRouteImport } from './routes/framework'
 import { Route as CrmAssessmentRouteImport } from './routes/crm-assessment'
@@ -22,6 +23,11 @@ import { Route as ApiConsultationLeadRouteImport } from './routes/api/consultati
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/crm-assessment': typeof CrmAssessmentRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/crm-assessment'
     | '/framework'
     | '/services'
+    | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/crm-assessment'
     | '/framework'
     | '/services'
+    | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/crm-assessment'
     | '/framework'
     | '/services'
+    | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   CrmAssessmentRoute: typeof CrmAssessmentRoute
   FrameworkRoute: typeof FrameworkRoute
   ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ToolsRoute: typeof ToolsRoute
   ApiConsultationLeadRoute: typeof ApiConsultationLeadRoute
 }
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/tools'
       fullPath: '/tools'
       preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -223,19 +243,10 @@ const rootRouteChildren: RootRouteChildren = {
   CrmAssessmentRoute: CrmAssessmentRoute,
   FrameworkRoute: FrameworkRoute,
   ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ToolsRoute: ToolsRoute,
   ApiConsultationLeadRoute: ApiConsultationLeadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
