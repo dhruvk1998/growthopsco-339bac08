@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DiagnosticSchema, SHEET_HEADERS, buildSheetRow, DIAGNOSTIC_FEE, REPORT_DELIVERY, type DiagnosticRequest } from "@/lib/diagnostic";
+import { bridgeToPublished } from "@/lib/diagnostic-bridge";
 
 /**
  * CRM Revenue Diagnostic request endpoint. Mirrors /api/consultation-lead:
@@ -9,7 +10,6 @@ import { DiagnosticSchema, SHEET_HEADERS, buildSheetRow, DIAGNOSTIC_FEE, REPORT_
  */
 
 const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
-const PUBLISHED_ENDPOINT = "https://growthopsco.lovable.app/api/diagnostic-request";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_NAME = "Diagnostic Requests";
 const GATEWAY = "https://connector-gateway.lovable.dev";
@@ -110,17 +110,6 @@ function prospectEmail(d: DiagnosticRequest) {
   ].join("\n");
 }
 
-async function bridge(body: unknown) {
-  const res = await fetch(PUBLISHED_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json", "X-GrowthOps-Remote-Bridge": "1" },
-    body: JSON.stringify(body),
-  });
-  const json = (await res.json().catch(() => ({}))) as { ok?: boolean; id?: string };
-  if (!res.ok || !json.ok) throw new Error(`Bridge failed (${res.status})`);
-  return json;
-}
-
 const ERROR_MSG =
   "We couldn't submit your request right now. Your details are still in the form — please try again, or email dhruvozone38@gmail.com.";
 
@@ -144,7 +133,7 @@ export const Route = createFileRoute("/api/diagnostic-request")({
         try {
           if (!process.env.LOVABLE_API_KEY || !sheetsKey) {
             if (isBridge) throw new Error("Sheets not configured on bridge host");
-            const r = await bridge(d);
+            const r = await bridgeToPublished(d);
             return Response.json({ ok: true, id: r.id });
           }
           const id = crypto.randomUUID();
