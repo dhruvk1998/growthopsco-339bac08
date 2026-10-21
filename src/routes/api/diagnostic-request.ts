@@ -110,17 +110,6 @@ function prospectEmail(d: DiagnosticRequest) {
   ].join("\n");
 }
 
-async function bridge(body: unknown) {
-  const res = await fetch(PUBLISHED_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json", "X-GrowthOps-Remote-Bridge": "1" },
-    body: JSON.stringify(body),
-  });
-  const json = (await res.json().catch(() => ({}))) as { ok?: boolean; id?: string };
-  if (!res.ok || !json.ok) throw new Error(`Bridge failed (${res.status})`);
-  return json;
-}
-
 const ERROR_MSG =
   "We couldn't submit your request right now. Your details are still in the form — please try again, or email dhruvozone38@gmail.com.";
 
