@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { isolatedSubmission, submissionEnvironment, UAT_OWNER_EMAIL, UAT_RECIPIENT, UAT_SPREADSHEET_ID } from "@/lib/uat-isolation";
+import { DIAGNOSTIC_CONFIRMATION_SUBJECT, diagnosticConfirmationBody, needsDiagnosticConfirmation } from "@/lib/diagnostic-confirmation";
 
 /**
  * Consultation lead submission endpoint — portable across Vercel, Lovable, and
@@ -328,7 +329,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
                 data.leadSource, data.engagementType, data.companySize,
               ], UAT_SPREADSHEET_ID),
               () => submitViaGmail(data, timestamp, UAT_OWNER_EMAIL));
-            return Response.json(result, { status: result.ok ? 200 : 403 });
+            const confirmation = result.ok ? await sendDiagnosticConfirmation(data) : "skipped";
+            return Response.json({ ...result, confirmation }, { status: result.ok ? 200 : 403 });
           }
           const appsScriptUrl = process.env.APPS_SCRIPT_URL;
           const requestHost = new URL(request.url).host;
@@ -441,7 +443,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
             throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
 
-          return Response.json({ ok: true, tried, succeeded, errors });
+          const confirmation = await sendDiagnosticConfirmation(data);
+          return Response.json({ ok: true, tried, succeeded, errors, confirmation });
 
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
