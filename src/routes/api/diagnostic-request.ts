@@ -10,7 +10,6 @@ import { bridgeToPublished } from "@/lib/diagnostic-bridge";
  */
 
 const NOTIFY_EMAIL = "dhruvozone38@gmail.com";
-const PUBLISHED_ENDPOINT = "https://growthopsco.lovable.app/api/diagnostic-request";
 const SPREADSHEET_ID = "1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4";
 const SHEET_NAME = "Diagnostic Requests";
 const GATEWAY = "https://connector-gateway.lovable.dev";
