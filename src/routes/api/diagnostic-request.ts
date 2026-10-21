@@ -133,7 +133,7 @@ export const Route = createFileRoute("/api/diagnostic-request")({
         try {
           if (!process.env.LOVABLE_API_KEY || !sheetsKey) {
             if (isBridge) throw new Error("Sheets not configured on bridge host");
-            const r = await bridge(d);
+            const r = await bridgeToPublished(d);
             return Response.json({ ok: true, id: r.id });
           }
           const id = crypto.randomUUID();
