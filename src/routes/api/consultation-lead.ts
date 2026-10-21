@@ -263,7 +263,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
       POST: async ({ request }) => {
         const environment = submissionEnvironment(request.url, import.meta.env.DEV);
         if (environment === "blocked-preview") {
-          return Response.json({ ok: false, error: "Hosted preview submissions are paused. Isolated UAT runs only in the local test preview." }, { status: 503 });
+          return Response.json({ ok: false, error: "Hosted preview submissions are paused. Isolated UAT runs only in the local test preview." }, { status: 403 });
         }
         try {
           const json = (await request.json().catch(() => null)) as Record<string, unknown> | null;
@@ -288,7 +288,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
                 data.leadSource, data.engagementType, data.companySize,
               ], UAT_SPREADSHEET_ID),
               () => submitViaGmail(data, timestamp, UAT_OWNER_EMAIL));
-            return Response.json(result, { status: result.ok ? 200 : 503 });
+            return Response.json(result, { status: result.ok ? 200 : 403 });
           }
           const appsScriptUrl = process.env.APPS_SCRIPT_URL;
           const requestHost = new URL(request.url).host;
