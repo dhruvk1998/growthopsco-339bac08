@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Workflow } from "@/components/site/Workflow";
-import { HealthCheck } from "@/components/site/HealthCheck";
+import { DiagnosticPromo } from "@/components/site/DiagnosticPromo";
 import { FinalCTA } from "@/components/site/FinalCTA";
 
 const framework = [
@@ -69,7 +69,7 @@ function FrameworkPage() {
       </section>
 
       <Workflow />
-      <HealthCheck />
+      <DiagnosticPromo />
       <FinalCTA />
     </SiteLayout>
   );

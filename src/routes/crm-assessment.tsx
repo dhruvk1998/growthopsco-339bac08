@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHeader } from "@/components/site/PageHeader";
-import { HealthCheck } from "@/components/site/HealthCheck";
+import { DiagnosticPromo } from "@/components/site/DiagnosticPromo";
 
 
 const title = "CRM Health Check — Free 8-Question Assessment | Dhruv Kaushik";
@@ -54,7 +54,7 @@ function CRMAssessmentPage() {
         title="Find out where your CRM is losing leads."
         description="Eight quick questions across lead management, automation, integration, and reporting. Get a CRM Health Score, identified problem areas, and recommended next steps — in under two minutes."
       />
-      <HealthCheck />
+      <DiagnosticPromo />
     </SiteLayout>
   );
 }

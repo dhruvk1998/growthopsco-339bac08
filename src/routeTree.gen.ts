@@ -18,6 +18,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiDiagnosticRequestRouteImport } from './routes/api/diagnostic-request'
 import { Route as ApiConsultationLeadRouteImport } from './routes/api/consultation-lead'
 
 const ToolsRoute = ToolsRouteImport.update({
@@ -65,6 +66,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDiagnosticRequestRoute = ApiDiagnosticRequestRouteImport.update({
+  id: '/api/diagnostic-request',
+  path: '/api/diagnostic-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiConsultationLeadRoute = ApiConsultationLeadRouteImport.update({
   id: '/api/consultation-lead',
   path: '/api/consultation-lead',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
+  '/api/diagnostic-request': typeof ApiDiagnosticRequestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
+  '/api/diagnostic-request': typeof ApiDiagnosticRequestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tools': typeof ToolsRoute
   '/api/consultation-lead': typeof ApiConsultationLeadRoute
+  '/api/diagnostic-request': typeof ApiDiagnosticRequestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
+    | '/api/diagnostic-request'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
+    | '/api/diagnostic-request'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tools'
     | '/api/consultation-lead'
+    | '/api/diagnostic-request'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ToolsRoute: typeof ToolsRoute
   ApiConsultationLeadRoute: typeof ApiConsultationLeadRoute
+  ApiDiagnosticRequestRoute: typeof ApiDiagnosticRequestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/diagnostic-request': {
+      id: '/api/diagnostic-request'
+      path: '/api/diagnostic-request'
+      fullPath: '/api/diagnostic-request'
+      preLoaderRoute: typeof ApiDiagnosticRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/consultation-lead': {
       id: '/api/consultation-lead'
       path: '/api/consultation-lead'
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ToolsRoute: ToolsRoute,
   ApiConsultationLeadRoute: ApiConsultationLeadRoute,
+  ApiDiagnosticRequestRoute: ApiDiagnosticRequestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
