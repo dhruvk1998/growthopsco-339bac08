@@ -48,7 +48,7 @@ describe("email outcome classification", () => {
 
   it("maps settled results to per-recipient outcomes", () => {
     const outcomes = classifyEmailOutcomes([
-      Promise.resolve("ok") as PromiseSettledResult<unknown>,
+      { status: "fulfilled", value: "ok" },
       { status: "rejected", reason: new Error("Gmail send failed (500)") },
     ]);
     expect(outcomes).toEqual({ owner: "sent", prospect: "unknown" });
