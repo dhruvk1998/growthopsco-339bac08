@@ -1,0 +1,1 @@
+- Form rules shared by browser and server live in src/lib/*.ts zod schemas (e.g. diagnostic.ts); API routes on non-Lovable hosts bridge to the published Lovable endpoint because connector secrets exist only there.

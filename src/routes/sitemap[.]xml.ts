@@ -12,10 +12,14 @@ const pages = [
   { path: "/crm-assessment", priority: "0.7", changefreq: "monthly" },
 ];
 
+// Unlisted pages that must never appear in the sitemap.
+const EXCLUDED_PATHS = new Set(["/crm-revenue-diagnostic"]);
+
 const lastmod = new Date().toISOString().split("T")[0];
 
 function buildSitemap(): string {
   const urls = pages
+    .filter((p) => !EXCLUDED_PATHS.has(p.path))
     .map(
       (p) =>
         `  <url>\n    <loc>${SITE_URL}${p.path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`
