@@ -1,8 +1,8 @@
 /** Local development only. Hosted previews fail closed; production keeps its existing workflow. */
 export const UAT_SPREADSHEET_ID = "1hDoV5j9pICnP0i8uInGcmUXTXCfWFaF9IVt1PDvt47Q";
-export const UAT_OWNER_EMAIL = "dhruvkaushik2009@gmail.com";
-// Remains closed until Dhruv confirms the recipient after isolation verification.
-export const UAT_RECIPIENT: string | null = null;
+export const UAT_OWNER_EMAIL = "dhruvozone38@gmail.com";
+// Confirmed by Dhruv for local isolated UAT (owner and prospect copies).
+export const UAT_RECIPIENT: string | null = "dhruvozone38@gmail.com";
 
 export function submissionEnvironment(url: string, development: boolean) {
   const host = new URL(url).hostname;
