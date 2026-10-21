@@ -33,7 +33,7 @@ describe("offline cutover adapters",()=>{
     await proposedDiagnosticHandler(raw,{writer,fetchImpl:h.fetchImpl});expect(h.sends).toHaveLength(2);
   });
   it.each(["contact","diagnostic"] as const)("%s handler rejects HTTP 200 ok:false without a fallback",async form=>{
-    const spy=vi.fn(async()=>Response.json({ok:false,error:"unauthorized"}));const handler=form==="contact"?proposedContactHandler:proposedDiagnosticHandler;
+    const spy=vi.fn(async(_url: string | URL | Request, _init?: RequestInit)=>Response.json({ok:false,error:"unauthorized"}));const handler=form==="contact"?proposedContactHandler:proposedDiagnosticHandler;
     await expect(handler(await envelope(form),{writer,fetchImpl:spy})).rejects.toThrow("Writer rejected");expect(spy).toHaveBeenCalledTimes(1);expect(spy.mock.calls[0]?.[0]).toBe(writer.url);
   });
   it.each(["contact","diagnostic"] as const)("%s bridge retains all identity values and checks body",async form=>{
