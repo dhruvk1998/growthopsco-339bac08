@@ -1,4 +1,5 @@
 # UAT verification
+- [x] Refine only the active diagnostic acknowledgment: approved subject/body, first-name fallback, escaped HTML and UTF-8 plain-text/HTML MIME in the existing Gmail sender. 17 focused tests passed; desktop/375px browser previews readable, diagnostic page loads without runtime errors, automatic build OK. No submissions, emails or deployment; actual Gmail/Outlook rendering and inbox delivery remain unverified.
 - [x] Record user-confirmed diagnostic persistence and email delivery.
 - [x] Verify contact submission, duplicate prevention, and failure recovery; report gaps without changing behavior.
 - [x] Check dependencies and available build evidence; report advisory and lint failures.

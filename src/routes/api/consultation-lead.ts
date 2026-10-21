@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { isolatedSubmission, submissionEnvironment, UAT_OWNER_EMAIL, UAT_RECIPIENT, UAT_SPREADSHEET_ID } from "@/lib/uat-isolation";
-import { DIAGNOSTIC_CONFIRMATION_SUBJECT, diagnosticConfirmationBody, needsDiagnosticConfirmation } from "@/lib/diagnostic-confirmation";
+import { diagnosticConfirmationMessage, needsDiagnosticConfirmation } from "@/lib/diagnostic-confirmation";
 
 /**
  * Consultation lead submission endpoint — portable across Vercel, Lovable, and
@@ -152,15 +152,7 @@ async function sendDiagnosticConfirmation(data: Lead) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
   if (!lovableKey || !gmailKey) return "not-sent: missing Gmail connection";
-  const raw = [
-    `To: ${data.email}`,
-    `Reply-To: ${NOTIFY_EMAIL}`,
-    `Subject: ${DIAGNOSTIC_CONFIRMATION_SUBJECT}`,
-    "MIME-Version: 1.0",
-    'Content-Type: text/plain; charset="UTF-8"',
-    "",
-    diagnosticConfirmationBody(data.fullName),
-  ].join("\r\n");
+  const raw = diagnosticConfirmationMessage(data.email, data.fullName, NOTIFY_EMAIL);
   try {
     const res = await fetch(
       "https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send",
