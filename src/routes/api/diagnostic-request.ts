@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DiagnosticSchema, SHEET_HEADERS, buildSheetRow, DIAGNOSTIC_FEE, REPORT_DELIVERY, type DiagnosticRequest } from "@/lib/diagnostic";
+import { bridgeToPublished } from "@/lib/diagnostic-bridge";
 
 /**
  * CRM Revenue Diagnostic request endpoint. Mirrors /api/consultation-lead:
