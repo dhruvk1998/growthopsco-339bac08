@@ -443,7 +443,9 @@ export const Route = createFileRoute("/api/consultation-lead")({
             throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
 
-          const confirmation = await sendDiagnosticConfirmation(data);
+          // A bridged request is confirmed by the published endpoint; don't send twice.
+          const bridged = succeeded.some((s) => s.startsWith("bridge:"));
+          const confirmation = bridged ? "sent-by-bridge" : await sendDiagnosticConfirmation(data);
           return Response.json({ ok: true, tried, succeeded, errors, confirmation });
 
         } catch (err) {
