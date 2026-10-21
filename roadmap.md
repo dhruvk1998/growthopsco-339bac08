@@ -9,3 +9,4 @@
 - [ ] Release evidence: external prospect receipt with retained diagnostic row, exact Vercel settings/build and full forwarding flow remain unverified; prior dependency/lint findings unresolved.
 - [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
 - [ ] Partial-failure handling: verdict/outcome helpers implemented and tested; handler workflow change (record email outcomes on the row, no unconditional success) proposed, awaiting approval.
+- [x] Answered: Apps Script LockService vs Lovable Cloud atomicity comparison (see chat) — decision still pending.
