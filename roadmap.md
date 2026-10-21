@@ -5,5 +5,7 @@
 - [x] Document production request path, exclusions, blockers, and deployment checklist in the UAT report.
 - [x] Run one additional diagnostic test for atheequrrrehaman365@gmail.com; one website request and saved row, internal inbox receipt confirmed, prospect sent copy checked, test cells cleared. Prospect inbox delivery remains unverified; server duplicate prevention remains absent. No deployment.
 - [x] Focused final review: retained contact row/inbox verified, 5 existing tests passed, automatic build OK, deployment/rollback report provided; no new submissions or deployment.
-- [ ] Release blocker: safe duplicate/retry protection requires a verified shared atomic writer/ledger; current Sheets append and independent contact fallbacks cannot guarantee this.
-- [ ] Release evidence: external prospect receipt with retained diagnostic row, reachable published diagnostic bridge, exact Vercel settings/build and full forwarding flow remain unverified; prior dependency/lint findings unresolved.
+- [ ] Release blocker: safe duplicate/retry protection requires a verified shared atomic writer/ledger; current Sheets append and independent contact fallbacks cannot guarantee this. Mechanism decision pending (Apps Script LockService writer vs Lovable Cloud unique-key table); mechanism-agnostic helpers + tests added (src/lib/submission-integrity.ts).
+- [ ] Release evidence: external prospect receipt with retained diagnostic row, exact Vercel settings/build and full forwarding flow remain unverified; prior dependency/lint findings unresolved.
+- [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
+- [ ] Partial-failure handling: verdict/outcome helpers implemented and tested; handler workflow change (record email outcomes on the row, no unconditional success) proposed, awaiting approval.
