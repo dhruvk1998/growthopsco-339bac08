@@ -3,9 +3,10 @@ import {
   COMPANY_SIZES,
   CRM_OPTIONS,
   DIAGNOSTIC_FEE,
-  DiagnosticSchema,
   IMPROVEMENT_AREAS,
 } from "@/lib/diagnostic";
+import { DiagnosticContactSchema, ENQUIRY_ENDPOINT, toContactEnquiry } from "@/lib/diagnostic-contact";
+import { Button } from "@/components/ui/button";
 
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Partial<Record<string, string>>;
@@ -26,6 +27,7 @@ export function DiagnosticForm() {
       fullName: String(fd.get("fullName") || ""),
       email: String(fd.get("email") || ""),
       companyName: String(fd.get("companyName") || ""),
+      phone: String(fd.get("phone") || ""),
       website: String(fd.get("website") || ""),
       currentCrm: String(fd.get("currentCrm") || ""),
       companySize: String(fd.get("companySize") || ""),
@@ -34,7 +36,7 @@ export function DiagnosticForm() {
       preferredMeetingTime: String(fd.get("preferredMeetingTime") || ""),
       feeAcknowledged: fd.get("feeAcknowledged") === "on",
     };
-    const parsed = DiagnosticSchema.safeParse(payload);
+    const parsed = DiagnosticContactSchema.safeParse(payload);
     if (!parsed.success) {
       const next: Errors = {};
       for (const issue of parsed.error.issues) {
@@ -50,14 +52,22 @@ export function DiagnosticForm() {
     setServerError("");
     setStatus("submitting");
     try {
-      const res = await fetch("/api/diagnostic-request", {
+      let assessment: unknown;
+      try {
+        const raw = sessionStorage.getItem("crmHealthCheck");
+        if (raw) assessment = JSON.parse(raw);
+      } catch {
+        // Match the existing contact form when browser storage is unavailable.
+      }
+      const res = await fetch(ENQUIRY_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...parsed.data, _honeypot: String(fd.get("_honeypot") || "") }),
+        body: JSON.stringify(toContactEnquiry(parsed.data, assessment, String(fd.get("_honeypot") || ""))),
       });
       const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !json.ok) throw new Error(json.error || "Submission failed. Please try again.");
       setStatus("success");
+      try { sessionStorage.removeItem("crmHealthCheck"); } catch { /* same as contact */ }
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Submission failed. Please try again.");
       setStatus("error");
@@ -102,6 +112,7 @@ export function DiagnosticForm() {
         <div>{label("fullName", "Full Name")}<input {...a11y("fullName")} autoComplete="name" className={input} />{err("fullName")}</div>
         <div>{label("email", "Business Email")}<input {...a11y("email")} type="email" autoComplete="email" className={input} />{err("email")}</div>
         <div>{label("companyName", "Company Name")}<input {...a11y("companyName")} autoComplete="organization" className={input} />{err("companyName")}</div>
+        <div>{label("phone", "Phone Number", false)}<input {...a11y("phone")} type="tel" autoComplete="tel" maxLength={40} className={input} />{err("phone")}</div>
         <div>{label("website", "Company Website", false)}<input {...a11y("website")} type="url" placeholder="https://" className={input} />{err("website")}</div>
         <div>
           {label("currentCrm", "Current CRM")}
@@ -156,13 +167,13 @@ export function DiagnosticForm() {
           {serverError}
         </p>
       )}
-      <button
+      <Button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-xl bg-accent px-8 py-4 font-bold text-accent-foreground transition-all hover:shadow-glow disabled:cursor-wait disabled:opacity-60"
+        className="h-auto w-full rounded-xl bg-accent px-8 py-4 font-bold text-accent-foreground transition-all hover:shadow-glow disabled:cursor-wait disabled:opacity-60"
       >
         {status === "submitting" ? "Submitting…" : "Submit Diagnostic Request"}
-      </button>
+      </Button>
     </form>
   );
 }
