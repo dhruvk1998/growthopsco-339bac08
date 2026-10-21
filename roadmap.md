@@ -6,7 +6,7 @@
 - [x] Run one additional diagnostic test for atheequrrrehaman365@gmail.com; one website request and saved row, internal inbox receipt confirmed, prospect sent copy checked, test cells cleared. Prospect inbox delivery remains unverified; server duplicate prevention remains absent. No deployment.
 - [x] Focused final review: retained contact row/inbox verified, 5 existing tests passed, automatic build OK, deployment/rollback report provided; no new submissions or deployment.
 - [x] Revise and test the offline authenticated writer, both proposed handlers, stable-key preparation and interrupted storage/email recovery; no live handler changes, real submissions, emails or deployment. See apps-script/REVISION.md.
-- [ ] Current request: map diagnostic enquiries into the existing contact handler, preserve fields/assessment and offer wording, test in preview without network submissions or deployment.
+- [x] Current request: diagnostic enquiries use the existing contact handler; fields/assessment and CA$199 wording preserved. 61 automated tests passed, automatic build OK, preview retry/success checks used intercepted API responses only; zero live submissions/emails/deletions/deployment.
 - [x] Stop writer investigation/cutover: superseded by the user's existing-contact-workflow decision; offline proposal remains disconnected.
 - [ ] Release evidence: actual production persistence/notification and exact Vercel settings/full forwarding remain unverified; prior dependency/lint findings unresolved. No deployment authorized.
 - [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
