@@ -1,3 +1,4 @@
 - Form rules shared by browser and server live in src/lib/*.ts zod schemas (e.g. diagnostic.ts); API routes on non-Lovable hosts bridge to the published Lovable endpoint because connector secrets exist only there.
 - Both active enquiry forms use the existing consultation-lead handler; diagnostic fields are adapted browser-side to its existing contract so the UAT-tested transport and infrastructure remain unchanged.
 - Keep the abandoned writer and proposed adapters disconnected; no writer cutover is part of the contact-workflow integration.
+- Consultation UAT uses development loopback only with separate test storage, an approved recipient allowlist and no fallback transports; hosted previews fail closed, preserving production behavior and preventing test data from reaching production destinations.

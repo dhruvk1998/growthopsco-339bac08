@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { isolatedSubmission, submissionEnvironment, UAT_OWNER_EMAIL, UAT_RECIPIENT, UAT_SPREADSHEET_ID } from "@/lib/uat-isolation";
 
 /**
  * Consultation lead submission endpoint — portable across Vercel, Lovable, and
@@ -107,7 +108,7 @@ function base64UrlEncode(input: string) {
   return btoa(utf8).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-async function submitViaGmail(data: Lead, timestamp: string) {
+async function submitViaGmail(data: Lead, timestamp: string, notifyEmail = NOTIFY_EMAIL) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
   if (!lovableKey || !gmailKey) {
@@ -116,7 +117,7 @@ async function submitViaGmail(data: Lead, timestamp: string) {
   const subject = `New CRM Consultation Request — ${data.fullName}`;
   const body = buildEmailBody(data, timestamp);
   const rfc2822 = [
-    `To: ${NOTIFY_EMAIL}`,
+    `To: ${notifyEmail}`,
     `Reply-To: ${data.email}`,
     `Subject: ${subject}`,
     "MIME-Version: 1.0",
@@ -211,12 +212,12 @@ async function submitViaAppsScript(appsScriptUrl: string, data: Lead, timestamp:
 
 // --- Transport 3: Lovable Connector Gateway (Lovable-only fallback) --------
 
-async function appendToSheetViaGateway(row: string[]) {
+async function appendToSheetViaGateway(row: string[], spreadsheetId = SPREADSHEET_ID) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const sheetsKey = process.env.GOOGLE_SHEETS_API_KEY;
   if (!lovableKey || !sheetsKey) throw new Error("Missing Lovable gateway secrets");
 
-  const url = `${GATEWAY}/google_sheets/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_RANGE}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+  const url = `${GATEWAY}/google_sheets/v4/spreadsheets/${spreadsheetId}/values/${SHEET_RANGE}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -260,6 +261,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const environment = submissionEnvironment(request.url, import.meta.env.DEV);
+        if (environment === "blocked-preview") {
+          return Response.json({ ok: false, error: "Hosted preview submissions are paused. Isolated UAT runs only in the local test preview." }, { status: 503 });
+        }
         try {
           const json = (await request.json().catch(() => null)) as Record<string, unknown> | null;
           // Honeypot check — bots fill hidden fields, humans don't.
@@ -275,6 +280,16 @@ export const Route = createFileRoute("/api/consultation-lead")({
           }
           const data = parsed.data;
           const timestamp = new Date().toISOString();
+          if (environment === "uat") {
+            const result = await isolatedSubmission(data, UAT_RECIPIENT,
+              () => appendToSheetViaGateway([
+                timestamp, data.fullName, data.companyName, data.email, data.phone,
+                data.website, data.crmUsed, data.requirements, data.preferredMeetingTime,
+                data.leadSource, data.engagementType, data.companySize,
+              ], UAT_SPREADSHEET_ID),
+              () => submitViaGmail(data, timestamp, UAT_OWNER_EMAIL));
+            return Response.json(result, { status: result.ok ? 200 : 503 });
+          }
           const appsScriptUrl = process.env.APPS_SCRIPT_URL;
           const requestHost = new URL(request.url).host;
           const isLovableHost = requestHost.endsWith("lovable.app");
