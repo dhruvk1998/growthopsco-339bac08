@@ -8,6 +8,7 @@
 - [x] Revise and test the offline authenticated writer, both proposed handlers, stable-key preparation and interrupted storage/email recovery; no live handler changes, real submissions, emails or deployment. See apps-script/REVISION.md.
 - [x] Current request: diagnostic enquiries use the existing contact handler; fields/assessment and CA$199 wording preserved. 61 automated tests passed, automatic build OK, preview retry/success checks used intercepted API responses only; zero live submissions/emails/deletions/deployment.
 - [x] Stop writer investigation/cutover: superseded by the user's existing-contact-workflow decision; offline proposal remains disconnected.
+- [ ] Final staging-only UAT for both active forms: blocked before submissions because the existing staging handler can fall back to production; authorized recipient is also the connected sender/business inbox, and the existing workflow has no prospect confirmation. No live submissions or emails initiated. Independent row/email counts and duplicate tests remain unverified.
 - [ ] Release evidence: actual production persistence/notification and exact Vercel settings/full forwarding remain unverified; prior dependency/lint findings unresolved. No deployment authorized.
 - [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
 - [x] Stop proposed partial-failure writer rollout; preserve the existing contact handler unchanged and disclose its limitations.
