@@ -1,4 +1,5 @@
 # UAT verification
+- [ ] Refine only the active diagnostic acknowledgment to approved wording, first-name fallback and HTML/plain-text MIME; verify safely without sends or deployment.
 - [x] Record user-confirmed diagnostic persistence and email delivery.
 - [x] Verify contact submission, duplicate prevention, and failure recovery; report gaps without changing behavior.
 - [x] Check dependencies and available build evidence; report advisory and lint failures.
