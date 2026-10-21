@@ -13,6 +13,7 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as FrameworkRouteImport } from './routes/framework'
+import { Route as CrmRevenueDiagnosticRouteImport } from './routes/crm-revenue-diagnostic'
 import { Route as CrmAssessmentRouteImport } from './routes/crm-assessment'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaseStudiesRouteImport } from './routes/case-studies'
@@ -39,6 +40,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const FrameworkRoute = FrameworkRouteImport.update({
   id: '/framework',
   path: '/framework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmRevenueDiagnosticRoute = CrmRevenueDiagnosticRouteImport.update({
+  id: '/crm-revenue-diagnostic',
+  path: '/crm-revenue-diagnostic',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CrmAssessmentRoute = CrmAssessmentRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/crm-assessment': typeof CrmAssessmentRoute
+  '/crm-revenue-diagnostic': typeof CrmRevenueDiagnosticRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/crm-assessment': typeof CrmAssessmentRoute
+  '/crm-revenue-diagnostic': typeof CrmRevenueDiagnosticRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/crm-assessment': typeof CrmAssessmentRoute
+  '/crm-revenue-diagnostic': typeof CrmRevenueDiagnosticRoute
   '/framework': typeof FrameworkRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/case-studies'
     | '/contact'
     | '/crm-assessment'
+    | '/crm-revenue-diagnostic'
     | '/framework'
     | '/services'
     | '/sitemap.xml'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/case-studies'
     | '/contact'
     | '/crm-assessment'
+    | '/crm-revenue-diagnostic'
     | '/framework'
     | '/services'
     | '/sitemap.xml'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/case-studies'
     | '/contact'
     | '/crm-assessment'
+    | '/crm-revenue-diagnostic'
     | '/framework'
     | '/services'
     | '/sitemap.xml'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
   CrmAssessmentRoute: typeof CrmAssessmentRoute
+  CrmRevenueDiagnosticRoute: typeof CrmRevenueDiagnosticRoute
   FrameworkRoute: typeof FrameworkRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/framework'
       fullPath: '/framework'
       preLoaderRoute: typeof FrameworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm-revenue-diagnostic': {
+      id: '/crm-revenue-diagnostic'
+      path: '/crm-revenue-diagnostic'
+      fullPath: '/crm-revenue-diagnostic'
+      preLoaderRoute: typeof CrmRevenueDiagnosticRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm-assessment': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
   CrmAssessmentRoute: CrmAssessmentRoute,
+  CrmRevenueDiagnosticRoute: CrmRevenueDiagnosticRoute,
   FrameworkRoute: FrameworkRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
