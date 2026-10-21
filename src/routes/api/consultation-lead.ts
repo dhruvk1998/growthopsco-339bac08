@@ -145,6 +145,46 @@ async function submitViaGmail(data: Lead, timestamp: string, notifyEmail = NOTIF
   }
 }
 
+/** Prospect confirmation for diagnostic enquiries. Best-effort: never turns a saved request into a failure. */
+async function sendDiagnosticConfirmation(data: Lead) {
+  if (!needsDiagnosticConfirmation(data.engagementType)) return "skipped";
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
+  if (!lovableKey || !gmailKey) return "not-sent: missing Gmail connection";
+  const raw = [
+    `To: ${data.email}`,
+    `Reply-To: ${NOTIFY_EMAIL}`,
+    `Subject: ${DIAGNOSTIC_CONFIRMATION_SUBJECT}`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/plain; charset="UTF-8"',
+    "",
+    diagnosticConfirmationBody(data.fullName),
+  ].join("\r\n");
+  try {
+    const res = await fetch(
+      "https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "X-Connection-Api-Key": gmailKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ raw: base64UrlEncode(raw) }),
+      },
+    );
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[consultation-lead] prospect confirmation failed (${res.status}): ${text.slice(0, 300)}`);
+      return `not-sent: ${res.status}`;
+    }
+    return "accepted";
+  } catch (err) {
+    console.error("[consultation-lead] prospect confirmation failed:", err);
+    return "not-sent: error";
+  }
+}
+
 // --- Transport 1: FormSubmit.co (default, no setup) ------------------------
 
 async function submitViaFormSubmit(data: Lead, timestamp: string) {
