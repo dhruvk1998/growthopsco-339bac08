@@ -61,6 +61,8 @@ function validate(req) {
     if (['contact','diagnostic'].indexOf(s.form)<0 || !Array.isArray(s.row) || s.row.length !== (s.form==='contact'?12:14) || !s.row.every(function(v){return text(v,5000);})) fail('bad_request');
     var email=s.row[s.form==='contact'?3:3];
     if (!address(email) || !text(s.row[0],100) || !s.row[0] || !s.row[1]) fail('bad_request');
+    var limits=s.form==='contact'?[40,120,200,200,40,300,120,4000,200,120,120,40]:[100,40,120,200,200,300,120,40,4000,300,200,3,3,0];
+    if(!s.row.every(function(v,i){return v.length<=limits[i];}) || !s.row[s.form==='contact'?1:2] || !s.row[s.form==='contact'?7:8] || isNaN(Date.parse(s.row[s.form==='contact'?0:1]))) fail('bad_request');
     if (s.form==='diagnostic' && (s.row[11]!=='Yes' || s.row[12]!=='New' || s.row[13]!=='')) fail('bad_request');
     only(s.emails,['owner','prospect']);
     if (!s.emails.owner || (s.form==='contact' ? !!s.emails.prospect : !s.emails.prospect)) fail('bad_request');
@@ -69,13 +71,24 @@ function validate(req) {
       only(m,['to','subject','body','replyTo']);
       if (!address(m.to) || m.to !== (role==='owner'?OWNER_ADDRESS:email) || !text(m.subject,300) || !m.subject || /[\r\n]/.test(m.subject) || !text(m.body,20000) || !m.body || (role==='owner' && m.replyTo!==email) || (m.replyTo!==undefined && !address(m.replyTo))) fail('bad_request');
     });
-    if (s.assessment !== undefined && (s.form!=='contact' || canonical(s.assessment).length>15000)) fail('bad_request');
+    if (s.assessment !== undefined) {
+      var a=s.assessment;
+      if(s.form!=='contact') fail('bad_request');
+      only(a,['score','rating','summary','problemAreas','answers','completedAt']);
+      if ((a.score!==undefined && (typeof a.score!=='number' || !isFinite(a.score) || a.score<0 || a.score>100)) || (a.rating!==undefined&&!text(a.rating,40)) || (a.summary!==undefined&&!text(a.summary,2000)) || (a.completedAt!==undefined&&!text(a.completedAt,40))) fail('bad_request');
+      if(a.problemAreas!==undefined && (!Array.isArray(a.problemAreas)||a.problemAreas.length>20||!a.problemAreas.every(function(v){return text(v,60);}))) fail('bad_request');
+      if(a.answers!==undefined) {
+        if(!Array.isArray(a.answers)||a.answers.length>40) fail('bad_request');
+        a.answers.forEach(function(x){only(x,['id','question','category','answer']);if(!text(x.id,20)||!text(x.question,500)||!text(x.category,60)||['yes','no',null].indexOf(x.answer)<0) fail('bad_request');});
+      }
+      if(canonical(a).length>15000) fail('bad_request');
+    }
     if (canonical(s).length>38000 || digest(s)!==req.payloadHash) fail('key_payload_mismatch');
   } else if (req.action==='reconcile') {
     only(req,['action','token','key','payloadHash']);
   } else {
     only(req,['action','token','key','payloadHash','role','decision','evidence']);
-    if (['owner','prospect'].indexOf(req.role)<0 || ['accepted','delivered','bounced','confirmed_not_sent'].indexOf(req.decision)<0 || !text(req.evidence,2000) || req.evidence.length<10) fail('bad_request');
+    if (['owner','prospect'].indexOf(req.role)<0 || ['accepted','delivered','bounced','confirmed_not_sent'].indexOf(req.decision)<0 || !text(req.evidence,500) || req.evidence.length<10) fail('bad_request');
   }
 }
 function getLedger(ss) {
@@ -86,9 +99,10 @@ function getLedger(ss) {
   return sh;
 }
 function entries(sh) {
-  return sh.getDataRange().getValues().slice(1).filter(function(r){return r[0];}).map(function(r,i){
+  return sh.getDataRange().getValues().slice(1).map(function(r,i){
+    if(!r[0]) { if(r[1]) fail('ledger_conflict'); return null; }
     var entry=JSON.parse(r[1]); if(entry.key!==r[0]) fail('ledger_conflict'); return {row:i+2,entry:entry};
-  });
+  }).filter(function(r){return r!==null;});
 }
 function find(sh,key,hash) {
   var matches=entries(sh).filter(function(r){return r.entry.key===key;});
@@ -152,7 +166,7 @@ function reconcile(ss,sh,req) { var r=find(sh,req.key,req.payloadHash); if(!r) f
 function finalize(ss,sh,req) {
   var r=find(sh,req.key,req.payloadHash); if(!r) fail('unknown_key');
   var out=r.entry.emails[req.role];
-  if(out.state==='na' || r.entry.audit.length>=20) fail('invalid_transition');
+  if(out.state==='na' || r.entry.audit.length>=10) fail('invalid_transition');
   if(req.decision==='confirmed_not_sent') {
     if(['unknown','sending','failed'].indexOf(out.state)<0 || out.delivery!=='unconfirmed') fail('invalid_transition');
     out.state='not_started'; // explicit operator evidence only; finalize itself never sends
