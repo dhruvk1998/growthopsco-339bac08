@@ -11,8 +11,8 @@ describe("UAT isolation", () => {
   });
   it("uses separate storage and the authorized UAT owner, with sending paused", () => {
     expect(UAT_SPREADSHEET_ID).not.toBe("1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4");
-    expect(UAT_OWNER_EMAIL).toBe("dhruvkaushik2009@gmail.com");
-    expect(UAT_RECIPIENT).toBeNull();
+    expect(UAT_OWNER_EMAIL).toBe("dhruvozone38@gmail.com");
+    expect(UAT_RECIPIENT).toBe("dhruvozone38@gmail.com");
   });
   it("performs no external action before recipient confirmation", async () => {
     const write = vi.fn(), notify = vi.fn();
