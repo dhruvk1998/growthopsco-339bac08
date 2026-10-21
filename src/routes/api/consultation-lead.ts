@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { isolatedSubmission, submissionEnvironment, UAT_OWNER_EMAIL, UAT_RECIPIENT, UAT_SPREADSHEET_ID } from "@/lib/uat-isolation";
+import { DIAGNOSTIC_CONFIRMATION_SUBJECT, diagnosticConfirmationBody, needsDiagnosticConfirmation } from "@/lib/diagnostic-confirmation";
 
 /**
  * Consultation lead submission endpoint — portable across Vercel, Lovable, and
@@ -142,6 +143,46 @@ async function submitViaGmail(data: Lead, timestamp: string, notifyEmail = NOTIF
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Gmail send failed (${res.status}): ${text.slice(0, 400)}`);
+  }
+}
+
+/** Prospect confirmation for diagnostic enquiries. Best-effort: never turns a saved request into a failure. */
+async function sendDiagnosticConfirmation(data: Lead) {
+  if (!needsDiagnosticConfirmation(data.engagementType)) return "skipped";
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
+  if (!lovableKey || !gmailKey) return "not-sent: missing Gmail connection";
+  const raw = [
+    `To: ${data.email}`,
+    `Reply-To: ${NOTIFY_EMAIL}`,
+    `Subject: ${DIAGNOSTIC_CONFIRMATION_SUBJECT}`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/plain; charset="UTF-8"',
+    "",
+    diagnosticConfirmationBody(data.fullName),
+  ].join("\r\n");
+  try {
+    const res = await fetch(
+      "https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "X-Connection-Api-Key": gmailKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ raw: base64UrlEncode(raw) }),
+      },
+    );
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[consultation-lead] prospect confirmation failed (${res.status}): ${text.slice(0, 300)}`);
+      return `not-sent: ${res.status}`;
+    }
+    return "accepted";
+  } catch (err) {
+    console.error("[consultation-lead] prospect confirmation failed:", err);
+    return "not-sent: error";
   }
 }
 
@@ -288,7 +329,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
                 data.leadSource, data.engagementType, data.companySize,
               ], UAT_SPREADSHEET_ID),
               () => submitViaGmail(data, timestamp, UAT_OWNER_EMAIL));
-            return Response.json(result, { status: result.ok ? 200 : 403 });
+            const confirmation = result.ok ? await sendDiagnosticConfirmation(data) : "skipped";
+            return Response.json({ ...result, confirmation }, { status: result.ok ? 200 : 403 });
           }
           const appsScriptUrl = process.env.APPS_SCRIPT_URL;
           const requestHost = new URL(request.url).host;
@@ -401,7 +443,10 @@ export const Route = createFileRoute("/api/consultation-lead")({
             throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
 
-          return Response.json({ ok: true, tried, succeeded, errors });
+          // A bridged request is confirmed by the published endpoint; don't send twice.
+          const bridged = succeeded.some((s) => s.startsWith("bridge:"));
+          const confirmation = bridged ? "sent-by-bridge" : await sendDiagnosticConfirmation(data);
+          return Response.json({ ok: true, tried, succeeded, errors, confirmation });
 
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
