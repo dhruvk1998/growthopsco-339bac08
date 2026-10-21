@@ -9,57 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ToolsRouteImport } from './routes/tools'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as FrameworkRouteImport } from './routes/framework'
-import { Route as CrmRevenueDiagnosticRouteImport } from './routes/crm-revenue-diagnostic'
-import { Route as CrmAssessmentRouteImport } from './routes/crm-assessment'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CaseStudiesRouteImport } from './routes/case-studies'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiDiagnosticRequestRouteImport } from './routes/api/diagnostic-request'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CrmAssessmentRouteImport } from './routes/crm-assessment'
+import { Route as CrmRevenueDiagnosticRouteImport } from './routes/crm-revenue-diagnostic'
+import { Route as FrameworkRouteImport } from './routes/framework'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as ApiConsultationLeadRouteImport } from './routes/api/consultation-lead'
+import { Route as ApiDiagnosticRequestRouteImport } from './routes/api/diagnostic-request'
 
-const ToolsRoute = ToolsRouteImport.update({
-  id: '/tools',
-  path: '/tools',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FrameworkRoute = FrameworkRouteImport.update({
-  id: '/framework',
-  path: '/framework',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CrmRevenueDiagnosticRoute = CrmRevenueDiagnosticRouteImport.update({
-  id: '/crm-revenue-diagnostic',
-  path: '/crm-revenue-diagnostic',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CrmAssessmentRoute = CrmAssessmentRouteImport.update({
-  id: '/crm-assessment',
-  path: '/crm-assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseStudiesRoute = CaseStudiesRouteImport.update({
-  id: '/case-studies',
-  path: '/case-studies',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -67,19 +32,54 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiDiagnosticRequestRoute = ApiDiagnosticRequestRouteImport.update({
-  id: '/api/diagnostic-request',
-  path: '/api/diagnostic-request',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmAssessmentRoute = CrmAssessmentRouteImport.update({
+  id: '/crm-assessment',
+  path: '/crm-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmRevenueDiagnosticRoute = CrmRevenueDiagnosticRouteImport.update({
+  id: '/crm-revenue-diagnostic',
+  path: '/crm-revenue-diagnostic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrameworkRoute = FrameworkRouteImport.update({
+  id: '/framework',
+  path: '/framework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiConsultationLeadRoute = ApiConsultationLeadRouteImport.update({
   id: '/api/consultation-lead',
   path: '/api/consultation-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDiagnosticRequestRoute = ApiDiagnosticRequestRouteImport.update({
+  id: '/api/diagnostic-request',
+  path: '/api/diagnostic-request',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -188,60 +188,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tools': {
-      id: '/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/framework': {
-      id: '/framework'
-      path: '/framework'
-      fullPath: '/framework'
-      preLoaderRoute: typeof FrameworkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/crm-revenue-diagnostic': {
-      id: '/crm-revenue-diagnostic'
-      path: '/crm-revenue-diagnostic'
-      fullPath: '/crm-revenue-diagnostic'
-      preLoaderRoute: typeof CrmRevenueDiagnosticRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/crm-assessment': {
-      id: '/crm-assessment'
-      path: '/crm-assessment'
-      fullPath: '/crm-assessment'
-      preLoaderRoute: typeof CrmAssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/case-studies': {
-      id: '/case-studies'
-      path: '/case-studies'
-      fullPath: '/case-studies'
-      preLoaderRoute: typeof CaseStudiesRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -251,18 +202,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/diagnostic-request': {
-      id: '/api/diagnostic-request'
-      path: '/api/diagnostic-request'
-      fullPath: '/api/diagnostic-request'
-      preLoaderRoute: typeof ApiDiagnosticRequestRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm-assessment': {
+      id: '/crm-assessment'
+      path: '/crm-assessment'
+      fullPath: '/crm-assessment'
+      preLoaderRoute: typeof CrmAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm-revenue-diagnostic': {
+      id: '/crm-revenue-diagnostic'
+      path: '/crm-revenue-diagnostic'
+      fullPath: '/crm-revenue-diagnostic'
+      preLoaderRoute: typeof CrmRevenueDiagnosticRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/framework': {
+      id: '/framework'
+      path: '/framework'
+      fullPath: '/framework'
+      preLoaderRoute: typeof FrameworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/consultation-lead': {
@@ -270,6 +263,13 @@ declare module '@tanstack/react-router' {
       path: '/api/consultation-lead'
       fullPath: '/api/consultation-lead'
       preLoaderRoute: typeof ApiConsultationLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/diagnostic-request': {
+      id: '/api/diagnostic-request'
+      path: '/api/diagnostic-request'
+      fullPath: '/api/diagnostic-request'
+      preLoaderRoute: typeof ApiDiagnosticRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
