@@ -6,8 +6,9 @@
 - [x] Run one additional diagnostic test for atheequrrrehaman365@gmail.com; one website request and saved row, internal inbox receipt confirmed, prospect sent copy checked, test cells cleared. Prospect inbox delivery remains unverified; server duplicate prevention remains absent. No deployment.
 - [x] Focused final review: retained contact row/inbox verified, 5 existing tests passed, automatic build OK, deployment/rollback report provided; no new submissions or deployment.
 - [x] Revise and test the offline authenticated writer, both proposed handlers, stable-key preparation and interrupted storage/email recovery; no live handler changes, real submissions, emails or deployment. See apps-script/REVISION.md.
-- [ ] Duplicate/retry release: existing Apps Script source/version/permissions/quotas and real Google recovery/concurrency remain unverified; both active forms/routes require a coordinated approved all-path cutover (current direct writes still exist).
-- [ ] Release evidence: external prospect receipt with retained diagnostic row, exact Vercel settings/build and full forwarding flow remain unverified; prior dependency/lint findings unresolved.
+- [ ] Current request: map diagnostic enquiries into the existing contact handler, preserve fields/assessment and offer wording, test in preview without network submissions or deployment.
+- [x] Stop writer investigation/cutover: superseded by the user's existing-contact-workflow decision; offline proposal remains disconnected.
+- [ ] Release evidence: actual production persistence/notification and exact Vercel settings/full forwarding remain unverified; prior dependency/lint findings unresolved. No deployment authorized.
 - [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
-- [ ] Partial-failure release: offline adapters and ledger track separate persistence/send/delivery outcomes; live UI/handler cutover and independent recipient verification remain blocked on deployment verification and approval.
+- [x] Stop proposed partial-failure writer rollout; preserve the existing contact handler unchanged and disclose its limitations.
 - [x] Answered: Apps Script LockService vs Lovable Cloud atomicity comparison (see chat) — decision still pending.
