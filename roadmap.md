@@ -1,4 +1,6 @@
 # UAT verification
+- [ ] Correct diagnostic worksheet routing without changing contact routing or historical records: blocked pending the correct spreadsheet link/verified `Diagnostic review` headers. Read-only check of the currently configured spreadsheet returned CRM_Consultation_Leads with Database and Diagnostic Requests, not Diagnostic review. No service writes authorized or performed.
+- [x] Update diagnostic acknowledgment to approved team identity; preserve personalization and existing HTML/plain-text delivery. 17 focused tests passed; desktop/mobile email previews checked, no horizontal overflow, diagnostic form loads without runtime errors, automatic build OK. No submissions, emails, record changes or deployment; inbox delivery unverified.
 - [x] Refine only the active diagnostic acknowledgment: approved subject/body, first-name fallback, escaped HTML and UTF-8 plain-text/HTML MIME in the existing Gmail sender. 17 focused tests passed; desktop/375px browser previews readable, diagnostic page loads without runtime errors, automatic build OK. No submissions, emails or deployment; actual Gmail/Outlook rendering and inbox delivery remain unverified.
 - [x] Record user-confirmed diagnostic persistence and email delivery.
 - [x] Verify contact submission, duplicate prevention, and failure recovery; report gaps without changing behavior.

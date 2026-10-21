@@ -1,14 +1,14 @@
 export const DIAGNOSTIC_ENGAGEMENT = "CRM Revenue Diagnostic";
 export const DIAGNOSTIC_CONFIRMATION_SUBJECT = "We've Received Your CRM Revenue Diagnostic Request";
 
-const intro = "Thank you for choosing GrowthOpsCo for your CRM Revenue Diagnostic. Your request has been successfully received.";
-const review = "I'll review the information you've provided and reach out shortly to coordinate a suitable consultation time and outline the next steps.";
+const intro = "Thank you for choosing GrowthOpsCo for your CRM Revenue Diagnostic.";
+const review = "Your request has been successfully received. Our team will review the information you've provided and reach out to coordinate a suitable consultation time and outline the next steps.";
 const steps = [
-  { title: "Request Review", body: "I'll review your submitted details to understand your business and CRM requirements." },
+  { title: "Request Review", body: "Our team will review your submitted details to understand your business, current CRM setup, and requirements." },
   { title: "Consultation Scheduling", body: "We'll coordinate a suitable time for your diagnostic session and confirm the arrangements." },
-  { title: "Diagnostic Report", body: "You'll receive your report within one business day after the consultation, provided all necessary information has been received." },
+  { title: "Diagnostic Report", body: "You'll receive your report within one business day after the consultation, provided we've received all the necessary information." },
 ] as const;
-const closing = "I look forward to learning more about your business and identifying opportunities to improve your CRM processes, sales operations, and automation workflows.";
+const closing = "We look forward to learning more about your business and identifying opportunities to improve your CRM processes, sales operations, and automation workflows.";
 
 /** Email clients don't load app CSS; these semantic tokens are inlined below. */
 const emailTheme = {
@@ -40,7 +40,7 @@ export function diagnosticConfirmationBody(fullName?: string | null) {
     diagnosticGreeting(fullName), "", intro, "", review, "",
     "What happens next?", "",
     ...steps.flatMap((step, i) => [`${i + 1}. ${step.title}`, step.body, ""]),
-    closing, "", "Best regards,", "Dhruv Kaushik", "GrowthOpsCo",
+    closing, "", "Best regards,", "The GrowthOpsCo Team", "GrowthOpsCo",
     "Revenue Operations & CRM Automation Consulting",
   ].join("\n");
 }
@@ -60,7 +60,7 @@ export function diagnosticConfirmationHtml(fullName?: string | null) {
 <h1 style="margin:28px 0 8px;font-size:20px;line-height:28px;color:${t.accent};">What happens next?</h1>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${steps.map((step, i) => `<tr><td style="padding:16px 0;border-bottom:1px solid ${t.border};"><h2 style="margin:0 0 6px;font-size:16px;line-height:24px;color:${t.text};">${i + 1}. ${escapeHtml(step.title)}</h2><p style="margin:0;font-size:16px;line-height:26px;color:${t.muted};">${escapeHtml(step.body)}</p></td></tr>`).join("")}</table>
 <p style="${paragraph}margin-top:26px;">${escapeHtml(closing)}</p>
-<p style="margin:28px 0 0;font-size:16px;line-height:26px;color:${t.text};">Best regards,<br><strong>Dhruv Kaushik</strong><br>GrowthOpsCo<br><span style="font-size:14px;color:${t.muted};">Revenue Operations &amp; CRM Automation Consulting</span></p>
+<p style="margin:28px 0 0;font-size:16px;line-height:26px;color:${t.text};">Best regards,<br><strong>The GrowthOpsCo Team</strong><br>GrowthOpsCo<br><span style="font-size:14px;color:${t.muted};">Revenue Operations &amp; CRM Automation Consulting</span></p>
 </td></tr></table></td></tr></table></body></html>`;
 }
 
