@@ -5,8 +5,9 @@
 - [x] Document production request path, exclusions, blockers, and deployment checklist in the UAT report.
 - [x] Run one additional diagnostic test for atheequrrrehaman365@gmail.com; one website request and saved row, internal inbox receipt confirmed, prospect sent copy checked, test cells cleared. Prospect inbox delivery remains unverified; server duplicate prevention remains absent. No deployment.
 - [x] Focused final review: retained contact row/inbox verified, 5 existing tests passed, automatic build OK, deployment/rollback report provided; no new submissions or deployment.
-- [ ] Duplicate/retry protection: Apps Script LockService approach approved. Proposed writer (apps-script/writer.gs) + client (src/lib/apps-script-writer.ts) + 8 contract tests done. Pending: Dhruv confirms current script source/deployment settings, deploys new script version, then handler rewiring (direct gateway appends must be removed).
+- [x] Revise and test the offline authenticated writer, both proposed handlers, stable-key preparation and interrupted storage/email recovery; no live handler changes, real submissions, emails or deployment. See apps-script/REVISION.md.
+- [ ] Duplicate/retry release: existing Apps Script source/version/permissions/quotas and real Google recovery/concurrency remain unverified; both active forms/routes require a coordinated approved all-path cutover (current direct writes still exist).
 - [ ] Release evidence: external prospect receipt with retained diagnostic row, exact Vercel settings/build and full forwarding flow remain unverified; prior dependency/lint findings unresolved.
 - [x] Published diagnostic bridge 404 root-caused: published Lovable deployment predates /api/diagnostic-request; fix is publishing current version (approval-gated, on hold). No code defect.
-- [ ] Partial-failure handling: verdict/outcome helpers implemented and tested; handler workflow change (record email outcomes on the row, no unconditional success) proposed, awaiting approval.
+- [ ] Partial-failure release: offline adapters and ledger track separate persistence/send/delivery outcomes; live UI/handler cutover and independent recipient verification remain blocked on deployment verification and approval.
 - [x] Answered: Apps Script LockService vs Lovable Cloud atomicity comparison (see chat) — decision still pending.

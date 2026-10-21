@@ -1,171 +1,85 @@
 import { describe, expect, it, vi } from "vitest";
-import {
-  submitToWriter,
-  finalizeWriter,
-  KeyPayloadMismatchError,
-  type WriterSubmitRequest,
-} from "./apps-script-writer";
-
-const WRITER_URL = "https://script.google.com/macros/s/AKfyc_test/exec";
-
-const baseReq: WriterSubmitRequest = {
-  action: "submit",
-  form: "diagnostic",
-  key: "key-1",
-  payloadHash: "hash-1",
-  row: ["id1", "2026-10-21T22:00:00Z", "Test User"],
-  emails: {
-    owner: { to: "owner@example.com", subject: "s", body: "b" },
-    prospect: { to: "prospect@example.com", subject: "s", body: "b" },
-  },
-};
-
-/**
- * In-memory simulation of writer.gs semantics: a serialized lock around
- * claim + write, a persistent ledger, and one data append per key. Counts
- * data writes and email rounds so tests can assert exactly-once effects.
- */
-function makeScriptSim(opts: { dieBeforeDataWrite?: boolean } = {}) {
-  const ledger = new Map<string, { hash: string; status: string; owner: string; prospect: string }>();
-  let dataWrites = 0;
-  let emailRounds = 0;
-  let queue: Promise<void> = Promise.resolve();
-
-  const handler = async (_url: string, init?: RequestInit) => {
-    const req = JSON.parse(init?.body as string);
-    // Serialize like LockService.getScriptLock().
-    const prev = queue;
-    let release!: () => void;
-    queue = new Promise<void>((r) => (release = r));
-    await prev;
-    try {
-      if (req.action === "submit") {
-        const existing = ledger.get(req.key);
-        if (existing) {
-          if (existing.hash !== req.payloadHash) {
-            return new Response(JSON.stringify({ ok: false, error: "key_payload_mismatch" }), { status: 200 });
-          }
-          return new Response(
-            JSON.stringify({ ok: true, key: req.key, duplicate: true, status: existing.status, emails: { owner: existing.owner, prospect: existing.prospect } }),
-            { status: 200 },
-          );
-        }
-        ledger.set(req.key, { hash: req.payloadHash, status: "claimed", owner: "na", prospect: "na" });
-        if (opts.dieBeforeDataWrite) {
-          return new Response(JSON.stringify({ ok: false, error: "Script timed out" }), { status: 500 });
-        }
-        dataWrites++;
-        emailRounds++;
-        ledger.set(req.key, { hash: req.payloadHash, status: "finalized", owner: "sent", prospect: "sent" });
-        return new Response(
-          JSON.stringify({ ok: true, key: req.key, duplicate: false, status: "finalized", emails: { owner: "sent", prospect: "sent" } }),
-          { status: 200 },
-        );
-      }
-      if (req.action === "finalize") {
-        const existing = ledger.get(req.key);
-        if (!existing) return new Response(JSON.stringify({ ok: false, error: "unknown_key" }), { status: 200 });
-        if (existing.hash !== req.payloadHash) {
-          return new Response(JSON.stringify({ ok: false, error: "key_payload_mismatch" }), { status: 200 });
-        }
-        existing.owner = req.emails.owner;
-        existing.prospect = req.emails.prospect;
-        existing.status = req.emails.owner === "unknown" || req.emails.prospect === "unknown" ? "ambiguous" : "finalized";
-        return new Response(JSON.stringify({ ok: true, key: req.key, status: existing.status }), { status: 200 });
-      }
-      return new Response(JSON.stringify({ ok: false, error: "unknown_action" }), { status: 200 });
-    } finally {
-      release();
-    }
-  };
-
-  return { handler: handler as unknown as typeof fetch, stats: () => ({ dataWrites, emailRounds, ledger }) };
+import { makeHarness, TEST_WRITER_TOKEN, TEST_OPERATOR_TOKEN } from "../../apps-script/writer-harness";
+import { submitToWriter, KeyPayloadMismatchError, type WriterSubmitRequest, type WriterSubmission } from "./apps-script-writer";
+import { writerHash } from "./proposed-submission-keys";
+const config = {url:"https://script.google.com/macros/s/test/exec",token:TEST_WRITER_TOKEN};
+async function request(): Promise<WriterSubmitRequest> {
+  const submission: WriterSubmission = { form:"diagnostic", row:["08ce1011-fd6e-4e03-8833-2d649c33c135","2026-10-21T22:00:00.000Z","Test","prospect@example.com","Company","","HubSpot","1–10","Challenge","Automation","Tuesday","Yes","New",""], emails:{owner:{to:"dhruvozone38@gmail.com",replyTo:"prospect@example.com",subject:"Subject",body:"Body"},prospect:{to:"prospect@example.com",subject:"Receipt",body:"Body"}} };
+  return {action:"submit",key:"test-key-123456789",payloadHash:await writerHash(submission),submission};
 }
-
-describe("Apps Script writer client", () => {
-  it("concurrent duplicate submissions produce exactly one data write and one email round", async () => {
-    const sim = makeScriptSim();
-    const results = await Promise.all([
-      submitToWriter(WRITER_URL, baseReq, sim.handler),
-      submitToWriter(WRITER_URL, baseReq, sim.handler),
-      submitToWriter(WRITER_URL, baseReq, sim.handler),
-    ]);
-    expect(sim.stats().dataWrites).toBe(1);
-    expect(sim.stats().emailRounds).toBe(1);
-    expect(results.filter((r) => !r.duplicate)).toHaveLength(1);
-    expect(results.filter((r) => r.duplicate)).toHaveLength(2);
-    for (const r of results) expect(r.emails).toEqual({ owner: "sent", prospect: "sent" });
+describe("actual proposed Apps Script writer",()=>{
+  it.each(["submit","finalize","reconcile"])("authenticates %s before storage or sends",async action=>{
+    const h=makeHarness(), req=await request();
+    expect(h.post({...req,action,token:"wrong"})).toEqual({ok:false,error:"unauthorized"});
+    expect(h.records()).toHaveLength(0);expect(h.sends).toHaveLength(0);expect(h.sheets.has("Submission Ledger")).toBe(false);
   });
-
-  it("a retry after a lost response returns the recorded result without rewriting or resending", async () => {
-    const sim = makeScriptSim();
-    const first = await submitToWriter(WRITER_URL, baseReq, sim.handler);
-    expect(first.duplicate).toBe(false);
-    const retry = await submitToWriter(WRITER_URL, baseReq, sim.handler);
-    expect(retry.duplicate).toBe(true);
-    expect(retry.status).toBe("finalized");
-    expect(sim.stats().dataWrites).toBe(1);
-    expect(sim.stats().emailRounds).toBe(1);
+  it("requires distinct credentials and operator privilege for finalize",async()=>{
+    const h=makeHarness(), req=await request();
+    expect(h.post({action:"finalize",key:req.key,payloadHash:req.payloadHash,token:TEST_WRITER_TOKEN})).toEqual({ok:false,error:"unauthorized"});
+    h.props.OPERATOR_TOKEN=TEST_WRITER_TOKEN;
+    expect(h.post({...req,token:TEST_WRITER_TOKEN})).toEqual({ok:false,error:"missing_configuration"});
   });
-
-  it("rejects the same key with a different payload (key/payload mismatch)", async () => {
-    const sim = makeScriptSim();
-    await submitToWriter(WRITER_URL, baseReq, sim.handler);
-    await expect(
-      submitToWriter(WRITER_URL, { ...baseReq, payloadHash: "hash-2" }, sim.handler),
-    ).rejects.toBeInstanceOf(KeyPayloadMismatchError);
-    expect(sim.stats().dataWrites).toBe(1);
+  it("rejects unauthorized destinations and recomputes the payload hash",async()=>{
+    const h=makeHarness(), req=await request();req.submission.emails.owner.to="attacker@example.com";
+    expect(h.post({...req,token:TEST_WRITER_TOKEN})).toEqual({ok:false,error:"bad_request"});
+    const next=await request();next.submission.row[2]="Changed";
+    expect(h.post({...next,token:TEST_WRITER_TOKEN})).toEqual({ok:false,error:"key_payload_mismatch"});expect(h.sends).toHaveLength(0);
   });
-
-  it("an interrupted write leaves a claimed entry for reconciliation, and a retry completes it once", async () => {
-    const sim = makeScriptSim({ dieBeforeDataWrite: true });
-    await expect(submitToWriter(WRITER_URL, baseReq, sim.handler)).rejects.toThrow("Writer unreachable (500)");
-    expect(sim.stats().ledger.get("key-1")?.status).toBe("claimed");
-
-    // Retry against a recovered writer: the claimed entry is found, hashes
-    // match, and the recorded (still unwritten) result is returned — the
-    // reconcile flow, not a blind resend, completes it.
-    const recovered = makeScriptSim();
-    recovered.stats().ledger.set("key-1", { hash: "hash-1", status: "claimed", owner: "na", prospect: "na" });
-    const retry = await submitToWriter(WRITER_URL, baseReq, recovered.handler);
-    expect(retry.duplicate).toBe(true);
-    expect(retry.status).toBe("claimed");
-    expect(recovered.stats().dataWrites).toBe(0);
-    expect(recovered.stats().emailRounds).toBe(0);
+  it("serializes duplicate arrivals using the actual lock entry and one durable row",async()=>{
+    const h=makeHarness(), req=await request();
+    const results=await Promise.all(Array.from({length:3},()=>submitToWriter(config,req,h.fetchImpl)));
+    expect(results.filter(r=>!r.duplicate)).toHaveLength(1);expect(h.records()).toHaveLength(1);expect(h.sheets.get("Diagnostic Requests")?.getLastRow()).toBe(2);expect(h.sends).toHaveLength(2);
+    h.hold(true);expect(h.post({...req,token:TEST_WRITER_TOKEN})).toEqual({ok:false,error:"busy"});h.hold(false);
   });
-
-  it("finalize records ambiguous email outcomes without resending", async () => {
-    const sim = makeScriptSim();
-    await submitToWriter(WRITER_URL, baseReq, sim.handler);
-    const res = await finalizeWriter(
-      WRITER_URL,
-      { action: "finalize", key: "key-1", payloadHash: "hash-1", emails: { owner: "sent", prospect: "unknown" } },
-      sim.handler,
-    );
-    expect(res.status).toBe("ambiguous");
-    expect(sim.stats().emailRounds).toBe(1); // no resend
+  it.each(["claim","data_write","written","owner_intent","owner_send","owner_checkpoint","prospect_intent","prospect_send","prospect_checkpoint"])("recovers safely after %s",async point=>{
+    const h=makeHarness(), req=await request();h.fault(point);
+    await submitToWriter(config,req,h.fetchImpl).catch(()=>undefined);
+    // Retry uses persistent disk snapshot, not a new simulation/empty ledger.
+    const retry=await submitToWriter(config,req,h.fetchImpl);
+    expect(retry.persistence).toBe("written");expect(retry.duplicate).toBe(true);
+    expect(h.records()).toHaveLength(1);expect(h.sheets.get("Diagnostic Requests")?.getLastRow()).toBe(2);
+    const ownerAmbiguous=["owner_intent","owner_send"].includes(point), prospectAmbiguous=["prospect_intent","prospect_send"].includes(point);
+    expect(retry.emails.owner.state).toBe(ownerAmbiguous?"unknown":"accepted");expect(retry.emails.prospect.state).toBe(prospectAmbiguous?"unknown":"accepted");
+    expect(h.sends).toHaveLength(point.endsWith("intent")?1:2);
+    const count=h.sends.length;await submitToWriter(config,req,h.fetchImpl);expect(h.sends).toHaveLength(count);
   });
-
-  it("finalize with a mismatched hash is rejected", async () => {
-    const sim = makeScriptSim();
-    await submitToWriter(WRITER_URL, baseReq, sim.handler);
-    await expect(
-      finalizeWriter(WRITER_URL, { action: "finalize", key: "key-1", payloadHash: "wrong", emails: { owner: "sent", prospect: "sent" } }, sim.handler),
-    ).rejects.toBeInstanceOf(KeyPayloadMismatchError);
+  it("operator reconciliation repairs claimed and written unfinished entries",async()=>{
+    for(const point of ["claim","written"]){const h=makeHarness(),req=await request();h.fault(point);h.post({...req,token:TEST_WRITER_TOKEN});
+      const repaired=h.post({action:"reconcile",token:TEST_OPERATOR_TOKEN,key:req.key,payloadHash:req.payloadHash});expect(repaired.persistence).toBe("written");expect(repaired.status).toBe("finalized");expect(h.sends).toHaveLength(2);}
   });
-
-  it("throws when the writer is unreachable so the handler fails instead of falling back to a direct write", async () => {
-    const down = vi.fn(async () => new Response("Service Unavailable", { status: 503 }));
-    await expect(submitToWriter(WRITER_URL, baseReq, down)).rejects.toThrow("Writer unreachable (503)");
+  it("never resends ambiguous emails; operator evidence is required to resume confirmed-unsent",async()=>{
+    const h=makeHarness(),req=await request();h.fault("owner_intent");h.post({...req,token:TEST_WRITER_TOKEN});
+    const base={key:req.key,payloadHash:req.payloadHash,token:TEST_OPERATOR_TOKEN};
+    expect(h.post({...base,action:"reconcile"}).emails.owner.state).toBe("unknown");
+    expect(h.post({...base,action:"finalize",role:"owner",decision:"confirmed_not_sent",evidence:"short"}).ok).toBe(false);
+    const before=h.sends.length;
+    expect(h.post({...base,action:"finalize",role:"owner",decision:"confirmed_not_sent",evidence:"Operator verified no send was initiated"}).emails.owner.state).toBe("not_started");expect(h.sends).toHaveLength(before);
+    expect(h.post({...base,action:"reconcile"}).emails.owner.state).toBe("accepted");expect(h.sends).toHaveLength(before+1);
   });
-
-  it("sends the request as text/plain JSON to the writer URL", async () => {
-    const sim = makeScriptSim();
-    const spy = vi.fn(sim.handler);
-    await submitToWriter(WRITER_URL, baseReq, spy);
-    const [url, init] = spy.mock.calls[0] as unknown as [string, RequestInit];
-    expect(url).toBe(WRITER_URL);
-    expect((init.headers as Record<string, string>)["Content-Type"]).toContain("text/plain");
-    expect(JSON.parse(init.body as string).key).toBe("key-1");
+  it("records independent confirmed delivery without treating acceptance as delivery",async()=>{
+    const h=makeHarness(),req=await request();const first=await submitToWriter(config,req,h.fetchImpl);expect(first.emails.prospect.delivery).toBe("unconfirmed");
+    const base={action:"finalize",key:req.key,payloadHash:req.payloadHash,token:TEST_OPERATOR_TOKEN,role:"prospect",decision:"delivered",evidence:"Recipient confirmed receipt of this exact request"};
+    expect(h.post(base).emails.prospect.delivery).toBe("confirmed");expect(h.sends).toHaveLength(2);
+    expect(h.post({...base,decision:"confirmed_not_sent"}).error).toBe("invalid_transition");
+  });
+  it("lost final response retries without another write or send",async()=>{
+    const h=makeHarness(),req=await request();const lost=vi.fn(async()=>{h.post({...req,token:TEST_WRITER_TOKEN});throw new Error("lost response");});
+    await expect(submitToWriter(config,req,lost)).rejects.toThrow("lost response");expect((await submitToWriter(config,req,h.fetchImpl)).duplicate).toBe(true);expect(h.sends).toHaveLength(2);
+  });
+  it("rejects key/payload mismatch even with a valid new hash",async()=>{
+    const h=makeHarness(),req=await request();await submitToWriter(config,req,h.fetchImpl);req.submission.row[2]="Other";req.payloadHash=await writerHash(req.submission);
+    await expect(submitToWriter(config,req,h.fetchImpl)).rejects.toBeInstanceOf(KeyPayloadMismatchError);expect(h.sends).toHaveLength(2);
+  });
+  it("keeps quota-exhausted emails pending, then safely resumes",async()=>{
+    const h=makeHarness(),req=await request();h.quota(0);const first=await submitToWriter(config,req,h.fetchImpl);expect(first.status).toBe("partial");expect(h.sends).toHaveLength(0);
+    h.quota(100);expect((await submitToWriter(config,req,h.fetchImpl)).status).toBe("finalized");expect(h.sends).toHaveLength(2);
+  });
+  it("reserves rows across interrupted claims and refuses conflicting manual edits",async()=>{
+    const h=makeHarness(),req=await request();h.fault("claim");h.post({...req,token:TEST_WRITER_TOKEN});
+    const second={...req,key:"second-key-123456789"};await submitToWriter(config,second,h.fetchImpl);expect(h.records().map(r=>r.dataRow)).toEqual([2,3]);
+    h.sheets.get("Diagnostic Requests")?.getRange(2,1).setValue("manual existing record");await expect(submitToWriter(config,req,h.fetchImpl)).rejects.toThrow();expect(h.sheets.get("Diagnostic Requests")?.getRange(2,1).getValue()).toBe("manual existing record");expect(h.sends).toHaveLength(2);
+  });
+  it.each([{ok:false,error:"bad_request"},{ok:true},null])("rejects HTTP 200 invalid JSON contract %j",async body=>{
+    await expect(submitToWriter(config,await request(),async()=>Response.json(body))).rejects.toThrow("Writer rejected or malformed response");
   });
 });

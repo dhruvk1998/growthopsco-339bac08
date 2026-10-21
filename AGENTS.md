@@ -1,1 +1,3 @@
 - Form rules shared by browser and server live in src/lib/*.ts zod schemas (e.g. diagnostic.ts); API routes on non-Lovable hosts bridge to the published Lovable endpoint because connector secrets exist only there.
+- Keep proposed submission adapters disconnected from active routes/forms until coordinated approval; the authoritative Apps Script writer must own all writes and sends so legacy fallbacks cannot bypass the ledger.
+- Writer recovery reserves a data range with a trailing key/hash marker and durable per-recipient send intent; this avoids append retries and prevents automatic resend of ambiguous email outcomes.
