@@ -1,8 +1,8 @@
 /** Local development only. Hosted previews fail closed; production keeps its existing workflow. */
 export const UAT_SPREADSHEET_ID = "1hDoV5j9pICnP0i8uInGcmUXTXCfWFaF9IVt1PDvt47Q";
-export const UAT_OWNER_EMAIL = "dhruvozone38@gmail.com";
-// Confirmed by Dhruv for local isolated UAT (owner and prospect copies).
-export const UAT_RECIPIENT: string | null = "dhruvozone38@gmail.com";
+export const UAT_OWNER_EMAIL = "dhruv.growthops@gmail.com";
+// Confirmed by Dhruv for the isolated diagnostic test on 2026-10-22.
+export const UAT_RECIPIENT: string | null = "dhruvkaushik866@gmail.com";
 
 export function submissionEnvironment(url: string, development: boolean) {
   const host = new URL(url).hostname;

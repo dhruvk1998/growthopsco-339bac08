@@ -9,10 +9,10 @@ describe("UAT isolation", () => {
     expect(submissionEnvironment("https://growthopsco.lovable.app/api/consultation-lead", false)).toBe("production");
     expect(submissionEnvironment("https://growthopsco.vercel.app/api/consultation-lead", false)).toBe("production");
   });
-  it("uses separate storage and the authorized UAT owner, with sending paused", () => {
+  it("uses separate storage and the authorized diagnostic test recipients", () => {
     expect(UAT_SPREADSHEET_ID).not.toBe("1gR6UwaZ6zG2FmBVFBoKv9XbUcaqQC-k7pqsefQTC0c4");
-    expect(UAT_OWNER_EMAIL).toBe("dhruvozone38@gmail.com");
-    expect(UAT_RECIPIENT).toBe("dhruvozone38@gmail.com");
+    expect(UAT_OWNER_EMAIL).toBe("dhruv.growthops@gmail.com");
+    expect(UAT_RECIPIENT).toBe("dhruvkaushik866@gmail.com");
   });
   it("performs no external action before recipient confirmation", async () => {
     const write = vi.fn(), notify = vi.fn();
