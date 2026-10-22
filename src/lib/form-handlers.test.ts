@@ -89,4 +89,44 @@ describe("active handlers with no real provider access", () => {
     expect((await (await handleConsultationRequest(request({ _honeypot: "bot" }), false)).json()).ok).toBe(true);
     expect(fetcher).not.toHaveBeenCalled();
   });
+  it.each([false, true])("uses the same authenticated Gmail confirmation with correct reply address compatibility=%s", async (compatibility) => {
+    vi.stubEnv("OWNER_NOTIFICATION_EMAIL", "team@example.com");
+    const response = compatibility
+      ? await handleDiagnosticRequest(request(diagnostic), false)
+      : await handleConsultationRequest(request(toContactEnquiry(diagnostic)), false);
+    expect(await response.json()).toEqual(deliveryResult("saved", "accepted", "accepted"));
+    const calls = fetcher.mock.calls as unknown as [string, RequestInit][];
+    expect(calls).toHaveLength(3);
+    const [url, init] = calls[2];
+    expect(url).toBe("https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send");
+    expect(init.method).toBe("POST");
+    expect(init.headers).toMatchObject({ Authorization: "Bearer mock-only", "X-Connection-Api-Key": "mock-only" });
+    const { raw } = JSON.parse(init.body as string);
+    const decoded = Buffer.from(raw, "base64url").toString("utf8");
+    const headers = decoded.slice(0, decoded.indexOf("\r\n\r\n"));
+    expect(headers).toContain("To: prospect@example.com\r\nReply-To: team@example.com\r\n");
+    expect(headers).toContain("Content-Type: multipart/alternative;");
+    expect(headers).not.toMatch(/^(From|Sender|Return-Path|Bcc|Cc):/im);
+  });
+  it.each([false, true])("does not retry uncertain customer confirmations compatibility=%s", async (compatibility) => {
+    fetcher.mockImplementation(async (url: string) => {
+      if (url.includes("google_sheets")) return Response.json({ updates: { updatedRows: 1 } });
+      if (fetcher.mock.calls.length === 3) throw new Error("Mock lost Gmail response");
+      return Response.json({ id: "mock-owner-message" });
+    });
+    const response = compatibility
+      ? await handleDiagnosticRequest(request(diagnostic), false)
+      : await handleConsultationRequest(request(toContactEnquiry(diagnostic)), false);
+    expect(await response.json()).toEqual(deliveryResult("saved", "accepted", "unknown"));
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+  it("does not count a malformed Gmail customer acknowledgment as accepted or resend it", async () => {
+    fetcher.mockImplementation(async (url: string) => {
+      if (url.includes("google_sheets")) return Response.json({ updates: { updatedRows: 1 } });
+      return Response.json(fetcher.mock.calls.length === 3 ? { ok: true } : { id: "mock-owner-message" });
+    });
+    expect(await (await handleConsultationRequest(request(toContactEnquiry(diagnostic)), false)).json())
+      .toEqual(deliveryResult("saved", "accepted", "unknown"));
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
 });
