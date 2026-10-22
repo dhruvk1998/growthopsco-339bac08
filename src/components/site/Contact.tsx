@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { formDeliveryView } from "@/lib/form-delivery";
 import { Link } from "@tanstack/react-router";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "success" | "partial" | "unknown" | "error";
 
 export function Contact() {
+  const submitting = useRef(false);
+  const [resultMessage, setResultMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const formRef = useRef<HTMLFormElement>(null);
@@ -22,7 +26,7 @@ export function Contact() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "submitting") return; // prevent duplicate submits
+    if (submitting.current || ["success", "partial", "unknown"].includes(status)) return; // prevent duplicate submits
 
     const form = e.currentTarget;
     const fd = new FormData(form);
@@ -52,6 +56,7 @@ export function Contact() {
       assessment,
     };
 
+    submitting.current = true;
     setStatus("submitting");
     setErrorMsg("");
 
@@ -61,21 +66,20 @@ export function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!res.ok || !data.ok) {
-        throw new Error(data.error || "Unable to submit. Please try again.");
-      }
-      setStatus("success");
-      form.reset();
-      try {
-        sessionStorage.removeItem("crmHealthCheck");
-      } catch {
-        // ignore
+      const data = await res.json().catch(() => null);
+      if (!res.ok && res.status < 500 && data?.error) throw new Error(res.status === 403 ? "Submissions are paused in this preview. No request was saved." : "Please check your form details.");
+      const view = formDeliveryView(data, false);
+      setStatus(view.state);
+      setResultMessage(view.message);
+      if (view.state === "error") setErrorMsg(view.message);
+      if (view.state === "success" || view.state === "partial") {
+        try { sessionStorage.removeItem("crmHealthCheck"); } catch { /* storage optional */ }
       }
     } catch (err) {
-      setStatus("error");
+      setStatus(err instanceof Error && /paused|check your form/.test(err.message) ? "error" : "unknown");
+      setResultMessage("We couldn’t confirm your request. Please contact GrowthOpsCo before submitting again to avoid a duplicate.");
       setErrorMsg(err instanceof Error ? err.message : "Unable to submit. Please try again.");
-    }
+    } finally { submitting.current = false; }
   }
 
   return (
@@ -270,16 +274,16 @@ export function Contact() {
             </div>
 
             {status === "error" && (
-              <div className="mt-5 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              <div role="alert" className="mt-5 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                 {errorMsg || "Something went wrong. Please try again."}
               </div>
             )}
 
-            {status === "success" ? (
-              <div className="mt-6 rounded-xl border border-accent/40 bg-accent/10 px-5 py-4 text-sm text-foreground">
-                <p className="font-semibold text-accent">✓ Request received!</p>
+            {["success", "partial", "unknown"].includes(status) ? (
+              <div role={status === "success" ? "status" : "alert"} className="mt-6 rounded-xl border border-accent/40 bg-accent/10 px-5 py-4 text-sm text-foreground">
+                <p className="font-semibold text-accent">{status === "success" ? "✓ Request received!" : "Request update"}</p>
                 <p className="mt-2 text-muted-foreground">
-                  Your consultation inquiry has been sent successfully. Dhruv will review your requirements and follow up within one business day.
+                  {resultMessage}
                 </p>
                 <p className="mt-3 text-muted-foreground">
                   In the meantime, you're welcome to explore the{" "}
@@ -294,13 +298,13 @@ export function Contact() {
                 </p>
               </div>
             ) : (
-              <button
+              <Button
                 type="submit"
                 disabled={status === "submitting"}
                 className="mt-6 w-full rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground transition-all hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {status === "submitting" ? "Sending…" : "Request Consultation"}
-              </button>
+              </Button>
             )}
           </form>
         </div>
