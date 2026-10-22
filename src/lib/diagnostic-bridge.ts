@@ -10,10 +10,8 @@ export const PUBLISHED_DIAGNOSTIC_ENDPOINT =
 
 export const BRIDGE_HEADER = "X-GrowthOps-Remote-Bridge";
 
-export interface BridgeResult {
-  ok?: boolean;
-  id?: string;
-}
+import { readDeliveryBridge, type DeliveryResult } from "./form-delivery";
+export type BridgeResult = DeliveryResult;
 
 export async function bridgeToPublished(
   body: unknown,
@@ -29,7 +27,7 @@ export async function bridgeToPublished(
     },
     body: JSON.stringify(body),
   });
-  const json = (await res.json().catch(() => ({}))) as BridgeResult;
-  if (!res.ok || !json.ok) throw new Error(`Bridge failed (${res.status})`);
-  return json;
+  const result = await readDeliveryBridge(res);
+  if (result.status === "unknown") throw new Error(`Bridge failed (${res.status}): outcome unknown; do not retry automatically`);
+  return result;
 }
