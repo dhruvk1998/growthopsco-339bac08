@@ -7,6 +7,7 @@ import {
   decideVerdict,
 } from "./submission-integrity";
 import { bridgeToPublished, BRIDGE_HEADER, PUBLISHED_DIAGNOSTIC_ENDPOINT } from "./diagnostic-bridge";
+import { deliveryResult } from "./form-delivery";
 
 const payload = {
   fullName: "Test User",
@@ -81,10 +82,11 @@ describe("processing verdict", () => {
 
 describe("bridge forwarding", () => {
   it("forwards the body verbatim with the bridge header to the published endpoint", async () => {
-    const fetchImpl = vi.fn(async () => new Response(JSON.stringify({ ok: true, id: "x" }), { status: 200 }));
+    const remote = deliveryResult("saved", "accepted", "accepted");
+    const fetchImpl = vi.fn(async () => new Response(JSON.stringify(remote), { status: 200 }));
     const body = { ...payload, submissionKey: "key-123" };
     const result = await bridgeToPublished(body, fetchImpl);
-    expect(result).toEqual({ ok: true, id: "x" });
+    expect(result).toEqual(remote);
     const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe(PUBLISHED_DIAGNOSTIC_ENDPOINT);
     expect((init.headers as Record<string, string>)[BRIDGE_HEADER]).toBe("1");

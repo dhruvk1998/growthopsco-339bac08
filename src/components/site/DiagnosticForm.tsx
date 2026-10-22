@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   COMPANY_SIZES,
   CRM_OPTIONS,
@@ -6,22 +6,25 @@ import {
   IMPROVEMENT_AREAS,
 } from "@/lib/diagnostic";
 import { DiagnosticContactSchema, ENQUIRY_ENDPOINT, toContactEnquiry } from "@/lib/diagnostic-contact";
+import { formDeliveryView } from "@/lib/form-delivery";
 import { Button } from "@/components/ui/button";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "success" | "partial" | "unknown" | "error";
 type Errors = Partial<Record<string, string>>;
 
 const input =
   "w-full rounded-lg border border-border bg-background p-3 text-sm outline-none transition-colors focus:border-accent aria-[invalid=true]:border-destructive";
 
 export function DiagnosticForm() {
+  const submitting = useRef(false);
+  const [resultMessage, setResultMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "submitting") return;
+    if (submitting.current || ["success", "partial", "unknown"].includes(status)) return;
     const fd = new FormData(e.currentTarget);
     const payload = {
       fullName: String(fd.get("fullName") || ""),
@@ -50,6 +53,7 @@ export function DiagnosticForm() {
     }
     setErrors({});
     setServerError("");
+    submitting.current = true;
     setStatus("submitting");
     try {
       let assessment: unknown;
@@ -64,23 +68,28 @@ export function DiagnosticForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(toContactEnquiry(parsed.data, assessment, String(fd.get("_honeypot") || ""))),
       });
-      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!res.ok || !json.ok) throw new Error(json.error || "Submission failed. Please try again.");
-      setStatus("success");
-      try { sessionStorage.removeItem("crmHealthCheck"); } catch { /* same as contact */ }
+      const json = await res.json().catch(() => null);
+      if (!res.ok && res.status < 500 && json?.error) throw new Error(res.status === 403 ? "Submissions are paused in this preview. No request was saved." : "Please check your form details.");
+      const view = formDeliveryView(json, true);
+      setStatus(view.state);
+      setResultMessage(view.message);
+      if (view.state === "error") setServerError(view.message);
+      if (view.state === "success" || view.state === "partial") {
+        try { sessionStorage.removeItem("crmHealthCheck"); } catch { /* storage optional */ }
+      }
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Submission failed. Please try again.");
-      setStatus("error");
-    }
+      setStatus(err instanceof Error && /paused|check your form/.test(err.message) ? "error" : "unknown");
+      setResultMessage("We couldn’t confirm your request. Please contact GrowthOpsCo before submitting again to avoid a duplicate.");
+    } finally { submitting.current = false; }
   }
 
-  if (status === "success") {
+  if (["success", "partial", "unknown"].includes(status)) {
     return (
-      <div role="status" className="rounded-2xl border border-accent/40 bg-accent/5 p-8 text-center">
-        <p className="text-xs font-bold uppercase tracking-widest text-accent">Request Received</p>
+      <div role={status === "success" ? "status" : "alert"} className="rounded-2xl border border-accent/40 bg-accent/5 p-8 text-center">
+        <p className="text-xs font-bold uppercase tracking-widest text-accent">{status === "success" ? "Request Received" : "Request Update"}</p>
         <p className="mx-auto mt-3 max-w-xl leading-relaxed">
-          Your diagnostic request has been received. I will review your details and contact you to confirm availability,
-          payment arrangements, and the next steps. Your appointment is not confirmed until we agree on a time.
+          {resultMessage}
         </p>
       </div>
     );
