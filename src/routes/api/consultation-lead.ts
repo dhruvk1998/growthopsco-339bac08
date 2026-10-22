@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { isolatedSubmission, submissionEnvironment, UAT_OWNER_EMAIL, UAT_RECIPIENT, UAT_SPREADSHEET_ID } from "@/lib/uat-isolation";
 import { diagnosticConfirmationMessage, needsDiagnosticConfirmation } from "@/lib/diagnostic-confirmation";
+import { consultationSheetEntry } from "@/lib/consultation-sheet";
 
 /**
  * Consultation lead submission endpoint — portable across Vercel, Lovable, and
@@ -245,12 +246,12 @@ async function submitViaAppsScript(appsScriptUrl: string, data: Lead, timestamp:
 
 // --- Transport 3: Lovable Connector Gateway (Lovable-only fallback) --------
 
-async function appendToSheetViaGateway(row: string[], spreadsheetId = SPREADSHEET_ID) {
+async function appendToSheetViaGateway(row: string[], spreadsheetId = SPREADSHEET_ID, range = SHEET_RANGE) {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const sheetsKey = process.env.GOOGLE_SHEETS_API_KEY;
   if (!lovableKey || !sheetsKey) throw new Error("Missing Lovable gateway secrets");
 
-  const url = `${GATEWAY}/google_sheets/v4/spreadsheets/${spreadsheetId}/values/${SHEET_RANGE}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+  const url = `${GATEWAY}/google_sheets/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -328,7 +329,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
           const requestHost = new URL(request.url).host;
           const isLovableHost = requestHost.endsWith("lovable.app");
           const isRemoteBridge = request.headers.get("X-GrowthOps-Remote-Bridge") === "1";
-
+          const isDiagnostic = needsDiagnosticConfirmation(data.engagementType);
+          const sheetEntry = consultationSheetEntry(data, timestamp, crypto.randomUUID());
 
           // Sheet-write transports (first success wins).
           const sheetAttempts: Array<{ name: string; fn: () => Promise<void> }> = [];
@@ -336,20 +338,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
             sheetAttempts.push({
               name: "LovableGateway",
               fn: () =>
-                appendToSheetViaGateway([
-                  timestamp,
-                  data.fullName,
-                  data.companyName,
-                  data.email,
-                  data.phone,
-                  data.website,
-                  data.crmUsed,
-                  data.requirements,
-                  data.preferredMeetingTime,
-                  data.leadSource,
-                  data.engagementType,
-                  data.companySize,
-                ]),
+                appendToSheetViaGateway(sheetEntry.row, SPREADSHEET_ID, sheetEntry.range),
             });
           }
 
@@ -362,7 +351,8 @@ export const Route = createFileRoute("/api/consultation-lead")({
               fn: () => submitViaGmail(data, timestamp),
             });
           }
-          if (appsScriptUrl) {
+          // Legacy Apps Script also writes to Database, so it cannot handle diagnostics.
+          if (appsScriptUrl && !isDiagnostic) {
             emailAttempts.push({
               name: "AppsScript",
               fn: () => submitViaAppsScript(appsScriptUrl, data, timestamp),
@@ -413,7 +403,7 @@ export const Route = createFileRoute("/api/consultation-lead")({
             }
           }
 
-          if (!sheetDelivered && !emailDelivered && bridgeAttempt) {
+          if (!sheetDelivered && (!emailDelivered || isDiagnostic) && bridgeAttempt) {
             tried.push(`bridge:${bridgeAttempt.name}`);
             try {
               await bridgeAttempt.fn();
@@ -431,6 +421,9 @@ export const Route = createFileRoute("/api/consultation-lead")({
             `[consultation-lead] tried=[${tried.join(",")}] succeeded=[${succeeded.join(",")}] errors=[${errors.join(" | ")}]`,
           );
 
+          if (isDiagnostic && !sheetDelivered) {
+            throw new Error("Diagnostic Requests persistence failed; no Database fallback permitted.");
+          }
           if (!sheetDelivered && !emailDelivered) {
             throw new Error(`All transports failed. ${errors.join(" | ")}`);
           }
