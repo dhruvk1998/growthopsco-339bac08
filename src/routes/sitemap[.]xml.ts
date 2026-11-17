@@ -1,32 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const SITE_URL = "https://growthopsco.vercel.app";
-
-const pages = [
-  { path: "/",               priority: "1.0", changefreq: "monthly" },
-  { path: "/services",       priority: "0.9", changefreq: "monthly" },
-  { path: "/about",          priority: "0.8", changefreq: "monthly" },
-  { path: "/case-studies",   priority: "0.8", changefreq: "monthly" },
-  { path: "/contact",        priority: "0.8", changefreq: "monthly" },
-  { path: "/framework",      priority: "0.7", changefreq: "monthly" },
-  { path: "/crm-assessment", priority: "0.7", changefreq: "monthly" },
-];
-
-// Unlisted pages that must never appear in the sitemap.
-const EXCLUDED_PATHS = new Set(["/crm-revenue-diagnostic"]);
-
-const lastmod = new Date().toISOString().split("T")[0];
-
-function buildSitemap(): string {
-  const urls = pages
-    .filter((p) => !EXCLUDED_PATHS.has(p.path))
-    .map(
-      (p) =>
-        `  <url>\n    <loc>${SITE_URL}${p.path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`
-    )
-    .join("\n");
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
-}
+import { buildSitemap } from "@/lib/sitemap";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {

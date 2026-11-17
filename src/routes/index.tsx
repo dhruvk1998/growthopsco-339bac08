@@ -23,8 +23,15 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://growthopsco.lovable.app/" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Dhruv Kaushik — CRM, Automation & Revenue Operations" },
+      { name: "twitter:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.lovable.app/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -33,7 +40,7 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: "Dhruv Kaushik",
           jobTitle: "CRM, Automation & Business Systems Consultant",
-          url: "https://growthopsco.vercel.app",
+          url: "https://growthopsco.lovable.app",
           sameAs: ["https://www.linkedin.com/in/dhruv-kaushik-95231a175/"],
           address: { "@type": "PostalAddress", addressLocality: "Burnaby", addressRegion: "BC", addressCountry: "CA" },
           knowsAbout: [

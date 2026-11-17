@@ -17,7 +17,7 @@ export const Route = createFileRoute("/case-studies")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Dhruv Kaushik" },
-      { property: "og:url", content: "https://growthopsco.vercel.app/case-studies" },
+      { property: "og:url", content: "https://growthopsco.lovable.app/case-studies" },
       { property: "og:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/case-studies")({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/case-studies" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.lovable.app/case-studies" }],
   }),
   component: CaseStudiesPage,
 });

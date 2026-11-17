@@ -17,7 +17,7 @@ export const Route = createFileRoute("/services")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Dhruv Kaushik" },
-      { property: "og:url", content: "https://growthopsco.vercel.app/services" },
+      { property: "og:url", content: "https://growthopsco.lovable.app/services" },
       { property: "og:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/services")({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://growthopsco.vercel.app/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://growthopsco.vercel.app/services" }],
+    links: [{ rel: "canonical", href: "https://growthopsco.lovable.app/services" }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
@@ -35,11 +35,11 @@ export const Route = createFileRoute("/services")({
         "provider": {
           "@type": "Person",
           "name": "Dhruv Kaushik",
-          "url": "https://growthopsco.vercel.app",
+          "url": "https://growthopsco.lovable.app",
         },
         "description": "CRM setup, workflow automation, lead process design, website–CRM integration, chatbot integration, and CRM audits for growing operations teams.",
         "areaServed": "CA",
-        "url": "https://growthopsco.vercel.app/services",
+        "url": "https://growthopsco.lovable.app/services",
       }),
     }],
   }),
